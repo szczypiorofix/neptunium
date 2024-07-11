@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="1e61a29d-26c1-44b3-ad80-1f81c41b6e51" name="neptunium-mydevil" url="https://neptunium.wroblewskipiotr.pl/">
+        <fileTransfer rootFolder="/usr/home/szczypiorofix" accessType="SFTP" host="s21.mydevil.net" port="22" sshConfigId="bd928402-bcab-4f97-8c1c-b77b48163f0b" sshConfig="szczypiorofix@s21.mydevil.net:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

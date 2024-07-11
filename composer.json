@@ -1,0 +1,13 @@
+{
+  "license": "MIT",
+  "name": "neptunium/neptunium",
+  "autoload": {
+    "psr-4": {
+      "Neptunium\\": "neptunium/",
+      "Vendor\\Namespace\\" : ""
+    }
+  },
+  "require": {
+    "twig/twig": "^3.0"
+  }
+}
