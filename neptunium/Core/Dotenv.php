@@ -5,26 +5,41 @@ namespace Neptunium\Core;
 use Exception;
 
 class Dotenv {
-    private string $fileRawContent;
-    private array $fileContentArray;
-    public function __construct() {
-        $this->fileRawContent = "";
-        $this->fileContentArray = [];
-    }
+    private array $registeredKeys = array();
+
+    public function __construct() {}
 
     /**
      * @throws Exception
      */
     public function load(string $path): void {
-        $this->fileRawContent = @file_get_contents($path);
-        if (!$this->fileRawContent) {
+        $fileRawContent = @file_get_contents($path);
+        if (!$fileRawContent) {
             throw new Exception('Unable to read file: ' . $path);
         }
-        $this->parseContent();
+        $fileContentArray = $this->parseContent($fileRawContent);
+        $this->registerEnvironmentalVariables($fileContentArray);
     }
 
-    private function parseContent(): void {
-        $this->fileContentArray = explode(PHP_EOL, nl2br($this->fileRawContent));
-//        print_r($this->fileContentArray);
+    public function unloadVariables(): void {
+        foreach($this->registeredKeys as $key) {
+            unset($_ENV[$key]);
+        }
+    }
+
+    private function parseContent(string $fileRawContent): array {
+        return explode(PHP_EOL, nl2br($fileRawContent));
+    }
+
+    private function registerEnvironmentalVariables(array $fileContentArray): void {
+        foreach($fileContentArray as $line) {
+            $lineArray = explode("=", trim($line));
+            if (isset($lineArray[0]) && isset($lineArray[1])) {
+                $lineKey = $lineArray[0];
+                $lineValue = $lineArray[1];
+                $this->registeredKeys[] = $lineKey;
+                $_ENV[$lineKey] = $lineValue;
+            }
+        }
     }
 }
