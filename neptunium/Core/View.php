@@ -10,7 +10,7 @@ class View {
     private function __clone() {}
 
     public static function render(string $view, array $params = []): string {
-        $loader = new FilesystemLoader('./public');
+        $loader = new FilesystemLoader('./views');
         $twig = new \Twig\Environment($loader, ['debug' => true]);
         try {
             $template = $twig->load($view);
