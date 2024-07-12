@@ -35,20 +35,6 @@ class Core {
             echo 'An error occurred while registering routes: '. $e->getMessage();
         }
 
-//        echo '<pre>';
-//        print_r($this->router->getRoutes());
-//        echo '</pre>';
-//
-//        echo '<pre>';
-//        print_r(apache_request_headers());
-//        echo '</pre>';
-//
-//        header('Accept: application/json');
-//
-//        echo '<pre>';
-//        print_r(headers_list());
-//        echo '</pre>';
-
         $urlPath = $this->parseUrl();
         $pageContent = $this->router->handleRoutes($urlPath);
 
