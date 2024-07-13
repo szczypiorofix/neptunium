@@ -3,7 +3,6 @@
 namespace Neptunium\Core;
 
 use Neptunium\Attributes\Route;
-use Neptunium\Interfaces\Page;
 use ReflectionException;
 
 

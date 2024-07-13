@@ -1,6 +1,6 @@
 <?php
 
-namespace Neptunium\Models;
+namespace Neptunium\ModelClasses;
 
 use PDO;
 

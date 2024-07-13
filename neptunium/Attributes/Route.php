@@ -2,7 +2,7 @@
 
 namespace Neptunium\Attributes;
 
-use Neptunium\Core\Http;
+use Neptunium\ModelClasses\Http;
 
 #[\Attribute]
 class Route {

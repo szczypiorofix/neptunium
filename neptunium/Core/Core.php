@@ -6,7 +6,7 @@ use Neptunium\Controllers\HomeController;
 use Neptunium\Controllers\MainController;
 
 class Core {
-    private Environment $environment;
+    private ?Environment $environment;
     private Dotenv $dotenv;
     private Router $router;
 
@@ -38,6 +38,9 @@ class Core {
 
         $db = DatabaseConnection::getConnection();
 
+        Registry::add($db, "database connection");
+        Registry::add($this->environment, "Environment");
+
         $this->router = new Router();
         try {
             $this->router->registerRoutesFromControllerAttributes(
@@ -50,8 +53,13 @@ class Core {
             echo 'An error occurred while registering routes: '. $e->getMessage();
         }
 
+        Registry::add($this->router, "Router");
+        Registry::remove("Environment");
+
         $urlPath = $this->parseUrl();
         $pageContent = $this->router->handleRoutes($urlPath);
+
+        $this->dump(Registry::returnList());
 
         echo $pageContent;
     }
@@ -70,5 +78,11 @@ class Core {
             return rtrim($filteredUrl);
         }
         return '';
+    }
+
+    private function dump(mixed $data): void {
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
     }
 }
