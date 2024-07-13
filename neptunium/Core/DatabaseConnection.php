@@ -2,6 +2,7 @@
 
 namespace Neptunium\Core;
 
+use Neptunium\Models\Database;
 use PDO;
 
 class DatabaseConnection {

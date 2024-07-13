@@ -9,7 +9,6 @@
       <sourceFolder url="file://$MODULE_DIR$/neptunium/Core" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/neptunium/Interfaces" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/neptunium/Models" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/views" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.github" />
       <excludeFolder url="file://$MODULE_DIR$/logs" />
     </content>
