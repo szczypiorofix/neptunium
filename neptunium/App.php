@@ -10,5 +10,6 @@ class App {
 
     public static function launch(string $rootDir): void {
         $core = new Core($rootDir, __DIR__);
+        $core->launch();
     }
 }

@@ -12,13 +12,16 @@ class Dotenv {
     /**
      * @throws Exception
      */
-    public function load(string $path): void {
+    public function load(string $path, array $requiredEnvironmentalVariables = []): void {
         $fileRawContent = @file_get_contents($path);
         if (!$fileRawContent) {
             throw new Exception('Unable to read file: ' . $path);
         }
         $fileContentArray = $this->parseContent($fileRawContent);
-        $this->registerEnvironmentalVariables($fileContentArray);
+        $this->registerEnvironmentalVariables(
+            $fileContentArray,
+            $requiredEnvironmentalVariables
+        );
     }
 
     public function unloadVariables(): void {
@@ -28,17 +31,26 @@ class Dotenv {
     }
 
     private function parseContent(string $fileRawContent): array {
-        return explode(PHP_EOL, nl2br($fileRawContent));
+        return explode(PHP_EOL, $fileRawContent);
     }
 
-    private function registerEnvironmentalVariables(array $fileContentArray): void {
+    private function registerEnvironmentalVariables(
+        array $fileContentArray,
+        array $requiredEnvironmentalVariables
+    ): void {
         foreach($fileContentArray as $line) {
             $lineArray = explode("=", trim($line));
             if (isset($lineArray[0]) && isset($lineArray[1])) {
-                $lineKey = $lineArray[0];
-                $lineValue = $lineArray[1];
+                $lineKey = trim($lineArray[0]);
+                $lineValue = trim($lineArray[1]);
                 $this->registeredKeys[] = $lineKey;
                 $_ENV[$lineKey] = $lineValue;
+            }
+        }
+
+        foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
+            if (isset($_ENV[$requiredEnvironmentalVariable])) {
+                // show warning about required environmental variable not given
             }
         }
     }

@@ -2,7 +2,6 @@
 
 namespace Neptunium\Core;
 
-use Exception;
 use Neptunium\Controllers\HomeController;
 use Neptunium\Controllers\MainController;
 
@@ -14,14 +13,30 @@ class Core {
     public function __construct(
         private readonly string $rootDir,
         private readonly string $appRootDir
-    ) {
-        $this->environment = new Environment($this->rootDir, $this->appRootDir);
-        $this->dotenv = new Dotenv();
+    ) {}
+
+    private function __clone() {}
+
+    public function launch(): void {
+        $this->environment = new Environment(
+            $this->rootDir,
+            $this->appRootDir,
+            [
+                "DB_NAME",
+                "DB_HOST",
+                "DB_USER",
+                "DB_PASS",
+                "DB_PORT",
+            ]
+        );
+
         try {
-            $this->dotenv->load($this->rootDir . '/.env');
-        } catch(Exception $exc) {
-            var_dump($exc);
+            $this->environment->loadDotEnv();
+        } catch (\Exception $e) {
+            echo 'An error occurred while loading environmental variables: '. $e->getMessage();
         }
+
+        $db = DatabaseConnection::getConnection();
 
         $this->router = new Router();
         try {
