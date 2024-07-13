@@ -4,6 +4,12 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/" isTestSource="false" packagePrefix="Vendor\Namespace\" />
       <sourceFolder url="file://$MODULE_DIR$/neptunium" isTestSource="false" packagePrefix="Neptunium\" />
+      <sourceFolder url="file://$MODULE_DIR$/neptunium/Attributes" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/neptunium/Controllers" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/neptunium/Core" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/neptunium/Interfaces" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/neptunium/Models" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/views" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.github" />
       <excludeFolder url="file://$MODULE_DIR$/logs" />
     </content>
