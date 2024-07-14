@@ -26,7 +26,6 @@ class Core {
                 "DB_HOST",
                 "DB_USER",
                 "DB_PASS",
-                "DB_PORT",
             ]
         );
 
@@ -59,7 +58,7 @@ class Core {
         $urlPath = $this->parseUrl();
         $pageContent = $this->router->handleRoutes($urlPath);
 
-        $this->dump(Registry::returnList());
+//        $this->dump(Registry::returnList());
 
         echo $pageContent;
     }
