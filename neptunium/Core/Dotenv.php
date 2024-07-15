@@ -49,8 +49,10 @@ class Dotenv {
         }
 
         foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
-            if (isset($_ENV[$requiredEnvironmentalVariable])) {
-                // show warning about required environmental variable not given
+            if (!isset($_ENV[$requiredEnvironmentalVariable])) {
+                echo '<pre>';
+                print_r("No required environmental variable: $requiredEnvironmentalVariable");
+                echo '</pre>';
             }
         }
     }
