@@ -3,6 +3,8 @@
 namespace Neptunium\Core;
 
 use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
 class View {
@@ -15,6 +17,10 @@ class View {
         try {
             $template = $twig->load($view);
         } catch (LoaderError $e) {
+            return $e->getMessage();
+        } catch (RuntimeError $e) {
+            return $e->getMessage();
+        } catch (SyntaxError $e) {
             return $e->getMessage();
         }
         return $template->render($params);
