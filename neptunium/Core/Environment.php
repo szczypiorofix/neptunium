@@ -8,17 +8,16 @@ class Environment {
     public function __construct(
         private readonly string $rootDir,
         private readonly string $appRootDir,
-        private readonly array $requiredEnvironmentalVariables = []
     ) {}
 
     /**
      * @throws Exception
      */
-    public function loadDotEnv(): void {
+    public function loadDotEnv(array $requiredEnvironmentalVariableKeys = []): void {
         $dotenv = new Dotenv();
         $dotenv->load(
             $this->rootDir . '/.env',
-            $this->requiredEnvironmentalVariables
+            $requiredEnvironmentalVariableKeys
         );
     }
 
@@ -28,9 +27,5 @@ class Environment {
 
     public function getAppRootDir(): string {
         return $this->appRootDir;
-    }
-
-    public function getRequiredEnvironmentalVariables(): array {
-        return $this->requiredEnvironmentalVariables;
     }
 }

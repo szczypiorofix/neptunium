@@ -12,7 +12,7 @@ class Dotenv {
     /**
      * @throws Exception
      */
-    public function load(string $path, array $requiredEnvironmentalVariables = []): void {
+    public function load(string $path, array $requiredEnvironmentalKeys = []): void {
         $fileRawContent = @file_get_contents($path);
         if (!$fileRawContent) {
             throw new Exception('Unable to read file: ' . $path);
@@ -20,7 +20,7 @@ class Dotenv {
         $fileContentArray = $this->parseContent($fileRawContent);
         $this->registerEnvironmentalVariables(
             $fileContentArray,
-            $requiredEnvironmentalVariables
+            $requiredEnvironmentalKeys
         );
     }
 
