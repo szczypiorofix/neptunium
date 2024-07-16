@@ -35,13 +35,13 @@ class Router {
         }
     }
 
-    public function handleRoutes(string $url): string {
-        $requestMethod = ($_SERVER["REQUEST_METHOD"]);
+    public function handleRoutes(string $requestMethod, string $requestUrl): string {
         foreach($this->routes as $routeRequestMethodKey => $routeRequestMethodValue) {
             if ($requestMethod === $routeRequestMethodKey) {
-                foreach($routeRequestMethodValue as  $routeUrl => $routeValue) {
-                    $routeUrlParsed = ltrim($routeUrl, '/');
-                    if ($routeUrlParsed === $url) {
+                foreach($routeRequestMethodValue as $routeUrl => $routeValue) {
+                    $routeUrlParsed = trim($routeUrl, '/');
+                    $parsedUrl = trim($requestUrl, '/');
+                    if ($routeUrlParsed === $parsedUrl) {
                         $className = $routeValue[0];
                         $classObject = new $className();
                         return call_user_func(array($classObject, $routeValue[1]));
@@ -53,7 +53,11 @@ class Router {
         return View::render('404.twig');
     }
 
-    public function register(string $requestMethod, string $route, callable | array $action) : self {
+    public function register(
+        string $requestMethod,
+        string $route,
+        callable | array $action
+    ) : self {
         $this->routes[$requestMethod][$route] = $action;
         return $this;
     }
