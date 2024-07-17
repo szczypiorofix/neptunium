@@ -23,9 +23,16 @@ class EnvironmentTest extends TestCase {
     }
 
     public function testLoadDotEnv() {
+        $requiredEnvironmentalVariableKeys = [
+            "DB_NAME",
+            "DB_HOST",
+            "DB_USER",
+            "DB_PASS",
+        ];
         try {
             $this->environment->loadDotEnv(
-                $this->environment->getRootDir() . '/.env'
+                $this->environment->getRootDir() . '/.env',
+                $requiredEnvironmentalVariableKeys
             );
         } catch (Exception $e) {
             throw $e;
