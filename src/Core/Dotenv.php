@@ -17,7 +17,6 @@ class Dotenv {
         if ($fileRawContent) {
             $this->parseEnvFileContent($fileRawContent);
         }
-        print_r($_ENV);
         $this->registerEnvironmentalVariables($requiredEnvironmentalKeys);
     }
 
@@ -44,14 +43,18 @@ class Dotenv {
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private function registerEnvironmentalVariables(
         array $requiredEnvironmentalVariables
     ): void {
         foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
             if (!isset($_ENV[$requiredEnvironmentalVariable])) {
-                echo '<pre>';
-                print_r("No required environmental variable: $requiredEnvironmentalVariable");
-                echo '</pre>';
+//                echo '<pre>';
+//                print_r("No required environmental variable: $requiredEnvironmentalVariable");
+//                echo '</pre>';
+                throw new Exception('Environmental variable "' . $requiredEnvironmentalVariable . '" not found.');
             }
         }
     }
