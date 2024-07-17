@@ -30,6 +30,10 @@ class Dotenv {
         }
     }
 
+    public function getRegisteredKeys(): array {
+        return $this->registeredKeys;
+    }
+
     private function parseContent(string $fileRawContent): array {
         return explode(PHP_EOL, $fileRawContent);
     }

@@ -4,8 +4,12 @@
   "description": "Web application - code Neptunium",
   "autoload": {
     "psr-4": {
-      "Neptunium\\": "neptunium/",
-      "Vendor\\Namespace\\" : ""
+      "Neptunium\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Neptunium\\Tests\\": "tests/"
     }
   },
   "require": {

@@ -5,7 +5,6 @@ namespace Neptunium\Core;
 use Neptunium\Attributes\Route;
 use ReflectionException;
 
-
 /**
  * Route format:
  * [
