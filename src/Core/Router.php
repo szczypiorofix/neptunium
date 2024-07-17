@@ -54,6 +54,7 @@ class Router {
         return View::render('index.twig',
             [
                 'templateFileName' => '404.twig',
+                'templateName' => 'page404',
                 'queryData' => []
             ]
         );

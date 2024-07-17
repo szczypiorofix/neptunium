@@ -14,6 +14,7 @@ class HomeController extends Controller {
         return View::render('index.twig',
             [
                 'templateFileName' => 'home.twig',
+                'templateName' => 'home',
                 'queryData' => $params
             ]
         );

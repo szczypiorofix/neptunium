@@ -13,6 +13,7 @@ class MainController extends Controller {
         return View::render('index.twig',
             [
                 'templateFileName' => 'main.twig',
+                'templateName' => 'main',
                 'queryData' => $params,
             ]
         );
