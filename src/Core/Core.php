@@ -45,7 +45,10 @@ class Core {
         ];
 
         try {
-            $this->environment->loadDotEnv($requiredEnvironmentalVariableKeys);
+            $this->environment->loadDotEnv(
+                $this->rootDir . '/.env',
+                $requiredEnvironmentalVariableKeys
+            );
         } catch (\Exception $e) {
             echo 'An error occurred while loading environmental variables: '. $e->getMessage();
         }

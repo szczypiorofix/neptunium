@@ -16,9 +16,9 @@ class Environment {
     /**
      * @throws Exception
      */
-    public function loadDotEnv(array $requiredEnvironmentalVariableKeys = []): void {
+    public function loadDotEnv(string $dotEnvFileName, array $requiredEnvironmentalVariableKeys = []): void {
         $this->dotenv->load(
-            $this->rootDir . '/.env',
+            $dotEnvFileName,
             $requiredEnvironmentalVariableKeys
         );
     }
