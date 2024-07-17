@@ -9,9 +9,11 @@ use Neptunium\ModelClasses\Http;
 
 class MainController extends Controller {
     #[Route('/', Http::GET)]
-    public function index(): string {
-        return View::render('index.twig', [
-            'data' => 'Page content...'
-        ]);
+    public function index(array $params = []): string {
+        return View::render('index.twig',
+            [
+                'data' => $params
+            ]
+        );
     }
 }

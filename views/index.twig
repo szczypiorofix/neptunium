@@ -7,8 +7,12 @@
 <body>
     <h1>Neptunium Application</h1>
     <div>
-        <h2>Data:</h2>
-        <div>{{ data }}</div>
+        <h2>Index template</h2>
+        <div>
+            {% for key,value in data %}
+                <p>{{ key }} : {{ value }}</p>
+            {% endfor %}
+        </div>
     </div>
 </body>
 </html>
