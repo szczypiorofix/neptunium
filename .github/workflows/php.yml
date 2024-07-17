@@ -36,6 +36,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: php-actions/composer@v6
+      - uses: php-actions/phpunit@v3
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
       - name: Run test suite
