@@ -1,9 +1,9 @@
 <?php
 
-namespace Core;
+namespace Neptunium\Tests\Core;
 
 use Exception;
-use Core\Environment;
+use Neptunium\Core\Environment;
 use PHPUnit\Framework\TestCase;
 
 class EnvironmentTest extends TestCase {

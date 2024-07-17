@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace Neptunium\Core;
 
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace Neptunium\Core;
 
 use Exception;
 

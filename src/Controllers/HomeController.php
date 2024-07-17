@@ -1,11 +1,11 @@
 <?php
 
-namespace Controllers;
+namespace Neptunium\Controllers;
 
-use Attributes\Route;
-use Core\View;
-use ModelClasses\Controller;
-use ModelClasses\Http;
+use Neptunium\Attributes\Route;
+use Neptunium\Core\View;
+use Neptunium\ModelClasses\Controller;
+use Neptunium\ModelClasses\Http;
 
 
 class HomeController extends Controller {

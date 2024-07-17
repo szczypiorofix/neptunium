@@ -1,10 +1,9 @@
 <?php
 
-namespace Core;
+namespace Neptunium\Core;
 
-use Attributes\Route;
+use Neptunium\Attributes\Route;
 use ReflectionException;
-
 
 /**
  * Route format:

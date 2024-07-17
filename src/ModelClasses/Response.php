@@ -1,6 +1,6 @@
 <?php
 
-namespace ModelClasses;
+namespace Neptunium\ModelClasses;
 
 class Response {
     private array $headers;

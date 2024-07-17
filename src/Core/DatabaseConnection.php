@@ -1,8 +1,8 @@
 <?php
 
-namespace Core;
+namespace Neptunium\Core;
 
-use ModelClasses\Database;
+use Neptunium\ModelClasses\Database;
 use PDO;
 
 class DatabaseConnection {

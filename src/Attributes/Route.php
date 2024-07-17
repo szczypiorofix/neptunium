@@ -1,8 +1,8 @@
 <?php
 
-namespace Attributes;
+namespace Neptunium\Attributes;
 
-use ModelClasses\Http;
+use Neptunium\ModelClasses\Http;
 
 #[\Attribute]
 class Route {
