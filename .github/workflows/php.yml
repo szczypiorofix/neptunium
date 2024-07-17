@@ -39,5 +39,8 @@ jobs:
       - uses: php-actions/composer@v6
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
-      - name: Run test suite
+      - name: PHPUnit tests
+        uses: php-actions/phpunit@v3
+        with:
+          php_extensions: "xdebug"
         run: composer run-script test

@@ -14,14 +14,11 @@ class Dotenv {
      */
     public function load(string $path, array $requiredEnvironmentalKeys = []): void {
         $fileRawContent = @file_get_contents($path);
-        if (!$fileRawContent) {
-            throw new Exception('Unable to read file: ' . $path);
+        if ($fileRawContent) {
+            $this->parseEnvFileContent($fileRawContent);
         }
-        $fileContentArray = $this->parseContent($fileRawContent);
-        $this->registerEnvironmentalVariables(
-            $fileContentArray,
-            $requiredEnvironmentalKeys
-        );
+        print_r($_ENV);
+        $this->registerEnvironmentalVariables($requiredEnvironmentalKeys);
     }
 
     public function unloadVariables(): void {
@@ -34,14 +31,8 @@ class Dotenv {
         return $this->registeredKeys;
     }
 
-    private function parseContent(string $fileRawContent): array {
-        return explode(PHP_EOL, $fileRawContent);
-    }
-
-    private function registerEnvironmentalVariables(
-        array $fileContentArray,
-        array $requiredEnvironmentalVariables
-    ): void {
+    private function parseEnvFileContent(string $fileRawContent): void {
+        $fileContentArray = explode(PHP_EOL, $fileRawContent);
         foreach($fileContentArray as $line) {
             $lineArray = explode("=", trim($line));
             if (isset($lineArray[0]) && isset($lineArray[1])) {
@@ -51,7 +42,11 @@ class Dotenv {
                 $_ENV[$lineKey] = $lineValue;
             }
         }
+    }
 
+    private function registerEnvironmentalVariables(
+        array $requiredEnvironmentalVariables
+    ): void {
         foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
             if (!isset($_ENV[$requiredEnvironmentalVariable])) {
                 echo '<pre>';
