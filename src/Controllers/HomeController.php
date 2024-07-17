@@ -11,9 +11,11 @@ use Neptunium\ModelClasses\Http;
 class HomeController extends Controller {
     #[Route('/home', Http::GET)]
     public function index(array $params = []): string {
-        return View::render('home.twig',
+        return View::render('index.twig',
             [
-                'data' => $params
+                'templateFileName' => 'home.twig',
+                'templateName' => 'home',
+                'queryData' => $params
             ]
         );
     }

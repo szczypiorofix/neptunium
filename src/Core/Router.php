@@ -3,6 +3,7 @@
 namespace Neptunium\Core;
 
 use Neptunium\Attributes\Route;
+use ReflectionClass;
 use ReflectionException;
 
 /**
@@ -23,7 +24,7 @@ class Router {
      */
     public function registerRoutesFromControllerAttributes(array $controllers): void {
         foreach($controllers as $controller) {
-            $reflectionController = new \ReflectionClass($controller);
+            $reflectionController = new ReflectionClass($controller);
             foreach($reflectionController->getMethods() as $method) {
                 $attributes = $method->getAttributes(Route::class);
                 foreach($attributes as $attribute) {
@@ -50,7 +51,13 @@ class Router {
             }
         }
         http_response_code(404);
-        return View::render('404.twig');
+        return View::render('index.twig',
+            [
+                'templateFileName' => '404.twig',
+                'templateName' => 'page404',
+                'queryData' => []
+            ]
+        );
     }
 
     public function register(

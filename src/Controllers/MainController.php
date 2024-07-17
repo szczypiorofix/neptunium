@@ -12,7 +12,9 @@ class MainController extends Controller {
     public function index(array $params = []): string {
         return View::render('index.twig',
             [
-                'data' => $params
+                'templateFileName' => 'main.twig',
+                'templateName' => 'main',
+                'queryData' => $params,
             ]
         );
     }

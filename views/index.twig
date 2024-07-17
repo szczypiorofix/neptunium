@@ -1,18 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Neptunium</title>
-</head>
-<body>
-    <h1>Neptunium Application</h1>
-    <div>
-        <h2>Index template</h2>
-        <div>
-            {% for key,value in data %}
-                <p>{{ key }} : {{ value }}</p>
-            {% endfor %}
-        </div>
-    </div>
-</body>
+    {% include 'head.twig' %}
+    {% include 'body.twig' %}
 </html>
