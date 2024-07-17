@@ -40,10 +40,11 @@ class Router {
                 foreach($routeRequestMethodValue as $routeUrl => $routeValue) {
                     $routeUrlParsed = trim($routeUrl, '/');
                     $parsedUrl = trim($requestUrl, '/');
+                    $requestQueryString = $this->retrieveGetParameters();
                     if ($routeUrlParsed === $parsedUrl) {
                         $className = $routeValue[0];
                         $classObject = new $className();
-                        return call_user_func(array($classObject, $routeValue[1]));
+                        return call_user_func_array(array($classObject, $routeValue[1]), [$requestQueryString]);
                     }
                 }
             }
@@ -67,5 +68,13 @@ class Router {
 
     public function getRoutes(): array {
         return $this->routes;
+    }
+
+    private function retrieveGetParameters(): array|false|int|null|string {
+        $actual_link = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $queryString = parse_url($actual_link, PHP_URL_QUERY);
+        $queryStringParameters = [];
+        parse_str($queryString, $queryStringParameters);
+        return $queryStringParameters;
     }
 }
