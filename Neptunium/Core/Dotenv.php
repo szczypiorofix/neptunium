@@ -1,6 +1,6 @@
 <?php
 
-namespace Neptunium\Core;
+namespace Core;
 
 use Exception;
 
@@ -28,6 +28,10 @@ class Dotenv {
         foreach($this->registeredKeys as $key) {
             unset($_ENV[$key]);
         }
+    }
+
+    public function getRegisteredKeys(): array {
+        return $this->registeredKeys;
     }
 
     private function parseContent(string $fileRawContent): array {

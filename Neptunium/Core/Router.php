@@ -1,8 +1,8 @@
 <?php
 
-namespace Neptunium\Core;
+namespace Core;
 
-use Neptunium\Attributes\Route;
+use Attributes\Route;
 use ReflectionException;
 
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Neptunium\ModelClasses;
+namespace ModelClasses;
 
 abstract class Middleware {
     abstract public function process(Request $request, Response $response, callable $next);

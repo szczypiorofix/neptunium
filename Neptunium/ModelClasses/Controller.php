@@ -1,6 +1,6 @@
 <?php
 
-namespace Neptunium\ModelClasses;
+namespace ModelClasses;
 
 abstract class Controller {
     abstract function index();

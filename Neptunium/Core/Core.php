@@ -1,11 +1,11 @@
 <?php
 
-namespace Neptunium\Core;
+namespace Core;
 
-use Neptunium\Controllers\HomeController;
-use Neptunium\Controllers\MainController;
-use Neptunium\ModelClasses\Request;
-use Neptunium\ModelClasses\Response;
+use Controllers\HomeController;
+use Controllers\MainController;
+use ModelClasses\Request;
+use ModelClasses\Response;
 
 class Core {
     private Environment $environment;

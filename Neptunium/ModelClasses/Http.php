@@ -1,6 +1,6 @@
 <?php
 
-namespace Neptunium\ModelClasses;
+namespace ModelClasses;
 
 class Http {
     public const GET = 'GET';

@@ -1,8 +1,6 @@
 <?php
 
-namespace Neptunium;
-
-use Neptunium\Core\Core;
+use Core\Core;
 
 class App {
     private function __construct() {}

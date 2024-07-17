@@ -1,6 +1,6 @@
 <?php
 
-namespace Neptunium\Core;
+namespace Core;
 
 class Registry {
     static private array $store = array();

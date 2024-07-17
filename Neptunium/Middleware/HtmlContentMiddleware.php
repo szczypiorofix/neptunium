@@ -1,10 +1,10 @@
 <?php
 
-namespace Neptunium\Middleware;
+namespace Middleware;
 
-use Neptunium\ModelClasses\Middleware;
-use Neptunium\ModelClasses\Request;
-use Neptunium\ModelClasses\Response;
+use ModelClasses\Middleware;
+use ModelClasses\Request;
+use ModelClasses\Response;
 
 class HtmlContentMiddleware extends Middleware {
     public function process(Request $request, Response $response, callable $next) {

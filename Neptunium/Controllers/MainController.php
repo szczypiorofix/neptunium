@@ -1,11 +1,11 @@
 <?php
 
-namespace Neptunium\Controllers;
+namespace Controllers;
 
-use Neptunium\Attributes\Route;
-use Neptunium\Core\View;
-use Neptunium\ModelClasses\Controller;
-use Neptunium\ModelClasses\Http;
+use Attributes\Route;
+use Core\View;
+use ModelClasses\Controller;
+use ModelClasses\Http;
 
 class MainController extends Controller {
     #[Route('/', Http::GET)]
