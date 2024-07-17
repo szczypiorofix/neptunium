@@ -24,7 +24,9 @@ class EnvironmentTest extends TestCase {
 
     public function testLoadDotEnv() {
         try {
-            $this->environment->loadDotEnv();
+            $this->environment->loadDotEnv(
+                $this->environment->getRootDir() . '/.env'
+            );
         } catch (Exception $e) {
             throw $e;
         }
