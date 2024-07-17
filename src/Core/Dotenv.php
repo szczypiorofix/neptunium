@@ -12,7 +12,7 @@ class Dotenv {
     /**
      * @throws Exception
      */
-    public function load(string $path, array $requiredEnvironmentalVariables = []): void {
+    public function load(string $path, array $requiredEnvironmentalKeys = []): void {
         $fileRawContent = @file_get_contents($path);
         if (!$fileRawContent) {
             throw new Exception('Unable to read file: ' . $path);
@@ -20,7 +20,7 @@ class Dotenv {
         $fileContentArray = $this->parseContent($fileRawContent);
         $this->registerEnvironmentalVariables(
             $fileContentArray,
-            $requiredEnvironmentalVariables
+            $requiredEnvironmentalKeys
         );
     }
 
@@ -28,6 +28,10 @@ class Dotenv {
         foreach($this->registeredKeys as $key) {
             unset($_ENV[$key]);
         }
+    }
+
+    public function getRegisteredKeys(): array {
+        return $this->registeredKeys;
     }
 
     private function parseContent(string $fileRawContent): array {
@@ -49,8 +53,10 @@ class Dotenv {
         }
 
         foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
-            if (isset($_ENV[$requiredEnvironmentalVariable])) {
-                // show warning about required environmental variable not given
+            if (!isset($_ENV[$requiredEnvironmentalVariable])) {
+                echo '<pre>';
+                print_r("No required environmental variable: $requiredEnvironmentalVariable");
+                echo '</pre>';
             }
         }
     }

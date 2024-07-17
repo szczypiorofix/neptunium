@@ -4,12 +4,19 @@
   "description": "Web application - code Neptunium",
   "autoload": {
     "psr-4": {
-      "Neptunium\\": "neptunium/",
-      "Vendor\\Namespace\\" : ""
+      "Neptunium\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Neptunium\\Tests\\": "tests/"
     }
   },
   "require": {
     "twig/twig": "^3.0",
     "ext-pdo": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "10"
   }
 }

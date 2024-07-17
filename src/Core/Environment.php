@@ -5,21 +5,30 @@ namespace Neptunium\Core;
 use Exception;
 
 class Environment {
+    private Dotenv $dotenv;
     public function __construct(
         private readonly string $rootDir,
         private readonly string $appRootDir,
-        private readonly array $requiredEnvironmentalVariables = []
-    ) {}
+    ) {
+        $this->dotenv = new Dotenv();
+    }
 
     /**
      * @throws Exception
      */
-    public function loadDotEnv(): void {
-        $dotenv = new Dotenv();
-        $dotenv->load(
+    public function loadDotEnv(array $requiredEnvironmentalVariableKeys = []): void {
+        $this->dotenv->load(
             $this->rootDir . '/.env',
-            $this->requiredEnvironmentalVariables
+            $requiredEnvironmentalVariableKeys
         );
+    }
+
+    public function getEnvironmentRegisteredKeys(): array {
+        return $this->dotenv->getRegisteredKeys();
+    }
+
+    public function getDotenv(): Dotenv {
+        return $this->dotenv;
     }
 
     public function getRootDir(): string {
@@ -28,9 +37,5 @@ class Environment {
 
     public function getAppRootDir(): string {
         return $this->appRootDir;
-    }
-
-    public function getRequiredEnvironmentalVariables(): array {
-        return $this->requiredEnvironmentalVariables;
     }
 }
