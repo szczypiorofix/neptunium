@@ -33,21 +33,17 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
-
+    env:
+      DB_HOST: ${{ vars.DB_HOST }}
+      DB_NAME: ${{ vars.DB_NAME }}
+      DB_USER: ${{ vars.DB_USER }}
+      DB_PASS: ${{ vars.DB_PASS }}
     steps:
       - uses: actions/checkout@v4
       - uses: php-actions/composer@v6
+
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
-      - name: Environment settings
-        run: |
-         DB_HOST=$GITHUB_ENV{DB_HOST}
-         DB_NAME=$GITHUB_ENV{DB_NAME}
-         DB_PASS=$GITHUB_ENV{DB_PASS}
-         DB_USER=$GITHUB_ENV{DB_USER}
-         export DB_HOST
-         export DB_NAME
-         export DB_PASS
-         export DB_USER
+
       - name: PHPUnit tests
         run: composer run-script test
