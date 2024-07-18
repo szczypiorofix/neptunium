@@ -35,10 +35,10 @@ jobs:
 
       - name: PHPUnit tests
         run: | 
-          echo "DB_HOST variable : DB_HOST"
-          echo "DB_NAME variable : DB_NAME"
-          echo "DB_USER variable : DB_USER"
-          echo "DB_PASS variable : DB_PASS"
+          echo "DB_HOST variable : $DB_HOST"
+          echo "DB_NAME variable : $DB_NAME"
+          echo "DB_USER variable : $DB_USER"
+          echo "DB_PASS variable : $DB_PASS"
 
         env:
           DB_HOST: ${{ vars.DB_HOST }}
