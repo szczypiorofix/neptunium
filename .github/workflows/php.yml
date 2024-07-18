@@ -39,6 +39,7 @@ jobs:
           echo "DB_NAME variable : $DB_NAME"
           echo "DB_USER variable : $DB_USER"
           echo "DB_PASS variable : $DB_PASS"
+          composer run-script test
 
         env:
           DB_HOST: ${{ vars.DB_HOST }}
