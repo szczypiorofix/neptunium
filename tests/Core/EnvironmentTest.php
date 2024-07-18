@@ -40,7 +40,12 @@ class EnvironmentTest extends TestCase {
         ];
 
         $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
-        $this->assertTrue($allVariablesAreAvailable || count(getenv()) > 0);
+
+        if (!$allVariablesAreAvailable) {
+            throw new Exception("Environmental variables are missing" . (implode(", ", getenv())));
+        }
+
+        $this->assertTrue($allVariablesAreAvailable);
     }
 
     public function testRegisteredKeys() {
