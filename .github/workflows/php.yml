@@ -6,12 +6,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-env:
-  DB_HOST: ${{ vars.DB_HOST }}
-  DB_NAME: ${{ vars.DB_NAME }}
-  DB_USER: ${{ vars.DB_USER }}
-  DB_PASS: ${{ vars.DB_PASS }}
-
 permissions:
   contents: read
 
@@ -40,4 +34,14 @@ jobs:
         run: sudo composer install --prefer-dist --no-progress
 
       - name: PHPUnit tests
-        run: composer run-script test
+        run: | 
+          echo "DB_HOST variable : DB_HOST"
+          echo "DB_NAME variable : DB_NAME"
+          echo "DB_USER variable : DB_USER"
+          echo "DB_PASS variable : DB_PASS"
+
+        env:
+          DB_HOST: ${{ vars.DB_HOST }}
+          DB_NAME: ${{ vars.DB_NAME }}
+          DB_USER: ${{ vars.DB_USER }}
+          DB_PASS: ${{ vars.DB_PASS }}
