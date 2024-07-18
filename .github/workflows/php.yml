@@ -10,11 +10,13 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build_and_tests:
     runs-on: ubuntu-latest
+    environment: NeptuniumEnv
 
     steps:
       - uses: actions/checkout@v4
+      - uses: php-actions/composer@v6
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
@@ -31,17 +33,6 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-  tests:
-    runs-on: ubuntu-latest
-    environment: NeptuniumEnv
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: php-actions/composer@v6
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate --strict
-
       - name: PHPUnit tests
         run: composer run-script test
         env:
@@ -49,3 +40,4 @@ jobs:
           DB_NAME: ${{ vars.DB_NAME }}
           DB_USER: ${{ vars.DB_USER }}
           DB_PASS: ${{ vars.DB_PASS }}
+

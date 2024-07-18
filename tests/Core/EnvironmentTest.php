@@ -41,7 +41,7 @@ class EnvironmentTest extends TestCase {
 
         $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
         if (!$allVariablesAreAvailable) {
-            throw new Exception("Pinga: " . implode(",", $_ENV));
+            throw new Exception("ENV VARS?: " . implode(",", $_ENV));
         }
         $this->assertTrue($allVariablesAreAvailable);
     }
