@@ -32,6 +32,7 @@ class EnvironmentTest extends TestCase {
     }
 
     public function testRequiredEnvironmentalVariables() {
+        $allVariablesAreAvailable = false;
         $requiredEnvironmentalVariableKeys = [
             "DB_NAME",
             "DB_HOST",
@@ -43,6 +44,7 @@ class EnvironmentTest extends TestCase {
         } catch (Exception $e) {
             print_r($e);
         }
+        print_r($_ENV);
         $this->assertTrue($allVariablesAreAvailable);
     }
 
