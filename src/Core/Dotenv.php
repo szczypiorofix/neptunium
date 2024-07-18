@@ -35,9 +35,6 @@ class Dotenv {
             if (getenv($requiredEnvironmentalVariable) !== false) {
                 $allEnvironmentalVariablesAllAvailable = false;
             }
-//            if (!isset($_ENV[$requiredEnvironmentalVariable])) {
-//                $allEnvironmentalVariablesAllAvailable = false;
-//            }
         }
         return $allEnvironmentalVariablesAllAvailable;
     }
