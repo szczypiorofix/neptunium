@@ -19,24 +19,8 @@ class Dotenv {
         }
     }
 
-    public function unloadVariables(): void {
-        foreach($this->registeredKeys as $key) {
-            unset($_ENV[$key]);
-        }
-    }
-
     public function getRegisteredKeys(): array {
         return $this->registeredKeys;
-    }
-
-    public function checkRequiredEnvironmentalVariables(array $requiredEnvironmentalVariables): bool {
-        $allEnvironmentalVariablesAllAvailable = true;
-        foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
-            if (getenv($requiredEnvironmentalVariable) !== false) {
-                $allEnvironmentalVariablesAllAvailable = false;
-            }
-        }
-        return $allEnvironmentalVariablesAllAvailable;
     }
 
     private function parseEnvFileContent(string $fileRawContent): void {
@@ -47,7 +31,7 @@ class Dotenv {
                 $lineKey = trim($lineArray[0]);
                 $lineValue = trim($lineArray[1]);
                 $this->registeredKeys[] = $lineKey;
-                $_ENV[$lineKey] = $lineValue;
+                putenv("$lineKey=$lineValue");
             }
         }
     }

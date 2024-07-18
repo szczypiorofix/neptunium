@@ -2,6 +2,7 @@
 
 namespace Neptunium\Core;
 
+use Neptunium\Config;
 use Neptunium\Controllers\HomeController;
 use Neptunium\Controllers\MainController;
 use Neptunium\ModelClasses\Request;
@@ -42,12 +43,8 @@ class Core {
         } catch (\Exception $e) {
             echo 'An error occurred while loading environmental variables: '. $e->getMessage();
         }
-        $requiredEnvironmentalVariableKeys = [
-            "DB_NAME",
-            "DB_HOST",
-            "DB_USER",
-            "DB_PASS",
-        ];
+
+        $requiredEnvironmentalVariableKeys = Config::REQUIRED_ENVIRONMENTAL_VARIABLES;
         $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
     }
 
@@ -67,6 +64,9 @@ class Core {
 
     private function prepareDatabaseConnection(): void {
         $this->databaseConnection = DatabaseConnection::getConnection();
+        if ($this->databaseConnection->db->isError()) {
+            print_r($this->databaseConnection->db->getErrorMessage());
+        }
     }
 
     private function resolveRequest(): void {

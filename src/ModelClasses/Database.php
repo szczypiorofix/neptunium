@@ -2,6 +2,7 @@
 
 namespace Neptunium\ModelClasses;
 
+use Neptunium\Config;
 use PDO;
 
 class Database {
@@ -19,12 +20,12 @@ class Database {
     private const DEFAULT_CHARSET = 'UTF8';
 
     public function __construct() {
-        $this->host         = $_ENV['DB_HOST'];
-        $this->name         = $_ENV['DB_NAME'];
-        $this->username     = $_ENV['DB_USER'];
-        $this->password     = $_ENV['DB_PASS'];
-        $this->port         = $_ENV['DB_PORT'] ?? self::DEFAULT_PORT;
-        $this->charset      = $_ENV['DB_CHARSET'] ?? self::DEFAULT_CHARSET;
+        $this->host         = getenv(Config::ENV_NEP_DB_HOST);
+        $this->name         = getenv(Config::ENV_NEP_DB_NAME);
+        $this->username     = getenv(Config::ENV_NEP_DB_USER);
+        $this->password     = getenv(Config::ENV_NEP_DB_PASS);
+        $this->port         = getenv(Config::ENV_NEP_DB_PORT) ?? self::DEFAULT_PORT;
+        $this->charset      = getenv(Config::ENV_NEP_DB_CHARSET) ?? self::DEFAULT_CHARSET;
     }
 
     public function getCharset(): string {

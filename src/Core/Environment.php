@@ -25,7 +25,13 @@ class Environment {
     }
 
     public function checkRequiredEnvironmentalVariables(array $requiredEnvironmentalVariableKeys): bool {
-        return $this->dotenv->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
+        $allEnvironmentalVariablesAllAvailable = true;
+        foreach($requiredEnvironmentalVariableKeys as $requiredEnvironmentalVariable) {
+            if (getenv($requiredEnvironmentalVariable) === false) {
+                $allEnvironmentalVariablesAllAvailable = false;
+            }
+        }
+        return $allEnvironmentalVariablesAllAvailable;
     }
 
     public function getDotenv(): Dotenv {

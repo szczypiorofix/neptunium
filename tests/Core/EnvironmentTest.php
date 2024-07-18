@@ -3,6 +3,7 @@
 namespace Neptunium\Tests\Core;
 
 use Exception;
+use Neptunium\Config;
 use Neptunium\Core\Environment;
 use PHPUnit\Framework\TestCase;
 
@@ -32,20 +33,8 @@ class EnvironmentTest extends TestCase {
     }
 
     public function testRequiredEnvironmentalVariables() {
-        $requiredEnvironmentalVariableKeys = [
-            "DB_NAME",
-            "DB_HOST",
-            "DB_USER",
-            "DB_PASS",
-        ];
-
-        $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
-
-        if (!$allVariablesAreAvailable) {
-            throw new Exception("Environmental variables are missing" . (implode(", ", getenv())));
-        }
-
-        $this->assertTrue($allVariablesAreAvailable);
+        $requiredEnvironmentalVariableKeys = Config::REQUIRED_ENVIRONMENTAL_VARIABLES;
+        $this->assertTrue($this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys));
     }
 
     public function testRegisteredKeys() {
