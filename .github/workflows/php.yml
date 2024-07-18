@@ -43,10 +43,10 @@ jobs:
 
       - name: PHPUnit tests
         run: |
-          echo "DB_HOST variable : $DB_HOST"
-          echo "DB_NAME variable : $DB_NAME"
-          echo "DB_USER variable : $DB_USER"
-          echo "DB_PASS variable : $DB_PASS"
+          echo "DB_HOST=$DB_HOST"
+          echo "DB_NAME=$DB_NAME"
+          echo "DB_USER=$DB_USER"
+          echo "DB_PASS=$DB_PASS"
           composer run-script test
 
         env:
