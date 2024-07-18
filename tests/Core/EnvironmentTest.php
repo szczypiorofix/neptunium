@@ -41,7 +41,7 @@ class EnvironmentTest extends TestCase {
         try {
             $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
         } catch (Exception $e) {
-            throw $e;
+            print_r($e);
         }
         $this->assertTrue($allVariablesAreAvailable);
     }

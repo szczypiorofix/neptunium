@@ -36,8 +36,8 @@ class Dotenv {
         $allEnvironmentalVariablesAllAvailable = true;
         foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
             if (!isset($_ENV[$requiredEnvironmentalVariable])) {
-//                throw new Exception('Environmental variable "' . $requiredEnvironmentalVariable . '" not found.');
                 $allEnvironmentalVariablesAllAvailable = false;
+                throw new Exception('Environmental variable "' . implode(",", $_ENV));
             }
         }
         return $allEnvironmentalVariablesAllAvailable;
