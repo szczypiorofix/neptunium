@@ -32,9 +32,12 @@ class Dotenv {
     public function checkRequiredEnvironmentalVariables(array $requiredEnvironmentalVariables): bool {
         $allEnvironmentalVariablesAllAvailable = true;
         foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
-            if (!isset($_ENV[$requiredEnvironmentalVariable])) {
+            if (getenv($requiredEnvironmentalVariable) !== false) {
                 $allEnvironmentalVariablesAllAvailable = false;
             }
+//            if (!isset($_ENV[$requiredEnvironmentalVariable])) {
+//                $allEnvironmentalVariablesAllAvailable = false;
+//            }
         }
         return $allEnvironmentalVariablesAllAvailable;
     }
