@@ -12,12 +12,11 @@ class Dotenv {
     /**
      * @throws Exception
      */
-    public function load(string $path, array $requiredEnvironmentalKeys = []): void {
+    public function load(string $path): void {
         $fileRawContent = @file_get_contents($path);
         if ($fileRawContent) {
             $this->parseEnvFileContent($fileRawContent);
         }
-        $this->registerEnvironmentalVariables($requiredEnvironmentalKeys);
     }
 
     public function unloadVariables(): void {
@@ -30,6 +29,17 @@ class Dotenv {
         return $this->registeredKeys;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function checkRegisteredEnvironmentalVariables(array $requiredEnvironmentalVariables): void {
+        foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
+            if (!isset($_ENV[$requiredEnvironmentalVariable])) {
+                throw new Exception('Environmental variable "' . $requiredEnvironmentalVariable . '" not found.');
+            }
+        }
+    }
+
     private function parseEnvFileContent(string $fileRawContent): void {
         $fileContentArray = explode(PHP_EOL, $fileRawContent);
         foreach($fileContentArray as $line) {
@@ -39,19 +49,6 @@ class Dotenv {
                 $lineValue = trim($lineArray[1]);
                 $this->registeredKeys[] = $lineKey;
                 $_ENV[$lineKey] = $lineValue;
-            }
-        }
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function registerEnvironmentalVariables(
-        array $requiredEnvironmentalVariables
-    ): void {
-        foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
-            if (!isset($_ENV[$requiredEnvironmentalVariable])) {
-                throw new Exception('Environmental variable "' . $requiredEnvironmentalVariable . '" not found.');
             }
         }
     }

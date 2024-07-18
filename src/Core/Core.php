@@ -37,20 +37,21 @@ class Core {
             $this->rootDir,
             $this->appRootDir
         );
+        try {
+            $this->environment->loadDotEnv($this->rootDir . '/.env');
+        } catch (\Exception $e) {
+            echo 'An error occurred while loading environmental variables: '. $e->getMessage();
+        }
         $requiredEnvironmentalVariableKeys = [
             "DB_NAME",
             "DB_HOST",
             "DB_USER",
             "DB_PASS",
         ];
-
         try {
-            $this->environment->loadDotEnv(
-                $this->rootDir . '/.env',
-                $requiredEnvironmentalVariableKeys
-            );
-        } catch (\Exception $e) {
-            echo 'An error occurred while loading environmental variables: '. $e->getMessage();
+            $this->environment->checkRegisteredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
+        } catch(\Exception $e) {
+            echo 'An error occurred while checking required environmental variables: '. $e->getMessage();
         }
     }
 

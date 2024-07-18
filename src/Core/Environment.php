@@ -16,15 +16,19 @@ class Environment {
     /**
      * @throws Exception
      */
-    public function loadDotEnv(string $dotEnvFileName, array $requiredEnvironmentalVariableKeys = []): void {
-        $this->dotenv->load(
-            $dotEnvFileName,
-            $requiredEnvironmentalVariableKeys
-        );
+    public function loadDotEnv(string $dotEnvFileName): void {
+        $this->dotenv->load($dotEnvFileName);
     }
 
     public function getEnvironmentRegisteredKeys(): array {
         return $this->dotenv->getRegisteredKeys();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function checkRegisteredEnvironmentalVariables(array $requiredEnvironmentalVariableKeys): void {
+        $this->dotenv->checkRegisteredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
     }
 
     public function getDotenv(): Dotenv {
