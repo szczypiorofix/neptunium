@@ -24,9 +24,6 @@ class Environment {
         return $this->dotenv->getRegisteredKeys();
     }
 
-    /**
-     * @throws Exception
-     */
     public function checkRequiredEnvironmentalVariables(array $requiredEnvironmentalVariableKeys): bool {
         return $this->dotenv->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
     }

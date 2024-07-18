@@ -32,19 +32,17 @@ class EnvironmentTest extends TestCase {
     }
 
     public function testRequiredEnvironmentalVariables() {
-        $allVariablesAreAvailable = false;
         $requiredEnvironmentalVariableKeys = [
             "DB_NAME",
             "DB_HOST",
             "DB_USER",
             "DB_PASS",
         ];
-        try {
-            $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
-        } catch (Exception $e) {
-            print_r($e);
+
+        $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
+        if (!$allVariablesAreAvailable) {
+            throw new Exception("Pinga: " . implode(",", $_ENV));
         }
-        print_r($_ENV);
         $this->assertTrue($allVariablesAreAvailable);
     }
 

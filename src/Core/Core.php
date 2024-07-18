@@ -48,11 +48,7 @@ class Core {
             "DB_USER",
             "DB_PASS",
         ];
-        try {
-            $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
-        } catch (\Exception $e) {
-            print_r($e);
-        }
+        $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
     }
 
     private function prepareRouter(): void {

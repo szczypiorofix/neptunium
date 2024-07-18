@@ -29,15 +29,11 @@ class Dotenv {
         return $this->registeredKeys;
     }
 
-    /**
-     * @throws Exception
-     */
     public function checkRequiredEnvironmentalVariables(array $requiredEnvironmentalVariables): bool {
         $allEnvironmentalVariablesAllAvailable = true;
         foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
             if (!isset($_ENV[$requiredEnvironmentalVariable])) {
                 $allEnvironmentalVariablesAllAvailable = false;
-                throw new Exception('Environmental variable "' . implode(",", $_ENV));
             }
         }
         return $allEnvironmentalVariablesAllAvailable;
