@@ -23,12 +23,15 @@ class EnvironmentTest extends TestCase {
     }
 
     public function testLoadDotEnv() {
-
         try {
             $this->environment->loadDotEnv($this->environment->getRootDir() . '/.env');
         } catch (Exception $e) {
             throw $e;
         }
+        $this->assertTrue($this->environment->getDotenv() != null);
+    }
+
+    public function testRequiredEnvironmentalVariables() {
         $requiredEnvironmentalVariableKeys = [
             "DB_NAME",
             "DB_HOST",
@@ -36,16 +39,13 @@ class EnvironmentTest extends TestCase {
             "DB_PASS",
         ];
         try {
-            $this->environment->checkRegisteredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
+            $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
         } catch (Exception $e) {
             throw $e;
         }
-        $this->assertTrue($this->environment->getDotenv() != null);
+        $this->assertTrue($allVariablesAreAvailable);
     }
 
-    /**
-     * @throws Exception
-     */
     public function testRegisteredKeys() {
         $this->assertTrue($this->environment->getEnvironmentRegisteredKeys() > 0);
     }

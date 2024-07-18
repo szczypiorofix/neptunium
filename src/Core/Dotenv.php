@@ -32,12 +32,15 @@ class Dotenv {
     /**
      * @throws Exception
      */
-    public function checkRegisteredEnvironmentalVariables(array $requiredEnvironmentalVariables): void {
+    public function checkRequiredEnvironmentalVariables(array $requiredEnvironmentalVariables): bool {
+        $allEnvironmentalVariablesAllAvailable = true;
         foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
             if (!isset($_ENV[$requiredEnvironmentalVariable])) {
-                throw new Exception('Environmental variable "' . $requiredEnvironmentalVariable . '" not found.');
+//                throw new Exception('Environmental variable "' . $requiredEnvironmentalVariable . '" not found.');
+                $allEnvironmentalVariablesAllAvailable = false;
             }
         }
+        return $allEnvironmentalVariablesAllAvailable;
     }
 
     private function parseEnvFileContent(string $fileRawContent): void {

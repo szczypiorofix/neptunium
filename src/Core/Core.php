@@ -48,8 +48,9 @@ class Core {
             "DB_USER",
             "DB_PASS",
         ];
+        $allVariablesAreAvailable = false;
         try {
-            $this->environment->checkRegisteredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
+            $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
         } catch(\Exception $e) {
             echo 'An error occurred while checking required environmental variables: '. $e->getMessage();
         }
