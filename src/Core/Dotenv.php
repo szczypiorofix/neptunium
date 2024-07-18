@@ -49,12 +49,10 @@ class Dotenv {
     private function registerEnvironmentalVariables(
         array $requiredEnvironmentalVariables
     ): void {
-//        foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
-//            if (!isset($_ENV[$requiredEnvironmentalVariable])) {
-//                throw new Exception('Environmental variable "' . $requiredEnvironmentalVariable . '" not found.');
-//            }
-//        }
-
-        echo 'ENV: ' . implode(',', $_ENV) ;
+        foreach($requiredEnvironmentalVariables as $requiredEnvironmentalVariable) {
+            if (!isset($_ENV[$requiredEnvironmentalVariable])) {
+                throw new Exception('Environmental variable "' . $requiredEnvironmentalVariable . '" not found.');
+            }
+        }
     }
 }
