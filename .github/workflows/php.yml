@@ -41,16 +41,26 @@ jobs:
       - uses: actions/checkout@v4
       - uses: php-actions/composer@v6
 
+      - name: Create .env file
+        env:
+          NEP_DB_HOST: ${{ vars.DB_HOST }}
+          NEP_DB_NAME: ${{ vars.DB_NAME }}
+          NEP_DB_USER: ${{ vars.DB_USER }}
+          NEP_DB_PASS: ${{ vars.DB_PASS }}
+        run: |
+          echo "NEP_DB_HOST=$NEP_DB_HOST"
+          echo "NEP_DB_NAME=$NEP_DB_NAME"
+          echo "NEP_DB_USER=$NEP_DB_USER"
+          echo "NEP_DB_PASS=$NEP_DB_PASS"
+          touch .env
+          echo NEP_DB_HOST="$NEP_DB_HOST">> .env
+          echo NEP_DB_NAME="$NEP_DB_NAME">> .env
+          echo NEP_DB_USER="$NEP_DB_USER">> .env
+          echo NEP_DB_PASS="$NEP_DB_PASS">> .env
+        shell: bash
+
       - name: PHPUnit tests
         run: |
-          echo "DB_HOST=$DB_HOST"
-          echo "DB_NAME=$DB_NAME"
-          echo "DB_USER=$DB_USER"
-          echo "DB_PASS=$DB_PASS"
           composer run-script test
 
-        env:
-          DB_HOST: ${{ vars.DB_HOST }}
-          DB_NAME: ${{ vars.DB_NAME }}
-          DB_USER: ${{ vars.DB_USER }}
-          DB_PASS: ${{ vars.DB_PASS }}
+        

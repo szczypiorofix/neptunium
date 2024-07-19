@@ -31,11 +31,11 @@ class EnvironmentTest extends TestCase {
         $this->assertTrue($this->environment->getDotenv() != null);
     }
 
-    /** TEMPORARY DISABLED */
-//    public function testRequiredEnvironmentalVariables() {
-//         $requiredEnvironmentalVariableKeys = Config::REQUIRED_ENVIRONMENTAL_VARIABLES;
-//         $this->assertTrue($this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys));
-//    }
+
+    public function testRequiredEnvironmentalVariables() {
+         $requiredEnvironmentalVariableKeys = Config::REQUIRED_ENVIRONMENTAL_VARIABLES;
+         $this->assertTrue($this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys));
+    }
 
     public function testRegisteredKeys() {
         $this->assertTrue($this->environment->getEnvironmentRegisteredKeys() > 0);
