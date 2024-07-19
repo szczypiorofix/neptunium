@@ -15,6 +15,7 @@ class EnvironmentTest extends TestCase {
             'C:\workshop\htdocs\neptunium',
             'C:\workshop\htdocs\neptunium\src'
         );
+        $this->environment->loadDotEnv('.env');
         parent::setUp();
     }
 
