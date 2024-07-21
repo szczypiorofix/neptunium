@@ -9,10 +9,21 @@ use ReflectionException;
 
 class TableGenerator implements Generator {
 
+    public function generate(mixed $class): bool {
+        try {
+            $this->generateModelObjectWithAttributes($class);
+        } catch (ReflectionException $e) {
+            DebugContainer::$errors["ReflectionError"] = $e->getMessage();
+            return false;
+        }
+        return true;
+    }
+
     /**
      * @throws ReflectionException
      */
-    public function generate(mixed $class): bool {
+    private function generateModelObjectWithAttributes(mixed $class): void {
+//        throw new ReflectionException("Simple error");
         $reflection = new ReflectionClass($class);
         $reflectionProperties = $reflection->getProperties();
         $reflectionAttributes = $reflection->getAttributes();
@@ -22,9 +33,8 @@ class TableGenerator implements Generator {
             $typeClass = $reflectionProperty->getName();
             foreach($typeAttributes as $typeAttribute) {
                 $attribute = $typeAttribute->newInstance();
-//                DebugContainer::$info['UserTableGenerate'][$inst->name][$typeClass] = $attribute;
+                DebugContainer::$info['UserTableGenerate'][$inst->name][$typeClass] = $attribute;
             }
         }
-        return true;
     }
 }

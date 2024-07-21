@@ -73,11 +73,7 @@ class Core {
 
         $success = false;
         $tableGenerator = new TableGenerator();
-        try {
-            $success = $tableGenerator->generate(UserModel::class);
-        } catch (\ReflectionException $e) {
-            print_r(['Error' => $e->getMessage()]);
-        }
+        $success = $tableGenerator->generate(UserModel::class);
     }
 
     private function resolveRequest(): void {
