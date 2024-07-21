@@ -7,12 +7,10 @@ use Neptunium\ORM\Mapping\Column;
 use Neptunium\ORM\Mapping\FieldPropertyType;
 use Neptunium\ORM\Mapping\Table;
 
-#[Table("User")]
+#[Table('User')]
 class UserModel extends BaseModel {
     #[Column(
         type: FieldPropertyType::Integer,
-        length: 255,
-        nullable: false,
         autoIncrement: true,
         comment: 'ID użytkownika'
     )]
@@ -21,7 +19,6 @@ class UserModel extends BaseModel {
     #[Column(
         type: FieldPropertyType::VarChar,
         length: 60,
-        nullable: false,
         comment: 'Nazwa użytkownika'
     )]
     public string $username;
@@ -29,7 +26,6 @@ class UserModel extends BaseModel {
     #[Column(
         type: FieldPropertyType::VarChar,
         length: 20,
-        nullable: false,
         comment: 'Hasło użytkownika'
     )]
     public string $password;
@@ -37,7 +33,6 @@ class UserModel extends BaseModel {
     #[Column(
         type: FieldPropertyType::VarChar,
         length: 60,
-        nullable: false,
         comment: 'E-mail użytkownika'
     )]
     public string $email;
@@ -45,7 +40,6 @@ class UserModel extends BaseModel {
     #[Column(
         type: FieldPropertyType::VarChar,
         length: 60,
-        nullable: false,
         comment: 'Imię użytkownika'
     )]
     public string $firstName;
@@ -53,14 +47,12 @@ class UserModel extends BaseModel {
     #[Column(
         type: FieldPropertyType::VarChar,
         length: 60,
-        nullable: false,
         comment: 'Nazwisko użytkownika'
     )]
     public string $lastName;
 
     #[Column(
         type: FieldPropertyType::Boolean,
-        nullable: false,
         comment: 'Aktywny uzytkownik'
     )]
     public bool $active;

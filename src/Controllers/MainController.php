@@ -15,7 +15,8 @@ class MainController extends Controller {
             [
                 'templateFileName' => 'main.twig',
                 'templateName' => 'main',
-                'debugData'=> DebugContainer::$info,
+                'debugInfoData'=> DebugContainer::$info,
+                'debugErrorData'=> DebugContainer::$errors,
                 'queryData' => $params,
             ]
         );
