@@ -15,16 +15,14 @@ class TableGenerator implements Generator {
     public function generate(mixed $class): bool {
         $reflection = new ReflectionClass($class);
         $reflectionProperties = $reflection->getProperties();
-
-        $newInstance = $reflection->newInstance();
+        $reflectionAttributes = $reflection->getAttributes();
+        $inst = $reflectionAttributes[0]->newInstance();
         foreach ($reflectionProperties as $reflectionProperty) {
-//            $newInstance->{$reflectionProperty->getName()} = $class->{$reflectionProperty->getName()};
-
             $typeAttributes = $reflectionProperty->getAttributes();
+            $typeClass = $reflectionProperty->getName();
             foreach($typeAttributes as $typeAttribute) {
                 $attribute = $typeAttribute->newInstance();
-
-                DebugContainer::$info['UserTableGenerate'][] = $attribute;
+//                DebugContainer::$info['UserTableGenerate'][$inst->name][$typeClass] = $attribute;
             }
         }
         return true;

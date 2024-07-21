@@ -3,21 +3,30 @@
     <h2>Template file '{{ templateFileName }}' loaded</h2>
 
 
+    {% if debugData %}
     <div>
         <h3>Debug data:</h3>
         {% for ddKey,ddValue in debugData %}
             {% if ddValue %}
             <p>Part: {{ ddKey }}</p>
             <div>
-                {% for debugInfo in ddValue %}
-                    <pre>
-                        <?php print_r({{ debugInfo }}) <?/>
-                    </pre>
+                {% for debugInfoKey,debugInfoValue in ddValue %}
+                    <p>Class: {{ debugInfoKey }}</p>
+                    {% for dk,dv in debugInfoValue %}
+                        <pre>
+                            Name: {{ dk }}
+                            Type: {{ dv.type.name }}
+                            Length - {{ dv.length }}
+                            Collation - {{ dv.collation }}
+                            Comment - {{ dv.comment }}
+                        </pre>
+                    {% endfor %}
                 {% endfor %}
             </div>
             {% endif %}
         {% endfor %}
     </div>
+    {% endif %}
 
     {% include 'pages/' ~ templateFileName %}
 </body>

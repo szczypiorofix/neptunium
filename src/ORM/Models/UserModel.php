@@ -9,7 +9,6 @@ use Neptunium\ORM\Mapping\Table;
 
 #[Table("User")]
 class UserModel extends BaseModel {
-
     #[Column(
         type: FieldPropertyType::Integer,
         length: 255,
