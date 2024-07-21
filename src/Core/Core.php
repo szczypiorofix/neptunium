@@ -7,6 +7,8 @@ use Neptunium\Controllers\HomeController;
 use Neptunium\Controllers\MainController;
 use Neptunium\ModelClasses\Request;
 use Neptunium\ModelClasses\Response;
+use Neptunium\ORM\Generators\TableGenerator;
+use Neptunium\ORM\Models\UserModel;
 
 class Core {
     private Environment $environment;
@@ -66,6 +68,15 @@ class Core {
         $this->databaseConnection = DatabaseConnection::getConnection();
         if ($this->databaseConnection->db->isError()) {
             print_r($this->databaseConnection->db->getErrorMessage());
+            return;
+        }
+
+        $success = false;
+        $tableGenerator = new TableGenerator();
+        try {
+            $success = $tableGenerator->generate(UserModel::class);
+        } catch (\ReflectionException $e) {
+            print_r(['Error' => $e->getMessage()]);
         }
     }
 

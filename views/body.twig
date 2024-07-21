@@ -1,5 +1,23 @@
 <body class="{{ templateName }}">
     <h1>Neptunium application</h1>
     <h2>Template file '{{ templateFileName }}' loaded</h2>
+
+
+    <div>
+        <h3>Debug data:</h3>
+        {% for ddKey,ddValue in debugData %}
+            {% if ddValue %}
+            <p>Part: {{ ddKey }}</p>
+            <div>
+                {% for debugInfo in ddValue %}
+                    <pre>
+                        <?php print_r({{ debugInfo }}) <?/>
+                    </pre>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
     {% include 'pages/' ~ templateFileName %}
 </body>

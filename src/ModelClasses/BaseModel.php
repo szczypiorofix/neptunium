@@ -2,11 +2,10 @@
 
 namespace Neptunium\ModelClasses;
 
-class BaseModel {
+abstract class BaseModel {
+    public function __construct() {}
 
-    public int $id;
-
-    public function __construct() {
-
+    public function create() {
+        
     }
 }
