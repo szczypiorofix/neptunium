@@ -3,5 +3,5 @@
 namespace Neptunium\ModelClasses;
 
 interface Generator {
-    public function generate(mixed $class): bool;
+    public function generate(string $class): bool;
 }

@@ -7,10 +7,11 @@ use Neptunium\ORM\Mapping\Column;
 use Neptunium\ORM\Mapping\FieldPropertyType;
 use Neptunium\ORM\Mapping\Table;
 
-#[Table('User')]
+#[Table(name: 'User')]
 class UserModel extends BaseModel {
     #[Column(
         type: FieldPropertyType::Integer,
+        primaryKey: true,
         autoIncrement: true,
         comment: 'ID użytkownika'
     )]

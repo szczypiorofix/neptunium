@@ -71,7 +71,6 @@ class Core {
             return;
         }
 
-        $success = false;
         $tableGenerator = new TableGenerator();
         $success = $tableGenerator->generate(UserModel::class);
     }

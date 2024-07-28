@@ -4,43 +4,103 @@ namespace Neptunium\ORM\Generators;
 
 use Neptunium\Core\DebugContainer;
 use Neptunium\ModelClasses\Generator;
-use ReflectionAttribute;
+use Neptunium\ORM\Mapping\FieldPropertyType;
+use Neptunium\ORM\Mapping\Table;
 use ReflectionClass;
 use ReflectionException;
 
 class TableGenerator implements Generator {
-    private array $table;
-    private mixed $originClass;
+    private Table $table;
+    private string $tableName;
+    private string $generateTableQuery;
+    private string $originClass;
+    private ReflectionClass $reflectionClassObject;
 
-    public function __construct() {
-        $this->table = [];
-        $this->originClass = null;
-    }
+    public function __construct() {}
 
-    public function generate(mixed $class): bool {
+    public function generate(string $class): bool {
         $this->originClass = $class;
         try {
-            $this->generateModelObjectWithAttributes();
+            $this->reflectionClassObject = $this->createReflectionObject();
+            $this->generateTableObjectWithAttributes();
+            $this->createTable();
         } catch (ReflectionException $e) {
             DebugContainer::$errors["ReflectionError"] = $e->getMessage();
             return false;
         }
-        $this->show($this->table);
-        return false;
+
+        $this->show($this->tableName);
+
+        return true;
     }
 
     /**
      * @throws ReflectionException
      */
-    private function generateModelObjectWithAttributes(): void {
-        $modelClassObject = new ReflectionClass($this->originClass);
+    private function createReflectionObject(): ReflectionClass {
+        return new ReflectionClass($this->originClass);
+    }
 
-        $modelClassProperties = $modelClassObject->getProperties();
-        $modelClassAttributes = $modelClassObject->getAttributes();
+    private function generateTableObjectWithAttributes(): void {
+        $tableArrayColumns = [];
+        $modelClassProperties = $this->reflectionClassObject->getProperties();
+        $modelClassAttributes = $this->reflectionClassObject->getAttributes();
+        foreach($modelClassProperties as $column) {
+            $propertyAttributes = $column->getAttributes();
+            $columnName = $column->getName();
+            foreach($propertyAttributes as $attribute) {
+                $tableArrayColumns[$columnName] = $attribute->getArguments();
+            }
+        }
+        $this->tableName = $this->determineTableName($modelClassAttributes);
+        $this->table = new Table($this->tableName);
+        $this->table->setColumns($tableArrayColumns);
+    }
 
-        $tableName = $this->determineTableName($modelClassAttributes);
+    private function createTable(): void {
+        $this->generateTableQuery = "CREATE TABLE IF NOT EXISTS `" .$this->tableName . "` (";
 
-        $this->table = ['TABLE_NAME' => $tableName];
+        $queryString = "";
+        foreach($this->table->getColumns() as $columnName => $column) {
+            $queryString .= "`" . $columnName . "`";
+            $setLength = null;
+            foreach($column as $attributeKey => $attributeValue) {
+                switch($attributeKey) {
+                    case 'type':
+                        $queryString .= " ".FieldPropertyType::getLabel($attributeValue);
+                        break;
+                    case 'autoIncrement':
+                        $queryString .= " AUTO_INCREMENT";
+                        break;
+                    case 'collation':
+                        break;
+                    case 'length':
+                        break;
+                    case 'nullable':
+                        $queryString .= " NULL";
+                        break;
+                    case 'defaultValue':
+                        break;
+                    case 'unique':
+                        break;
+                    case 'primaryKey':
+                        break;
+                    case 'comment':
+                        $queryString .= " COMMENT=`".$attributeValue."`";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            $queryString .= ',';
+        }
+
+        // remove last ', ' part from query
+        $queryString = rtrim($queryString, ", ");
+        $this->generateTableQuery .= $queryString . ");";
+        $this->show($this->generateTableQuery);
+
+        // db -> run query
     }
 
     private function determineTableName(array $modelClassAttributes): string {
@@ -51,76 +111,11 @@ class TableGenerator implements Generator {
         // check if there is an attribute for the model class
         if (isset($modelClassAttributes[0])) {
             $attributesValues = $modelClassAttributes[0]->getArguments();
-            if (isset($attributesValues[0])) {
-                $tableName = $attributesValues[0];
+            if (array_key_exists('name', $attributesValues)) {
+                $tableName = $attributesValues['name'];
             }
         }
         return $tableName;
-    }
-
-    private function createTable(): bool {
-        $arrayKeys = array_keys($this->table);
-        if (isset($arrayKeys[0])) {
-            $createTableQueryString = "CREATE TABLE IF NOT EXISTS `" .$arrayKeys[0] . "` (";
-            foreach($this->table as $columns) {
-                foreach($columns as $columnName => $columnAttributes) {
-                    $createTableQueryString .= "`" . $columnName . "`";
-
-                    $fieldType = null;
-                    $fieldValue = null;
-                    $fieldLength = null;
-                    $isNullable = null;
-
-                    foreach($columnAttributes as $columnAttributeName => $columnAttributeValue) {
-                        if ($columnAttributeName === 'type') {
-                            $fieldType = $columnAttributeValue->name;
-                        } else {
-                            $fieldValue = $columnAttributeValue;
-                            if ($columnAttributeName === 'length') {
-                                $fieldLength = $columnAttributeValue;
-                            }
-                            if ($columnAttributeName === 'nullable') {
-                                $isNullable = $columnAttributeValue;
-                            }
-                        }
-                    }
-
-                    // TYPE
-                    switch($fieldType) {
-                        case 'Timestamp':
-                            $createTableQueryString .= " TIMESTAMP ";
-                            break;
-                        case 'Integer':
-                            $createTableQueryString .= " INT ";
-                            break;
-                        case 'Boolean':
-                            $createTableQueryString .= " BOOL ";
-                            break;
-                        default:
-                            if ($fieldLength) {
-                                $createTableQueryString .= " VARCHAR($fieldLength) ";
-                            } else {
-                                $createTableQueryString .= " VARCHAR(21) ";
-                            }
-                            break;
-                    }
-
-                    // NULLABLE
-                    if ($isNullable) {
-                        $createTableQueryString .= " NULL ";
-                    } else {
-                        $createTableQueryString .= " NOT NULL ";
-                    }
-
-                    $createTableQueryString .= ',';
-                }
-            }
-            $createTableQueryString .= ");";
-            echo '<pre>';
-            var_dump($this->table);
-            echo '</pre>';
-        }
-        return false;
     }
 
     private function show(mixed $data): void {
