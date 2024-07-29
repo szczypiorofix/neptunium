@@ -31,9 +31,6 @@ class TableGenerator implements Generator {
             DebugContainer::$errors["ReflectionError"] = $e->getMessage();
             return false;
         }
-
-        $this->show($this->tableName);
-
         return true;
     }
 

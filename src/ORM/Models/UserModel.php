@@ -79,4 +79,20 @@ class UserModel extends BaseModel {
     public function __construct() {
         parent::__construct();
     }
+
+    public function add(): bool {
+        return false;
+    }
+
+    public function update(): bool {
+        return false;
+    }
+
+    public function get(): bool {
+        return false;
+    }
+
+    public function delete(): bool{
+        return false;
+    }
 }
