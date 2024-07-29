@@ -6,7 +6,7 @@ use Neptunium\Config;
 use PDO;
 
 class Database {
-    private ?PDO $db = null;
+    private ?PDO $pdo = null;
     private string $errorMessage = "";
     private bool $error = false;
     private string $host;
@@ -68,11 +68,11 @@ class Database {
         $this->errorMessage = $errorMessage;
     }
 
-    public function getDb(): ?PDO {
-        return $this->db;
+    public function getPdo(): ?PDO {
+        return $this->pdo;
     }
 
-    public function setDb(?PDO $db): void {
-        $this->db = $db;
+    public function setPdo(?PDO $pdo): void {
+        $this->pdo = $pdo;
     }
 }

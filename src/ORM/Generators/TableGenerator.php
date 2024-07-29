@@ -78,10 +78,7 @@ class TableGenerator implements Generator {
                 switch($attributeKey) {
                     case 'type':
                         $attributeType = FieldPropertyType::getLabel($attributeValue);
-                        if (
-                            str_starts_with($attributeType, 'VARCHAR')
-                            && $attributeLength > 0
-                        ) {
+                        if (str_starts_with($attributeType, 'VARCHAR') && $attributeLength > 0) {
                             $queryString .= " ".$attributeType."($attributeLength)";
                             break;
                         }
@@ -119,9 +116,7 @@ class TableGenerator implements Generator {
         $queryString = rtrim($queryString, ", ");
         $this->generateTableQuery .= $queryString . ");";
 
-        $this->show($this->generateTableQuery);
-
-        $this->databaseConnection->db->getDb()->exec($this->generateTableQuery);
+        $this->databaseConnection->getDatabase()->getPdo()->exec($this->generateTableQuery);
     }
 
     private function determineTableName(array $modelClassAttributes): string {

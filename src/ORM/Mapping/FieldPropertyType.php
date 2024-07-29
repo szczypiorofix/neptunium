@@ -19,7 +19,7 @@ enum FieldPropertyType {
         return FieldPropertyType::getLabel($this);
     }
 
-    public static function getLabel(self $value, ?int $length = null): string {
+    public static function getLabel(self $value): string {
         return match ($value) {
             FieldPropertyType::VarChar      => 'VARCHAR',
             FieldPropertyType::Integer      => 'INT',

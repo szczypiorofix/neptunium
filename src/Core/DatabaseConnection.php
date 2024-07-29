@@ -6,7 +6,7 @@ use Neptunium\ModelClasses\Database;
 use PDO;
 
 class DatabaseConnection {
-    public ?Database $db = null;
+    private ?Database $db = null;
     private static ?DatabaseConnection $databaseInstance = null;
 
     private function __construct() {
@@ -27,7 +27,7 @@ class DatabaseConnection {
                 PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES '$databaseCharset'"
             ];
             $dbPDO = new \PDO($dsn, $databaseUser, $databasePassword, $opt);
-            $this->db->setDb($dbPDO);
+            $this->db->setPdo($dbPDO);
         } catch (\PDOException $exc) {
             $this->db->setErrorMessage($exc->getMessage());
             $this->db->setError(true);
@@ -39,5 +39,9 @@ class DatabaseConnection {
             self::$databaseInstance = new DatabaseConnection();
         }
         return self::$databaseInstance;
+    }
+
+    public function getDatabase(): Database {
+        return $this->db;
     }
 }

@@ -66,13 +66,15 @@ class Core {
 
     private function prepareDatabaseConnection(): void {
         $this->databaseConnection = DatabaseConnection::getConnection();
-        if ($this->databaseConnection->db->isError()) {
-            print_r($this->databaseConnection->db->getErrorMessage());
+        if ($this->databaseConnection->getDatabase()->isError()) {
+            print_r($this->databaseConnection->getDatabase()->getErrorMessage());
             return;
         }
 
-        $tableGenerator = new TableGenerator();
-        $success = $tableGenerator->generate(UserModel::class, $this->databaseConnection);
+        // ======= Temporary disabled
+        // $tableGenerator = new TableGenerator();
+        // $success = $tableGenerator->generate(UserModel::class, $this->databaseConnection);
+        // ========
     }
 
     private function resolveRequest(): void {
