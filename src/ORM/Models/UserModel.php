@@ -7,7 +7,11 @@ use Neptunium\ORM\Mapping\Column;
 use Neptunium\ORM\Mapping\FieldPropertyType;
 use Neptunium\ORM\Mapping\Table;
 
-#[Table(name: 'User')]
+#[Table(
+    name: 'Users',
+    comment: 'Tabela użytkowników',
+    collate: 'utf8mb4_unicode_ci'
+)]
 class UserModel extends BaseModel {
     #[Column(
         type: FieldPropertyType::Integer,

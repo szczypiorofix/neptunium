@@ -72,7 +72,7 @@ class Core {
         }
 
         $tableGenerator = new TableGenerator();
-        $success = $tableGenerator->generate(UserModel::class);
+        $success = $tableGenerator->generate(UserModel::class, $this->databaseConnection);
     }
 
     private function resolveRequest(): void {

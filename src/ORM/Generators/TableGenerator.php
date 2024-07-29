@@ -2,6 +2,7 @@
 
 namespace Neptunium\ORM\Generators;
 
+use Neptunium\Core\DatabaseConnection;
 use Neptunium\Core\DebugContainer;
 use Neptunium\ModelClasses\Generator;
 use Neptunium\ORM\Mapping\FieldPropertyType;
@@ -14,12 +15,14 @@ class TableGenerator implements Generator {
     private string $tableName;
     private string $generateTableQuery;
     private string $originClass;
+    private DatabaseConnection $databaseConnection;
     private ReflectionClass $reflectionClassObject;
 
     public function __construct() {}
 
-    public function generate(string $class): bool {
+    public function generate(string $class, DatabaseConnection $databaseConnection): bool {
         $this->originClass = $class;
+        $this->databaseConnection = $databaseConnection;
         try {
             $this->reflectionClassObject = $this->createReflectionObject();
             $this->generateTableObjectWithAttributes();
@@ -53,7 +56,9 @@ class TableGenerator implements Generator {
             }
         }
         $this->tableName = $this->determineTableName($modelClassAttributes);
-        $this->table = new Table($this->tableName);
+        $tableComment = "";
+        $tableCollation = "";
+        $this->table = new Table($this->tableName, $tableComment, $tableCollation);
         $this->table->setColumns($tableArrayColumns);
     }
 
@@ -63,30 +68,45 @@ class TableGenerator implements Generator {
         $queryString = "";
         foreach($this->table->getColumns() as $columnName => $column) {
             $queryString .= "`" . $columnName . "`";
-            $setLength = null;
+            $attributeLength = 0;
+            foreach($column as $attributeKey => $attributeValue) {
+                if ($attributeKey === 'length') {
+                    $attributeLength = $attributeValue;
+                }
+            }
             foreach($column as $attributeKey => $attributeValue) {
                 switch($attributeKey) {
                     case 'type':
-                        $queryString .= " ".FieldPropertyType::getLabel($attributeValue);
+                        $attributeType = FieldPropertyType::getLabel($attributeValue);
+                        if (
+                            str_starts_with($attributeType, 'VARCHAR')
+                            && $attributeLength > 0
+                        ) {
+                            $queryString .= " ".$attributeType."($attributeLength)";
+                            break;
+                        }
+                        $queryString .= " ".$attributeType;
+                        break;
+                    case 'nullable':
+                        $queryString .= " NULL";
                         break;
                     case 'autoIncrement':
                         $queryString .= " AUTO_INCREMENT";
                         break;
                     case 'collation':
-                        break;
-                    case 'length':
-                        break;
-                    case 'nullable':
-                        $queryString .= " NULL";
+                        $queryString .= " COLLATION ".$attributeValue;
                         break;
                     case 'defaultValue':
+                        $queryString .= " DEFAULT ".$attributeValue;
                         break;
                     case 'unique':
+                        $queryString .= " UNIQUE";
                         break;
                     case 'primaryKey':
+                        $queryString .= " PRIMARY KEY";
                         break;
                     case 'comment':
-                        $queryString .= " COMMENT=`".$attributeValue."`";
+                        $queryString .= " COMMENT '".$attributeValue."'";
                         break;
                     default:
                         break;
@@ -98,9 +118,10 @@ class TableGenerator implements Generator {
         // remove last ', ' part from query
         $queryString = rtrim($queryString, ", ");
         $this->generateTableQuery .= $queryString . ");";
+
         $this->show($this->generateTableQuery);
 
-        // db -> run query
+        $this->databaseConnection->db->getDb()->exec($this->generateTableQuery);
     }
 
     private function determineTableName(array $modelClassAttributes): string {
