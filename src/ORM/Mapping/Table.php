@@ -58,7 +58,6 @@ class Table {
         return $this->columns;
     }
 
-
     /**
      * @param ReflectionProperty[] $columns
      * @return void

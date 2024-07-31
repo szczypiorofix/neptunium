@@ -113,7 +113,7 @@ class TableGenerator implements Generator {
         $queryString = rtrim($queryString, ", ");
         $this->generateTableQuery .= $queryString . ");";
 
-        $this->databaseConnection->getDatabase()->getPdo()->exec($this->generateTableQuery);
+//        $this->databaseConnection->getDatabase()->getPdo()->exec($this->generateTableQuery);
     }
 
     private function determineTableName(array $modelClassAttributes): string {

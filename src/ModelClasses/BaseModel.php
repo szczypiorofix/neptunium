@@ -2,13 +2,13 @@
 
 namespace Neptunium\ModelClasses;
 
-abstract class BaseModel {
-    public function __construct() {
-        print_r("Generate object");
-    }
+use Neptunium\Core\DatabaseConnection;
 
-    public abstract function add(): bool;
-    public abstract function update(): bool;
-    public abstract function get(): bool;
-    public abstract function delete(): bool;
+abstract class BaseModel {
+    public function __construct() {}
+
+    public abstract function add(DatabaseConnection $databaseConnection): bool;
+    public abstract function update(DatabaseConnection $databaseConnection): bool;
+    public abstract function get(DatabaseConnection $databaseConnection): bool;
+    public abstract function delete(DatabaseConnection $databaseConnection): bool;
 }

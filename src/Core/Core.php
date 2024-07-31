@@ -75,6 +75,18 @@ class Core {
         // $tableGenerator = new TableGenerator();
         // $success = $tableGenerator->generate(UserModel::class, $this->databaseConnection);
         // ========
+
+
+        $userOne = new UserModel();
+        $userOne->username = 'UserOnee';
+        $userOne->password = 'xxxxxxx';
+        $userOne->email = 'aaa@bbb.cc';
+        $userOne->active = false;
+        $userOne->firstName = "UserOne First Name";
+        $userOne->lastName = "UserOne Last Name";
+
+        print_r(['result' => $userOne->add($this->databaseConnection)]);
+
     }
 
     private function resolveRequest(): void {
