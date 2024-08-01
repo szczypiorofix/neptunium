@@ -8,6 +8,7 @@ use Neptunium\Controllers\MainController;
 use Neptunium\ModelClasses\Request;
 use Neptunium\ModelClasses\Response;
 use Neptunium\ORM\Generators\TableGenerator;
+use Neptunium\Middleware\HtmlContentMiddleware;
 use Neptunium\ORM\Models\UserModel;
 
 class Core {
@@ -28,11 +29,17 @@ class Core {
         $this->prepareEnvironment();
         $this->prepareDatabaseConnection();
         $this->prepareRouter();
-        $this->resolveRequest();
+        $this->prepareRequestAndResponse();
 
         $pageContent = $this->handleRoutes();
 
-        $this->resolveResponse($pageContent);
+        $middleware = new HtmlContentMiddleware();
+        $middleware->process(
+            $this->request,
+            $this->response,
+            function () use ($pageContent) {
+                $this->resolveResponse($pageContent);
+            });
     }
 
     private function prepareEnvironment(): void {
@@ -77,20 +84,21 @@ class Core {
         // ========
 
 
-        $userOne = new UserModel();
-        $userOne->username = 'UserOnee';
-        $userOne->password = 'xxxxxxx';
-        $userOne->email = 'aaa@bbb.cc';
-        $userOne->active = false;
-        $userOne->firstName = "UserOne First Name";
-        $userOne->lastName = "UserOne Last Name";
+//        $userOne = new UserModel();
+//        $userOne->username = 'UserOnee';
+//        $userOne->password = 'xxxxxxx';
+//        $userOne->email = 'aaa@bbb.cc';
+//        $userOne->active = false;
+//        $userOne->firstName = "UserOne First Name";
+//        $userOne->lastName = "UserOne Last Name";
 
-        print_r(['result' => $userOne->add($this->databaseConnection)]);
+//        print_r(['result' => $userOne->add($this->databaseConnection)]);
 
     }
 
-    private function resolveRequest(): void {
+    private function prepareRequestAndResponse(): void {
         $this->request = new Request();
+        $this->response = new Response();
     }
 
     private function handleRoutes(): string {
@@ -101,17 +109,7 @@ class Core {
     }
 
     private function resolveResponse(string $pageContent): void {
-        $this->response = new Response();
         $this->response->setContent($pageContent);
         $this->response->viewPageContent();
-    }
-
-    private function dump(mixed $data, string $name = ''): void {
-        if ($name) {
-            echo "<p>$name</p>";
-        }
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
     }
 }

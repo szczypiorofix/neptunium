@@ -33,7 +33,9 @@ class Response {
     }
 
     public function setHeaders(array $headers): void {
-        $this->headers = $headers;
+        foreach($headers as $headerKey => $headerValue) {
+            $this->headers[$headerKey] = $headerValue;
+        }
     }
 
     public function getStatusCode(): int {
@@ -70,5 +72,10 @@ class Response {
         foreach ($this->headers as $header => $value) {
             header("$header: $value");
         }
+
+        echo '<pre>';
+        var_dump($this->headers);
+        echo '</pre>';
+
     }
 }
