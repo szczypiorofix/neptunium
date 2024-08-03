@@ -2,11 +2,13 @@
 
 namespace Neptunium\ModelClasses;
 
-class BaseModel {
+use Neptunium\Core\DatabaseConnection;
 
-    public int $id;
+abstract class BaseModel {
+    public function __construct() {}
 
-    public function __construct() {
-
-    }
+    public abstract function add(DatabaseConnection $databaseConnection): bool;
+    public abstract function update(DatabaseConnection $databaseConnection): bool;
+    public abstract function get(DatabaseConnection $databaseConnection): bool;
+    public abstract function delete(DatabaseConnection $databaseConnection): bool;
 }

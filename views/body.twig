@@ -1,5 +1,39 @@
 <body class="{{ templateName }}">
     <h1>Neptunium application</h1>
     <h2>Template file '{{ templateFileName }}' loaded</h2>
+
+    {% if debugErrorData %}
+        <div class="error-container">
+            {% for ddKey,ddValue in debugErrorData %}
+                <div>{{ ddKey }} : {{ ddValue }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if debugInfoData %}
+    <div>
+        <h3>Debug data:</h3>
+        {% for ddKey,ddValue in debugInfoData %}
+            {% if ddValue %}
+            <p>Part: {{ ddKey }}</p>
+            <div>
+                {% for debugInfoKey,debugInfoValue in ddValue %}
+                    <p>Class: {{ debugInfoKey }}</p>
+                    {% for dk,dv in debugInfoValue %}
+                        <pre>
+                            Name: {{ dk }}
+                            Type: {{ dv.type.name }}
+                            Length - {{ dv.length }}
+                            Collation - {{ dv.collation }}
+                            Comment - {{ dv.comment }}
+                        </pre>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
     {% include 'pages/' ~ templateFileName %}
 </body>

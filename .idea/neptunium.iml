@@ -4,17 +4,6 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" packagePrefix="Neptunium\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" packagePrefix="Neptunium\" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Attributes" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Controllers" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Core" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Interfaces" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Middleware" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/ModelClasses" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/views" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/views/components" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/views/containers" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/views/pages" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/Models" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/deep-copy" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nikic/php-parser" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phar-io/manifest" />
