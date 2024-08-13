@@ -7,6 +7,7 @@ namespace Neptunium\Core;
 use Neptunium\Config;
 use Neptunium\Controllers\ApiController;
 use Neptunium\Controllers\HomeController;
+use Neptunium\Controllers\LoginController;
 use Neptunium\Controllers\MainController;
 use Neptunium\Middleware\HtmlContentMiddleware;
 use Neptunium\ModelClasses\Request;
@@ -78,6 +79,7 @@ class Core {
                     HomeController::class,
                     MainController::class,
                     ApiController::class,
+                    LoginController::class
                 ]
             );
         } catch (\ReflectionException $e) {

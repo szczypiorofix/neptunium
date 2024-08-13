@@ -1,6 +1,5 @@
 <body class="{{ templateName }}">
     <h1>Neptunium application</h1>
-    <h2>Template file '{{ templateFileName }}' loaded</h2>
 
     {% if debugErrorData %}
         <div class="error-container">
@@ -37,5 +36,5 @@
 
     {% include 'pages/' ~ templateFileName %}
 <!-- SCRIPTS PART -->
-<script src="{{ base_url }}/static/js/api.js?v={{ app_ver }}"></script>
+<script src="{{ base_url }}/static/js/main.js?v={{ app_ver }}"></script>
 </body>

@@ -18,4 +18,18 @@ class ApiController extends Controller {
             ]
         );
     }
+
+    #[Route('/api/login', Http::POST)]
+    function login(array $params = []): string {
+
+        return 'Login successfully.';
+
+//        return HtmlView::renderPage('index.twig',
+//            [
+//                'templateFileName' => 'api.twig',
+//                'templateName' => 'api',
+//                'queryData' => $params,
+//            ]
+//        );
+    }
 }

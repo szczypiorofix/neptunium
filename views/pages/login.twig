@@ -1,0 +1,28 @@
+<div>
+    <p>This is login page</p>
+</div>
+<div>
+    <h2>Navigation</h2>
+    <div>
+        <div>
+            <a href="{{ base_url }}">MAIN PAGE</a>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="form-container">
+        <form action="{{ base_url }}/api/login" method="post">
+            <div class="input-group">
+                <label for="useremail">E-mail:</label>
+                <input type="email" id="useremail" name="useremail" />
+            </div>
+            <div class="input-group">
+                <label for="userpass">Hasło:</label>
+                <input type="text" id="userpass" name="userpass" />
+            </div>
+            <div class="input-group">
+                <input type="submit" name="userpass" value="Loguj" />
+            </div>
+        </form>
+    </div>
+</div>
