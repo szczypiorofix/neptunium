@@ -1,4 +1,18 @@
 <div>
+    <p>This is home page</p>
+</div>
+<div>
+    <h2>Navigation</h2>
+    <div>
+        <div>
+            <a href="{{ base_url }}">MAIN PAGE</a>
+        </div>
+        <div>
+            <a href="{{ base_url }}/api">API PAGE</a>
+        </div>
+    </div>
+</div>
+<div>
     {% for key,value in queryData %}
         <p>{{ key }} : {{ value }}</p>
     {% endfor %}

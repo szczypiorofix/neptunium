@@ -64,7 +64,6 @@ class Response {
 
     public function viewPageContent(): void {
         $this->prepareHeaders();
-
         echo $this->content;
     }
 
@@ -72,10 +71,5 @@ class Response {
         foreach ($this->headers as $header => $value) {
             header("$header: $value");
         }
-
-        echo '<pre>';
-        var_dump($this->headers);
-        echo '</pre>';
-
     }
 }

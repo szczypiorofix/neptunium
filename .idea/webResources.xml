@@ -9,6 +9,7 @@
             <path value="file://$PROJECT_DIR$/static/css" />
             <path value="file://$PROJECT_DIR$/static/images" />
             <path value="file://$PROJECT_DIR$/static/images/icons" />
+            <path value="file://$PROJECT_DIR$/static/js" />
           </resourceRoots>
         </entryData>
       </entry>

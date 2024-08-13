@@ -51,7 +51,7 @@ class Router {
             }
         }
         http_response_code(404);
-        return View::render('index.twig',
+        return HtmlView::renderPage('index.twig',
             [
                 'templateFileName' => '404.twig',
                 'templateName' => 'page404',
