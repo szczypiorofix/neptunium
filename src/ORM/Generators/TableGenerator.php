@@ -28,7 +28,7 @@ class TableGenerator implements Generator {
             $this->generateTableObjectWithAttributes();
             $this->createTable();
         } catch (ReflectionException $e) {
-            DebugContainer::$errors["ReflectionError"] = $e->getMessage();
+            DebugContainer::$error["ReflectionError"] = $e->getMessage();
             return false;
         }
         return true;

@@ -7,9 +7,15 @@
         <div>
             <a href="{{ base_url }}">MAIN PAGE</a>
         </div>
-        <div>
-            <a href="{{ base_url }}/api">API PAGE</a>
-        </div>
+        {% if loginData == 1 %}
+            <div>
+                <a href="{{ base_url }}/api/logout">LOGOUT</a>
+            </div>
+        {% else %}
+            <div>
+                <a href="{{ base_url }}/login">LOGIN PAGE</a>
+            </div>
+        {% endif %}
     </div>
 </div>
 <div>

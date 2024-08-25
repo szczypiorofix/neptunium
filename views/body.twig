@@ -34,7 +34,21 @@
     </div>
     {% endif %}
 
+    {% if notifications %}
+        <div>
+            <h3>Notifications:</h3>
+            <div>
+                {% for notificationKey, notificationValue in notifications %}
+                    <div class="notifications-container">
+                        <h4>{{ notificationKey }}</h4>
+                        {% include 'components/notification.twig' with { 'snackbar' : {'type': notificationValue.type, 'text': notificationValue.text} } %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
     {% include 'pages/' ~ templateFileName %}
 <!-- SCRIPTS PART -->
-<script src="{{ base_url }}/static/js/main.js?v={{ app_ver }}"></script>
+<script type="module" src="{{ base_url }}/static/js/main.js?v={{ app_ver }}"></script>
 </body>

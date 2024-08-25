@@ -12,6 +12,9 @@ use Neptunium\Controllers\MainController;
 use Neptunium\Middleware\HtmlContentMiddleware;
 use Neptunium\ModelClasses\Request;
 use Neptunium\ModelClasses\Response;
+use Neptunium\Services\AuthenticationService;
+use Neptunium\Services\NotificationService;
+use Neptunium\Services\SessionService;
 
 class Core {
     private Environment $environment;
@@ -48,8 +51,16 @@ class Core {
     }
 
     private function prepareServices(): void {
-        $this->serviceManager = new ServiceManager();
-        $this->serviceManager->init();;
+        $authService = new AuthenticationService();
+        $sessionService = new SessionService();
+        $notificationService = new NotificationService();
+
+        $this->serviceManager = ServiceManager::getInstance();
+        $this->serviceManager->init(
+            $authService,
+            $sessionService,
+            $notificationService,
+        );
     }
 
     private function prepareEnvironment(): void {

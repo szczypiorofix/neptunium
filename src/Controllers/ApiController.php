@@ -2,14 +2,17 @@
 
 namespace Neptunium\Controllers;
 
+use JetBrains\PhpStorm\NoReturn;
 use Neptunium\Attributes\Route;
 use Neptunium\Core\HtmlView;
+use Neptunium\Core\ServiceManager;
 use Neptunium\ModelClasses\Controller;
 use Neptunium\ModelClasses\Http;
+use Neptunium\ModelClasses\NotificationType;
 
 class ApiController extends Controller {
     #[Route('/api', Http::GET)]
-    function index(array $params = []): string {
+    public function index(array $params = []): string {
         return HtmlView::renderPage('index.twig',
             [
                 'templateFileName' => 'api.twig',
@@ -19,17 +22,55 @@ class ApiController extends Controller {
         );
     }
 
+    #[NoReturn]
     #[Route('/api/login', Http::POST)]
-    function login(array $params = []): string {
+    public function login(array $params = []): string {
+        $serviceManager = ServiceManager::getInstance();
 
-        return 'Login successfully.';
+        $sessionService = $serviceManager->getSessionService();
+        $sessionService->sessionStart();
 
-//        return HtmlView::renderPage('index.twig',
-//            [
-//                'templateFileName' => 'api.twig',
-//                'templateName' => 'api',
-//                'queryData' => $params,
-//            ]
-//        );
+        $inputsToValidate = array(
+            'useremail' => FILTER_VALIDATE_EMAIL,
+            'userpass'  => FILTER_SANITIZE_SPECIAL_CHARS,
+        );
+
+        $authService = $serviceManager->getAuthenticationService();
+        $results = $authService->validate($inputsToValidate);
+
+        $notificationService = $serviceManager->getNotificationService();
+
+        if (count($results) === 0) {
+            $notificationService->addNotification('login', "Użytkownik pomyślnie zalogoway", NotificationType::INFO);
+            $notificationService->saveNotifications();
+
+            $sessionService->setLoginData();
+
+            $this->redirect(NEP_BASE_URL . "/home");
+        } else {
+            $notificationService->addNotification('wrong', "Wrong e-mail and/or password", NotificationType::ERROR);
+        }
+
+        // TODO: Set some data, not just text
+        $_SESSION['loginOK'] = $results[0];
+        $this->redirect(NEP_BASE_URL . "/login/");
+    }
+
+    #[NoReturn]
+    #[Route('/api/logout', Http::GET)]
+    public function logout(array $params = []): string {
+        $serviceManager = ServiceManager::getInstance();
+
+        $sessionService = $serviceManager->getSessionService();
+        $sessionService->sessionStart();
+
+        $sessionService->unsetLoginData();
+
+        $notificationService = $serviceManager->getNotificationService();
+        $notificationService->addNotification('logout', "Użytkownik wylogowany", NotificationType::INFO);
+
+        $notificationService->saveNotifications();
+
+        $this->redirect(NEP_BASE_URL . "/home/");
     }
 }

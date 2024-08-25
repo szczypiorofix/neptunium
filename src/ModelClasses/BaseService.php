@@ -10,7 +10,7 @@ abstract class BaseService {
      */
     public function __construct(protected string $name, array $dependencies = []) {}
 
-    abstract function initialize(): void;
+    abstract public function initialize(): void;
 
     public function getName(): string {
         return $this->name;

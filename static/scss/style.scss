@@ -1,3 +1,6 @@
+@import './variables';
+@import 'mixins';
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 * {
@@ -22,9 +25,7 @@ html, body {
 .form-container {
   display: flex;
   flex-direction: column;
-
   form {
-
     .input-group {
       display: flex;
       flex-direction: row;
@@ -33,11 +34,67 @@ html, body {
 
       label {
         min-width: 86px;
-
       }
-
     }
-
   }
+}
 
+.alert {
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
+
+.alert-primary {
+  background-color: $alert-primary-background-color;
+  color: $alert-primary-color;
+  border-color: $alert-primary-border-color;
+}
+
+.alert-info {
+  background-color: $alert-info-background-color;
+  color: $alert-info-color;
+  border-color: $alert-info-border-color;
+}
+
+.alert-warning {
+  background-color: $alert-warning-background-color;
+  color: $alert-warning-color;
+  border-color: $alert-warning-border-color;
+}
+
+.alert-error {
+  background-color: $alert-error-background-color;
+  color: $alert-error-color;
+  border-color: $alert-error-border-color;
+}
+
+
+
+.snackbar {
+  position: relative;
+  margin-left: 12px;
+  margin-right: 12px;
+
+  .close {
+    padding: 0;
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    button {
+      background: transparent;
+      border: 2px solid white;
+      border-radius: 3px;
+      color: white;
+      cursor: pointer;
+      padding: 3px 6px;
+      transition: all 0.2s ease-in-out;
+      &:hover {
+        border-color: #DDDDDD;
+        color: #DDDDDD;
+      }
+    }
+  }
 }

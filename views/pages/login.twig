@@ -5,12 +5,28 @@
     <h2>Navigation</h2>
     <div>
         <div>
-            <a href="{{ base_url }}">MAIN PAGE</a>
+            <a href="{{ base_url }}/home">HOME PAGE</a>
         </div>
     </div>
 </div>
+{% if sessionData %}
+    <div>
+        <h3>POST DATA</h3>
+        <div>
+            {% for sessionKey,sessionValue in sessionData %}
+                <p>{{ sessionKey }} - {{ sessionValue }}</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
 <div>
     <div class="form-container">
+        {% if formNotification %}
+        <div>
+            <p></p>
+            <span>{{ formNotification.message }}</span>
+        </div>
+        {% endif %}
         <form action="{{ base_url }}/api/login" method="post">
             <div class="input-group">
                 <label for="useremail">E-mail:</label>
@@ -21,7 +37,7 @@
                 <input type="text" id="userpass" name="userpass" />
             </div>
             <div class="input-group">
-                <input type="submit" name="userpass" value="Loguj" />
+                <input type="submit" name="submit-form" value="Loguj" />
             </div>
         </form>
     </div>

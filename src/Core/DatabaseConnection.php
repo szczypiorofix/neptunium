@@ -6,7 +6,7 @@ use Neptunium\ModelClasses\Database;
 use PDO;
 
 class DatabaseConnection {
-    private ?Database $db = null;
+    private ?Database $db;
     private static ?DatabaseConnection $databaseInstance = null;
 
     private function __construct() {

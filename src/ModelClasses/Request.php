@@ -11,10 +11,7 @@ class Request {
     public function __construct() {
         $this->url = $this->resolveUrl();
         $this->method = $this->resolveMethod();
-        $this->headers = array_change_key_case(
-            getallheaders(),
-            CASE_LOWER
-        );;
+        $this->headers = array_change_key_case(getallheaders());
     }
 
     private function resolveUrl(): string {

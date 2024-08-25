@@ -4,29 +4,44 @@ namespace Neptunium\Core;
 
 use Neptunium\ModelClasses\BaseService;
 use Neptunium\Services\AuthenticationService;
+use Neptunium\Services\NotificationService;
+use Neptunium\Services\SessionService;
 
 class ServiceManager {
+    private static ServiceManager $instance;
 
-    /**
-     * @var BaseService[]
-     */
-    private array $services = [];
+    private AuthenticationService $authenticationService;
+    private NotificationService $notificationService;
+    private SessionService $sessionService;
 
-    public function __construct() {}
+    private function __construct() {}
 
-    public function init(): void {
-        $authenticationService = new AuthenticationService();
-        $authenticationService->initialize();
-        $this->addService(($authenticationService));
+    public static function getInstance(): ServiceManager {
+        if (!isset(self::$instance)) {
+            self::$instance = new ServiceManager();
+        }
+        return self::$instance;
     }
 
-    public function getService(string $name): BaseService {
-        return $this->services[$name];
+    public function init(
+        AuthenticationService $authenticationService,
+        SessionService $sessionService,
+        NotificationService $notificationService
+    ): void {
+        $this->authenticationService = $authenticationService;
+        $this->sessionService = $sessionService;
+        $this->notificationService = $notificationService;
     }
 
-    private function addService(BaseService $service): void {
-        $serviceName = $service->getName();
-        $this->services[$serviceName] = $service;
+    public function getAuthenticationService(): AuthenticationService {
+        return $this->authenticationService;
     }
 
+    public function getSessionService(): SessionService {
+        return $this->sessionService;
+    }
+
+    public function getNotificationService(): NotificationService {
+        return $this->notificationService;
+    }
 }
