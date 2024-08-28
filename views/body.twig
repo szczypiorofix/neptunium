@@ -1,54 +1,64 @@
 <body class="{{ templateName }}">
-    <h1>Neptunium application</h1>
+    {% include 'components/navbar.twig' %}
 
-    {% if debugErrorData %}
-        <div class="error-container">
-            {% for ddKey,ddValue in debugErrorData %}
-                <div>{{ ddKey }} : {{ ddValue }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    <div class="container">
+        <!--  DEBUG ERROR DATA_ -->
+        {% if debugErrorData %}
+            <div class="error-container">
+                {% for ddKey,ddValue in debugErrorData %}
+                    <div>{{ ddKey }} : {{ ddValue }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <!--  _DEBUG ERROR DATA -->
 
-    {% if debugInfoData %}
-    <div>
-        <h3>Debug data:</h3>
-        {% for ddKey,ddValue in debugInfoData %}
-            {% if ddValue %}
-            <p>Part: {{ ddKey }}</p>
+        <!--  DEBUG INFO DATA_ -->
+        {% if debugInfoData %}
             <div>
-                {% for debugInfoKey,debugInfoValue in ddValue %}
-                    <p>Class: {{ debugInfoKey }}</p>
-                    {% for dk,dv in debugInfoValue %}
-                        <pre>
+                <h3>Debug data:</h3>
+                {% for ddKey,ddValue in debugInfoData %}
+                    {% if ddValue %}
+                        <p>Part: {{ ddKey }}</p>
+                        <div>
+                            {% for debugInfoKey,debugInfoValue in ddValue %}
+                                <p>Class: {{ debugInfoKey }}</p>
+                                {% for dk,dv in debugInfoValue %}
+                                    <pre>
                             Name: {{ dk }}
                             Type: {{ dv.type.name }}
                             Length - {{ dv.length }}
                             Collation - {{ dv.collation }}
                             Comment - {{ dv.comment }}
                         </pre>
-                    {% endfor %}
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </div>
-            {% endif %}
-        {% endfor %}
-    </div>
-    {% endif %}
+        {% endif %}
+        <!--  _DEBUG INFO DATA -->
 
-    {% if notifications %}
-        <div>
-            <h3>Notifications:</h3>
+        <!--  NOTIFICATIONS_ -->
+        {% if notifications %}
             <div>
-                {% for notificationKey, notificationValue in notifications %}
-                    <div class="notifications-container">
-                        <h4>{{ notificationKey }}</h4>
-                        {% include 'components/notification.twig' with { 'snackbar' : {'type': notificationValue.type, 'text': notificationValue.text} } %}
-                    </div>
-                {% endfor %}
+                <h3>Notifications:</h3>
+                <div>
+                    {% for notificationKey, notificationValue in notifications %}
+                        <div class="notifications-container">
+                            <h4>{{ notificationKey }}</h4>
+                            {% include 'components/notification.twig' with { 'snackbar' : {'type': notificationValue.type, 'text': notificationValue.text} } %}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
+        <!--  _NOTIFICATIONS -->
 
-    {% include 'pages/' ~ templateFileName %}
+        <!--- TEMPLATE_ -->
+        {% include 'pages/' ~ templateFileName %}
+        <!--- _TEMPLATE -->
+    </div>
 <!-- SCRIPTS PART -->
 <script type="module" src="{{ base_url }}/static/js/main.js?v={{ app_ver }}"></script>
 </body>

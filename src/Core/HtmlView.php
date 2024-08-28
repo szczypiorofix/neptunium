@@ -25,6 +25,8 @@ class HtmlView {
         }
         $params['base_url'] = NEP_BASE_URL;
         $params['app_ver'] = NEP_APP_VER;
+        $params['debugInfoData'] = DebugContainer::$info;
+        $params['debugErrorData'] = DebugContainer::$error;
 
         return $template->render($params);
     }
@@ -43,6 +45,8 @@ class HtmlView {
         }
         $params['base_url'] = NEP_BASE_URL;
         $params['app_ver'] = NEP_APP_VER;
+        $params['debugInfoData'] = DebugContainer::$info;
+        $params['debugErrorData'] = DebugContainer::$error;
 
         return $template->render($params);
     }

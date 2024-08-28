@@ -13,6 +13,7 @@ use Neptunium\Middleware\HtmlContentMiddleware;
 use Neptunium\ModelClasses\Request;
 use Neptunium\ModelClasses\Response;
 use Neptunium\Services\AuthenticationService;
+use Neptunium\Services\NavigationService;
 use Neptunium\Services\NotificationService;
 use Neptunium\Services\SessionService;
 
@@ -22,6 +23,7 @@ class Core {
     private Router $router;
     private Request $request;
     private Response $response;
+    private string $pageContent = "";
 
     private ServiceManager $serviceManager;
 
@@ -38,28 +40,22 @@ class Core {
         $this->prepareDatabaseConnection();
         $this->prepareRouter();
         $this->prepareRequestAndResponse();
-
-        $pageContent = $this->handleRoutes();
-
-        $middleware = new HtmlContentMiddleware();
-        $middleware->process(
-            $this->request,
-            $this->response,
-            function() use ($pageContent) {
-                $this->resolveResponse($pageContent);
-            });
+        $this->handleRoutes();
+        $this->prepareMiddlewares();
     }
 
     private function prepareServices(): void {
         $authService = new AuthenticationService();
         $sessionService = new SessionService();
         $notificationService = new NotificationService();
+        $navigationService = new NavigationService();
 
         $this->serviceManager = ServiceManager::getInstance();
         $this->serviceManager->init(
             $authService,
             $sessionService,
             $notificationService,
+            $navigationService,
         );
     }
 
@@ -110,11 +106,21 @@ class Core {
         $this->response = new Response();
     }
 
-    private function handleRoutes(): string {
-        return $this->router->handleRoutes(
+    private function handleRoutes(): void {
+        $this->pageContent = $this->router->handleRoutes(
             $this->request->getMethod(),
             $this->request->getUrl()
         );
+    }
+
+    private function prepareMiddlewares(): void {
+        $middleware = new HtmlContentMiddleware();
+        $middleware->process(
+            $this->request,
+            $this->response,
+            function() {
+                $this->resolveResponse($this->pageContent);
+            });
     }
 
     private function resolveResponse(string $pageContent): void {

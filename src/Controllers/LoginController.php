@@ -3,7 +3,6 @@
 namespace Neptunium\Controllers;
 
 use Neptunium\Attributes\Route;
-use Neptunium\Core\DebugContainer;
 use Neptunium\Core\HtmlView;
 use Neptunium\Core\ServiceManager;
 use Neptunium\ModelClasses\Controller;
@@ -15,20 +14,18 @@ class LoginController extends Controller {
         $renderParams = [
             'templateFileName'  => 'login.twig',
             'templateName'      => 'login',
-            'debugInfoData'     => DebugContainer::$info,
-            'debugErrorData'    => DebugContainer::$error,
             'queryData'         => $params,
         ];
 
         $serviceManager = ServiceManager::getInstance();
+
         $sessionService = $serviceManager->getSessionService();
         $sessionService->sessionStart();
 
-        $notificationService = $serviceManager->getNotificationService();
+        $navigationService = $serviceManager->getNavigationService();
+        $renderParams['navigationData'] = $navigationService->prepareNavigationBar('login');
 
-        echo '<pre>';
-        print_r($notificationService->getNotifications());
-        echo '</pre>';
+//        $notificationService = $serviceManager->getNotificationService();
 
         return HtmlView::renderPage('index.twig', $renderParams);
     }

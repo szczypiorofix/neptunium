@@ -1,18 +1,6 @@
 <div>
     <h1>This is API page</h1>
 </div>
-<div>
-    <h2>Navigation</h2>
-    <div>
-        <div>
-            <a href="{{ base_url }}">MAIN PAGE</a>
-        </div>
-        <div>
-            <a href="{{ base_url }}/home">HOME PAGE</a>
-        </div>
-    </div>
-</div>
-
 {% if queryData %}
     <div>
         {% for key,value in queryData %}
@@ -20,7 +8,6 @@
         {% endfor %}
     </div>
 {% endif %}
-
 <div>
 
 </div>

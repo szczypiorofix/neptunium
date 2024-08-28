@@ -4,10 +4,16 @@ $warn: #ffc107;
 $error: #dc3545;
 
 
-
-
 /** -------------- COLORS ----------------- */
 
+// --------- navbar ---------
+
+$navbar-link-color: #F2F2F2;
+$navbar-background-color: #333333;
+$navbar-hover-background-color: #DDDDDD;
+$navbar-active-background-color: #04AA6D;
+
+// --------- alerts ---------
 $alert-primary-color: #004085;
 $alert-primary-background-color: #cce5ff;
 $alert-primary-border-color: #b8daff;
@@ -27,6 +33,8 @@ $alert-warning-border-color: #ffeeba;
 $alert-error-color: #721c24;
 $alert-error-background-color: #f8d7da;
 $alert-error-border-color: #f5c6cb;
+
+
 
 /** ======================================== */
 

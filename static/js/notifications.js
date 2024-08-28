@@ -11,8 +11,9 @@ export function setNotificationsHandler() {
     // }
 
     const notificationsContainer = document.getElementsByClassName('notifications-container')[0];
-    notificationsContainer.addEventListener('click', (event) => {
-       console.log('clicked!');
-    });
-
+    if (notificationsContainer) {
+        notificationsContainer.addEventListener('click', (event) => {
+            console.log('clicked!');
+        });
+    }
 }

@@ -1,25 +1,10 @@
 <div>
     <p>This is home page</p>
 </div>
-<div>
-    <h2>Navigation</h2>
+{% if queryData %}
     <div>
-        <div>
-            <a href="{{ base_url }}">MAIN PAGE</a>
-        </div>
-        {% if loginData == 1 %}
-            <div>
-                <a href="{{ base_url }}/api/logout">LOGOUT</a>
-            </div>
-        {% else %}
-            <div>
-                <a href="{{ base_url }}/login">LOGIN PAGE</a>
-            </div>
-        {% endif %}
+        {% for key,value in queryData %}
+            <p>{{ key }} : {{ value }}</p>
+        {% endfor %}
     </div>
-</div>
-<div>
-    {% for key,value in queryData %}
-        <p>{{ key }} : {{ value }}</p>
-    {% endfor %}
-</div>
+{% endif %}

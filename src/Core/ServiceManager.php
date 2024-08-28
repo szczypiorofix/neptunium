@@ -2,8 +2,8 @@
 
 namespace Neptunium\Core;
 
-use Neptunium\ModelClasses\BaseService;
 use Neptunium\Services\AuthenticationService;
+use Neptunium\Services\NavigationService;
 use Neptunium\Services\NotificationService;
 use Neptunium\Services\SessionService;
 
@@ -13,6 +13,7 @@ class ServiceManager {
     private AuthenticationService $authenticationService;
     private NotificationService $notificationService;
     private SessionService $sessionService;
+    private NavigationService $navigationService;
 
     private function __construct() {}
 
@@ -26,11 +27,15 @@ class ServiceManager {
     public function init(
         AuthenticationService $authenticationService,
         SessionService $sessionService,
-        NotificationService $notificationService
+        NotificationService $notificationService,
+        NavigationService $navigationService,
     ): void {
         $this->authenticationService = $authenticationService;
         $this->sessionService = $sessionService;
         $this->notificationService = $notificationService;
+        $this->navigationService = $navigationService;
+
+        $this->initializeServices();
     }
 
     public function getAuthenticationService(): AuthenticationService {
@@ -43,5 +48,16 @@ class ServiceManager {
 
     public function getNotificationService(): NotificationService {
         return $this->notificationService;
+    }
+
+    public function getNavigationService(): NavigationService {
+        return $this->navigationService;
+    }
+
+    private function initializeServices(): void {
+        $this->authenticationService->initialize();
+        $this->sessionService->initialize();
+        $this->notificationService->initialize();
+        $this->navigationService->initialize();
     }
 }

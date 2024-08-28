@@ -11,6 +11,8 @@ html, body {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   font-style: normal;
+  margin: 0;
+  padding: 0;
 }
 
 .image-container {
@@ -91,6 +93,46 @@ html, body {
 .snackbar .close button:hover {
   border-color: #DDDDDD;
   color: #DDDDDD;
+}
+
+.navbar-container ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.navbar-container .navbar {
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  margin-top: 0;
+  list-style: none;
+  overflow: hidden;
+  background-color: #333333;
+  justify-content: flex-start;
+}
+.navbar-container .navbar > * {
+  display: block;
+}
+.navbar-container .navbar > * a {
+  color: #F2F2F2;
+  text-decoration: none;
+  float: left;
+  text-align: center;
+  padding: 14px 16px;
+  font-size: 17px;
+  background-color: transparent;
+}
+.navbar-container .navbar > * a:hover {
+  color: #0056b3;
+  background-color: #DDDDDD;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 32px;
+  padding-bottom: 32px;
 }
 
 /*# sourceMappingURL=style.css.map */

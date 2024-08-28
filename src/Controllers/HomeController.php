@@ -18,12 +18,13 @@ class HomeController extends Controller {
         $renderParams = [
             'templateFileName'  => 'home.twig',
             'templateName'      => 'home',
-            'debugInfoData'     => DebugContainer::$info,
-            'debugErrorData'    => DebugContainer::$error,
             'queryData'         => $params,
         ];
 
         $serviceManager = ServiceManager::getInstance();
+
+        $navigationService = $serviceManager->getNavigationService();
+
         $sessionService = $serviceManager->getSessionService();
         $sessionService->sessionStart();
 
@@ -38,9 +39,13 @@ class HomeController extends Controller {
 
         $notifications = $notificationService->getNotifications();
 
-        echo '<pre>';
-        print_r($notificationService->getNotifications());
-        echo '</pre>';
+        $renderParams['navigationData'] = $navigationService->prepareNavigationBar('home', !!$loginData);
+
+//        DebugContainer::$info = [
+//          'info' => [
+//              'HomeController' => []
+//          ]
+//        ];
 
         $renderParams[NotificationService::NOTIFICATIONS_KEY] = $notifications;
         $notificationService->clearNotifications();

@@ -1,14 +1,6 @@
 <div>
     <p>This is login page</p>
 </div>
-<div>
-    <h2>Navigation</h2>
-    <div>
-        <div>
-            <a href="{{ base_url }}/home">HOME PAGE</a>
-        </div>
-    </div>
-</div>
 {% if sessionData %}
     <div>
         <h3>POST DATA</h3>
@@ -30,11 +22,11 @@
         <form action="{{ base_url }}/api/login" method="post">
             <div class="input-group">
                 <label for="useremail">E-mail:</label>
-                <input type="email" id="useremail" name="useremail" />
+                <input type="email" id="useremail" name="useremail" required/>
             </div>
             <div class="input-group">
                 <label for="userpass">Hasło:</label>
-                <input type="text" id="userpass" name="userpass" />
+                <input type="text" id="userpass" name="userpass" required/>
             </div>
             <div class="input-group">
                 <input type="submit" name="submit-form" value="Loguj" />
