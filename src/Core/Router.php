@@ -51,13 +51,7 @@ class Router {
             }
         }
         http_response_code(404);
-        return HtmlView::renderPage('index.twig',
-            [
-                'templateFileName' => '404.twig',
-                'templateName' => 'page404',
-                'queryData' => []
-            ]
-        );
+        return $this->return404Page();
     }
 
     public function register(
@@ -83,5 +77,18 @@ class Router {
         $queryStringParameters = [];
         parse_str($queryString, $queryStringParameters);
         return $queryStringParameters;
+    }
+
+    private function return404Page(): string {
+        $renderParams = [
+            'templateFileName' => '404.twig',
+            'templateName' => 'page404',
+            'queryData' => []
+        ];
+        $serviceManager = ServiceManager::getInstance();
+
+        $navigationService = $serviceManager->getNavigationService();
+        $renderParams['navigationData'] = $navigationService->prepareNavigationBar('404');
+        return HtmlView::renderPage('index.twig', $renderParams);
     }
 }

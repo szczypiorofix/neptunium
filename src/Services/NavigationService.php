@@ -63,9 +63,22 @@ class NavigationService extends BaseService {
                     ];
                 }
                 return $nav;
+
+            case '404':
+                return [
+                    'main page' => [
+                        'title' => 'Naptunium',
+                        'path' => '/'
+                    ],
+                    'home page' => [
+                        'title' => 'Home',
+                        'path' => '/home'
+                    ],
+                ];
+
             default:
                 return [
-                    'home' => [
+                    'defau' => [
                         'title' => 'Home',
                         'path' => '/home'
                     ]
