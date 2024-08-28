@@ -9,6 +9,7 @@ use Neptunium\Core\ServiceManager;
 use Neptunium\ModelClasses\Controller;
 use Neptunium\ModelClasses\Http;
 use Neptunium\ModelClasses\NotificationType;
+use Neptunium\Services\NotificationService;
 
 class ApiController extends Controller {
     #[Route('/api', Http::GET)]
@@ -43,17 +44,16 @@ class ApiController extends Controller {
         if (count($results) === 0) {
             $notificationService->addNotification('login', "Użytkownik pomyślnie zalogoway", NotificationType::INFO);
             $notificationService->saveNotifications();
-
             $sessionService->setLoginData();
 
             $this->redirect(NEP_BASE_URL . "/home");
         } else {
-            $notificationService->addNotification('wrong', "Wrong e-mail and/or password", NotificationType::ERROR);
-        }
+            $notificationService->addNotification('login', "Niepoprawny login lub hasło", NotificationType::ERROR);
+            $notificationService->saveNotifications();
+            $sessionService->unsetLoginData();
 
-        // TODO: Set some data, not just text
-        $_SESSION['loginOK'] = $results[0];
-        $this->redirect(NEP_BASE_URL . "/login/");
+            $this->redirect(NEP_BASE_URL . "/login/");
+        }
     }
 
     #[NoReturn]

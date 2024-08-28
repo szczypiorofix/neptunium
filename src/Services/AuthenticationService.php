@@ -17,23 +17,6 @@ class AuthenticationService extends BaseService {
         $this->authInfo = new AuthInfo();
     }
 
-    public function checkInputs(array $fields, int $type): bool {
-        foreach($fields as $field => $filter) {
-            if (filter_input($type, $field, $filter) == null) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private function checkMatchPassword($password): bool {
-        $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
-        if (preg_match($pattern, $password)) {
-            return true;
-        }
-        return false;
-    }
-
     /**
      * @param array $fields
      * @return string[]
@@ -56,6 +39,11 @@ class AuthenticationService extends BaseService {
             return $results;
         }
 
+        if (!$this->checkPassword()) {
+            $results[] = "Błędny login lub hasło";
+            return $results;
+        }
+
         return $results;
     }
 
@@ -65,5 +53,27 @@ class AuthenticationService extends BaseService {
 
     public function getAuthInfo(): AuthInfo {
         return $this->authInfo;
+    }
+
+    private function checkInputs(array $fields, int $type): bool {
+        foreach($fields as $field => $filter) {
+            if (filter_input($type, $field, $filter) == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private function checkMatchPassword($password): bool {
+        $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
+        if (preg_match($pattern, $password)) {
+            return true;
+        }
+        return false;
+    }
+
+    private function checkPassword(): bool {
+        // TODO: validate password with DB password for user
+        return false;
     }
 }

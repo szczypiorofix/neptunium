@@ -3,7 +3,6 @@
 namespace Neptunium\Controllers;
 
 use Neptunium\Attributes\Route;
-use Neptunium\Core\DebugContainer;
 use Neptunium\Core\HtmlView;
 use Neptunium\Core\ServiceManager;
 use Neptunium\ModelClasses\Controller;
@@ -23,26 +22,19 @@ class HomeController extends Controller {
 
         $serviceManager = ServiceManager::getInstance();
 
-        $navigationService = $serviceManager->getNavigationService();
-
         $sessionService = $serviceManager->getSessionService();
         $sessionService->sessionStart();
-
-        $notificationService = $serviceManager->getNotificationService();
-
-        $notificationService->restoreNotifications();
-
         $loginData = $sessionService->getLoginData();
 
-        // Session
-        $renderParams[SessionService::LOGIN_DATA] = $loginData;
-
+        $notificationService = $serviceManager->getNotificationService();
+        $notificationService->restoreNotifications();
         $notifications = $notificationService->getNotifications();
-
-        $renderParams['navigationData'] = $navigationService->prepareNavigationBar('home', !!$loginData);
-
-        $renderParams[NotificationService::NOTIFICATIONS_KEY] = $notifications;
         $notificationService->clearNotifications();
+
+        $navigationService = $serviceManager->getNavigationService();
+        $renderParams['navigationData'] = $navigationService->prepareNavigationBar('home', !!$loginData);
+        $renderParams[NotificationService::NOTIFICATIONS_KEY] = $notifications;
+        $renderParams[SessionService::LOGIN_DATA] = $loginData;
 
         return HtmlView::renderPage('index.twig', $renderParams);
     }

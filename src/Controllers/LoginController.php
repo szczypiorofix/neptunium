@@ -7,6 +7,7 @@ use Neptunium\Core\HtmlView;
 use Neptunium\Core\ServiceManager;
 use Neptunium\ModelClasses\Controller;
 use Neptunium\ModelClasses\Http;
+use Neptunium\Services\NotificationService;
 
 class LoginController extends Controller {
     #[Route('/login', Http::GET)]
@@ -21,11 +22,16 @@ class LoginController extends Controller {
 
         $sessionService = $serviceManager->getSessionService();
         $sessionService->sessionStart();
+        $loginData = $sessionService->getLoginData();
+
+        $notificationService = $serviceManager->getNotificationService();
+        $notificationService->restoreNotifications();
+        $notifications = $notificationService->getNotifications();
+        $notificationService->clearNotifications();
 
         $navigationService = $serviceManager->getNavigationService();
-        $renderParams['navigationData'] = $navigationService->prepareNavigationBar('login');
-
-//        $notificationService = $serviceManager->getNotificationService();
+        $renderParams['navigationData'] = $navigationService->prepareNavigationBar('login', !!$loginData);
+        $renderParams[NotificationService::NOTIFICATIONS_KEY] = $notifications;
 
         return HtmlView::renderPage('index.twig', $renderParams);
     }
