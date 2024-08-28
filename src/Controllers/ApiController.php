@@ -50,9 +50,13 @@ class ApiController extends Controller {
         }
 
         if (isset($results['userdata']) && count($results['userdata']) === 1) {
-            $notificationService->addNotification('login', "Użytkownik pomyślnie zalogoway", NotificationType::INFO);
-            $notificationService->saveNotifications();
-            $sessionService->setLoginData();
+            if (isset($results['userdata'][0]['email'])) {
+                $authService->setUserLastLoginTime($results['userdata'][0]['email']);
+
+                $notificationService->addNotification('login', "Użytkownik pomyślnie zalogoway", NotificationType::INFO);
+                $notificationService->saveNotifications();
+                $sessionService->setLoginData();
+            }
 
             $this->redirect(NEP_BASE_URL . "/home");
         }

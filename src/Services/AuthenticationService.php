@@ -56,6 +56,15 @@ class AuthenticationService extends BaseService {
         return $this->authInfo;
     }
 
+    public function setUserLastLoginTime($userEmail): bool {
+        $pdo = $this->databaseConnection->getDatabase()->getPdo();
+        $exec = $pdo->prepare("UPDATE `users` SET `lastLogin`=NOW() WHERE `email` = :useremail");
+        $exec->execute([
+            ':useremail' => $userEmail,
+        ]);
+        return false;
+    }
+
     private function checkInputs(array $fields, int $type): bool {
         foreach($fields as $field => $filter) {
             if (filter_input($type, $field, $filter) == null) {
