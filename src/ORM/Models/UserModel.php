@@ -32,7 +32,7 @@ class UserModel extends BaseModel {
 
     #[Column(
         type: FieldPropertyType::VarChar,
-        length: 20,
+        length: 32,
         comment: 'Hasło użytkownika'
     )]
     public string $password = "";
