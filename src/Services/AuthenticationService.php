@@ -2,11 +2,12 @@
 
 namespace Neptunium\Services;
 
+use Neptunium\Core\DatabaseConnection;
 use Neptunium\ModelClasses\AuthInfo;
 use Neptunium\ModelClasses\BaseService;
 
 class AuthenticationService extends BaseService {
-
+    private DatabaseConnection $databaseConnection;
     private AuthInfo $authInfo;
 
     public function __construct(array $dependencies = []) {
@@ -17,34 +18,34 @@ class AuthenticationService extends BaseService {
         $this->authInfo = new AuthInfo();
     }
 
+    public function setDatabaseConnection(DatabaseConnection $dbConnection): void {
+        $this->databaseConnection = $dbConnection;
+    }
+
     /**
      * @param array $fields
-     * @return string[]
+     * @return array
      */
     public function validate(array $fields): array {
         $results = [];
         if (!$this->checkInputs($fields, INPUT_POST)) {
-            $results[] = "Sprawdzanie inputów nie powiodlo się";
+            $results['error'] = "Sprawdzanie inputów nie powiodlo się";
             return $results;
         }
 
         $filteredInputs = filter_input_array(INPUT_POST, $fields);
         if (!$filteredInputs) {{
-            $results[] = "Filtrowanie inputów nie powiodlo się";
+            $results['error'] = "Filtrowanie inputów nie powiodlo się";
             return $results;
         }}
 
         if (!$this->checkMatchPassword($filteredInputs['userpass'])) {
-            $results[] = "Błędny format hasła";
+            $results['error'] = "Błędny format hasła";
             return $results;
         }
 
-        if (!$this->checkPassword()) {
-            $results[] = "Błędny login lub hasło";
-            return $results;
-        }
-
-        return $results;
+        $results['userdata'] = $this->checkUser($filteredInputs['useremail'], $filteredInputs['userpass']);
+        return  $results;
     }
 
     public function setAuthInfo(AuthInfo $authInfo): void {
@@ -72,8 +73,13 @@ class AuthenticationService extends BaseService {
         return false;
     }
 
-    private function checkPassword(): bool {
-        // TODO: validate password with DB password for user
-        return false;
+    private function checkUser(string $userEmail, string $userPass): array {
+        $pdo = $this->databaseConnection->getDatabase()->getPdo();
+        $exec = $pdo->prepare("SELECT * FROM `users` WHERE `email` = :useremail AND `password` = MD5(:userpass)");
+        $exec->execute([
+            ':useremail' => $userEmail,
+            ':userpass' => $userPass
+        ]);
+        return $exec->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

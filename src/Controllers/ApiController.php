@@ -41,19 +41,27 @@ class ApiController extends Controller {
 
         $notificationService = $serviceManager->getNotificationService();
 
-        if (count($results) === 0) {
-            $notificationService->addNotification('login', "Użytkownik pomyślnie zalogoway", NotificationType::INFO);
-            $notificationService->saveNotifications();
-            $sessionService->setLoginData();
-
-            $this->redirect(NEP_BASE_URL . "/home");
-        } else {
-            $notificationService->addNotification('login', "Niepoprawny login lub hasło", NotificationType::ERROR);
+        if (isset($results['error'])) {
+            $notificationService->addNotification('login', $results['error'], NotificationType::ERROR);
             $notificationService->saveNotifications();
             $sessionService->unsetLoginData();
 
             $this->redirect(NEP_BASE_URL . "/login/");
         }
+
+        if (isset($results['userdata']) && count($results['userdata']) === 1) {
+            $notificationService->addNotification('login', "Użytkownik pomyślnie zalogoway", NotificationType::INFO);
+            $notificationService->saveNotifications();
+            $sessionService->setLoginData();
+
+            $this->redirect(NEP_BASE_URL . "/home");
+        }
+
+        $notificationService->addNotification('login', 'Zły login i/lub hasło. Spróbuj ponownie.', NotificationType::ERROR);
+        $notificationService->saveNotifications();
+        $sessionService->unsetLoginData();
+
+        $this->redirect(NEP_BASE_URL . "/login/");
     }
 
     #[NoReturn]

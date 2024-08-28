@@ -38,6 +38,10 @@ class Core {
         $this->prepareServices();
         $this->prepareEnvironment();
         $this->prepareDatabaseConnection();
+
+        // set DB connection object to Auth service
+        $this->serviceManager->getAuthenticationService()->setDatabaseConnection($this->databaseConnection);
+
         $this->prepareRouter();
         $this->prepareRequestAndResponse();
         $this->handleRoutes();
