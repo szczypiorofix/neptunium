@@ -42,6 +42,12 @@ class Core {
         // set DB connection object to Auth service
         $this->serviceManager->getAuthenticationService()->setDatabaseConnection($this->databaseConnection);
 
+        /** Generate table... */
+//        $tableGenerator = new TableGenerator();
+//        if (!$tableGenerator->generate(UserServerModel::class, $this->databaseConnection)) {
+//            print_r("Nie można wygenerować tabeli");
+//        }
+
         $this->prepareRouter();
         $this->prepareRequestAndResponse();
         $this->handleRoutes();

@@ -69,7 +69,7 @@ class UserModel extends BaseModel {
         nullable: true,
         comment: 'Data rejestracji'
     )]
-    public bool $registered = false;
+    public string $registered = "";
 
     #[Column(
         type: FieldPropertyType::Timestamp,
@@ -87,9 +87,9 @@ class UserModel extends BaseModel {
         $query = $pdo->prepare("INSERT INTO `Users` (`username`, `password`, `email`, `active`) VALUES (:username, :password, :email, :active);");
         return $query->execute([
             ':username' => $this->username,
-            ':password'=> $this->password,
-            ':email' => $this->email,
-            ':active' => $this->active
+            ':password' => $this->password,
+            ':email'    => $this->email,
+            ':active'   => $this->active
         ]);
     }
 
