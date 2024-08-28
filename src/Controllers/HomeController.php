@@ -41,12 +41,6 @@ class HomeController extends Controller {
 
         $renderParams['navigationData'] = $navigationService->prepareNavigationBar('home', !!$loginData);
 
-//        DebugContainer::$info = [
-//          'info' => [
-//              'HomeController' => []
-//          ]
-//        ];
-
         $renderParams[NotificationService::NOTIFICATIONS_KEY] = $notifications;
         $notificationService->clearNotifications();
 

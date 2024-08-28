@@ -2,7 +2,7 @@
     <ul class="navbar">
         {% if navigationData %}
             {% for navigation in navigationData %}
-                {% if navigation.title and navigation.path  %}
+                {% if navigation  %}
                 <li>
                     <a href="{{ base_url ~ navigation.path }}">{{ navigation.title }}</a>
                 </li>

@@ -30,40 +30,47 @@ class NavigationService extends BaseService {
     }
 
     public function prepareNavigationBar(string $currentPath, bool $userLoggedIn = false): array {
-        return match ($currentPath) {
-            'home' => [
-                'main page' => [
-                    'title' => 'Naptunium',
-                    'path' => '/'
-                ],
-                'login page' => [
-                    'title' => $userLoggedIn ? 'Logout' : 'Login',
-                    'path' => $userLoggedIn ? '/api/logout' : '/login'
-                ]
-            ],
-            'login' => [
-                'home page' => [
-                    'title' => 'Home',
-                    'path' => '/home'
-                ],
-            ],
-            'main' => [
-                'home page' => [
-                    'title' => 'Home',
-                    'path' => '/home'
-                ],
-                'login page' => [
-                    $userLoggedIn ?? 'title' => 'Logout',
-                    $userLoggedIn ?? 'path' => '/api/logout',
-                ]
-            ],
-            default => [
-                'home' => [
-                    'title' => 'Home',
-                    'path' => '/home'
-                ]
-            ],
-        };
+        switch ($currentPath) {
+            case 'home':
+                return [
+                    'main page' => [
+                        'title' => 'Naptunium',
+                        'path' => '/'
+                    ],
+                    'login page' => [
+                        'title' => $userLoggedIn ? 'Logout' : 'Login',
+                        'path' => $userLoggedIn ? '/api/logout' : '/login'
+                    ]
+                ];
+            case 'login':
+                return [
+                    'home page' => [
+                        'title' => 'Home',
+                        'path' => '/home'
+                    ],
+                ];
+            case 'main':
+                $nav = [
+                    'home page' => [
+                        'title' => 'Home',
+                        'path' => '/home'
+                    ],
+                ];
+                if ($userLoggedIn) {
+                    $nav['login page'] = [
+                        'title' => 'Logout',
+                        'path' => '/api/logout',
+                    ];
+                }
+                return $nav;
+            default:
+                return [
+                    'home' => [
+                        'title' => 'Home',
+                        'path' => '/home'
+                    ]
+                ];
+        }
     }
 
     /**
