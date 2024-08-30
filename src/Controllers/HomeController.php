@@ -3,6 +3,7 @@
 namespace Neptunium\Controllers;
 
 use Neptunium\Attributes\Route;
+use Neptunium\Core\DatabaseConnection;
 use Neptunium\Core\HtmlView;
 use Neptunium\Core\ServiceManager;
 use Neptunium\ModelClasses\Controller;
@@ -35,6 +36,14 @@ class HomeController extends Controller {
         $renderParams['navigationData'] = $navigationService->prepareNavigationBar('home', !!$loginData);
         $renderParams[NotificationService::NOTIFICATIONS_KEY] = $notifications;
         $renderParams[SessionService::LOGIN_DATA] = $loginData;
+
+        $db = DatabaseConnection::getConnection()->getDatabase();
+        $pdo = $db->getPdo();
+
+        $exec = $pdo->prepare("SELECT * FROM `userservers`;");
+        $exec->execute();
+
+        $renderParams['serverList'] = $exec->fetchAll(\PDO::FETCH_ASSOC);
 
         return HtmlView::renderPage('index.twig', $renderParams);
     }
