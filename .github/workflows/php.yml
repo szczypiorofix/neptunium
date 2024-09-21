@@ -47,16 +47,19 @@ jobs:
           NEP_DB_NAME: ${{ vars.DB_NAME }}
           NEP_DB_USER: ${{ vars.DB_USER }}
           NEP_DB_PASS: ${{ vars.DB_PASS }}
+          NEP_BASE_URL: ${{ vars.NEP_BASE_URL }}
         run: |
           echo "NEP_DB_HOST=$NEP_DB_HOST"
           echo "NEP_DB_NAME=$NEP_DB_NAME"
           echo "NEP_DB_USER=$NEP_DB_USER"
           echo "NEP_DB_PASS=$NEP_DB_PASS"
+          echo "NEP_BASE_URL=$NEP_BASE_URL"
           touch .env
           echo NEP_DB_HOST="$NEP_DB_HOST">> .env
           echo NEP_DB_NAME="$NEP_DB_NAME">> .env
           echo NEP_DB_USER="$NEP_DB_USER">> .env
           echo NEP_DB_PASS="$NEP_DB_PASS">> .env
+          echo NEP_BASE_URL="NEP_BASE_URL">> .env
         shell: bash
 
       - name: PHPUnit tests
