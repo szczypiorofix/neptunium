@@ -1,0 +1,13 @@
+<div>
+    <p>This is main page</p>
+</div>
+{% if queryData %}
+<div>
+    {% for key,value in queryData %}
+        <p>{{ key }} : {{ value }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+<div>
+    User is {% if not loginData %} NOT {% endif%} logged in.
+</div>

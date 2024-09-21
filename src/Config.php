@@ -8,10 +8,12 @@ class Config {
         Config::ENV_NEP_DB_HOST,
         Config::ENV_NEP_DB_USER,
         Config::ENV_NEP_DB_PASS,
+        Config::ENV_NEP_BASE_URL
     ];
 
     public const ENV_NEP_NAME = "NEP_NAME";
-    public const ENV_NEP_VAR = "NEP_VER";
+    public const ENV_NEP_VER = "NEP_VER";
+    public const ENV_NEP_BASE_URL = "NEP_BASE_URL";
     public const ENV_NEP_DB_NAME = "NEP_DB_NAME";
     public const ENV_NEP_DB_HOST = "NEP_DB_HOST";
     public const ENV_NEP_DB_USER = "NEP_DB_USER";

@@ -1,15 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neptunium\Core;
 
 use Neptunium\Config;
-use Neptunium\Controllers\HomeController;
+use Neptunium\Controllers\AdminPageController;
+use Neptunium\Controllers\ApiController;
+use Neptunium\Controllers\LoginController;
 use Neptunium\Controllers\MainController;
-use Neptunium\ModelClasses\Request;
-use Neptunium\ModelClasses\Response;
-use Neptunium\ORM\Generators\TableGenerator;
+use Neptunium\Core\ModelClasses\Request;
+use Neptunium\Core\ModelClasses\Response;
+use Neptunium\Core\Services\AuthenticationService;
+use Neptunium\Core\Services\NavigationService;
+use Neptunium\Core\Services\NotificationService;
+use Neptunium\Core\Services\SessionService;
 use Neptunium\Middleware\HtmlContentMiddleware;
-use Neptunium\ORM\Models\UserModel;
 
 class Core {
     private Environment $environment;
@@ -17,6 +23,9 @@ class Core {
     private Router $router;
     private Request $request;
     private Response $response;
+    private string $pageContent = "";
+
+    private ServiceManager $serviceManager;
 
     public function __construct(
         private readonly string $rootDir,
@@ -26,20 +35,38 @@ class Core {
     private function __clone() {}
 
     public function launch(): void {
+        $this->prepareServices();
         $this->prepareEnvironment();
         $this->prepareDatabaseConnection();
+
+        // set DB connection object to Auth service
+        $this->serviceManager->getAuthenticationService()->setDatabaseConnection($this->databaseConnection);
+
+        /** Generate table... */
+//        $tableGenerator = new TableGenerator();
+//        if (!$tableGenerator->generate(UserServerModel::class, $this->databaseConnection)) {
+//            print_r("Nie można wygenerować tabeli");
+//        }
+
         $this->prepareRouter();
         $this->prepareRequestAndResponse();
+        $this->handleRoutes();
+        $this->prepareMiddlewares();
+    }
 
-        $pageContent = $this->handleRoutes();
+    private function prepareServices(): void {
+        $authService = new AuthenticationService();
+        $sessionService = new SessionService();
+        $notificationService = new NotificationService();
+        $navigationService = new NavigationService();
 
-        $middleware = new HtmlContentMiddleware();
-        $middleware->process(
-            $this->request,
-            $this->response,
-            function () use ($pageContent) {
-                $this->resolveResponse($pageContent);
-            });
+        $this->serviceManager = ServiceManager::getInstance();
+        $this->serviceManager->init(
+            $authService,
+            $sessionService,
+            $notificationService,
+            $navigationService,
+        );
     }
 
     private function prepareEnvironment(): void {
@@ -51,7 +78,11 @@ class Core {
             $this->environment->loadDotEnv($this->rootDir . '/.env');
         } catch (\Exception $e) {
             echo 'An error occurred while loading environmental variables: '. $e->getMessage();
+            exit();
         }
+
+        define('NEP_BASE_URL', getenv(Config::ENV_NEP_BASE_URL));
+        define('NEP_APP_VER', '1.0.1');
 
         $requiredEnvironmentalVariableKeys = Config::REQUIRED_ENVIRONMENTAL_VARIABLES;
         $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
@@ -62,8 +93,10 @@ class Core {
         try {
             $this->router->registerRoutesFromControllerAttributes(
                 [
-                    HomeController::class,
-                    MainController::class
+                    AdminPageController::class,
+                    MainController::class,
+                    ApiController::class,
+                    LoginController::class
                 ]
             );
         } catch (\ReflectionException $e) {
@@ -75,25 +108,7 @@ class Core {
         $this->databaseConnection = DatabaseConnection::getConnection();
         if ($this->databaseConnection->getDatabase()->isError()) {
             print_r($this->databaseConnection->getDatabase()->getErrorMessage());
-            return;
         }
-
-        // ======= Temporary disabled
-        // $tableGenerator = new TableGenerator();
-        // $success = $tableGenerator->generate(UserModel::class, $this->databaseConnection);
-        // ========
-
-
-//        $userOne = new UserModel();
-//        $userOne->username = 'UserOnee';
-//        $userOne->password = 'xxxxxxx';
-//        $userOne->email = 'aaa@bbb.cc';
-//        $userOne->active = false;
-//        $userOne->firstName = "UserOne First Name";
-//        $userOne->lastName = "UserOne Last Name";
-
-//        print_r(['result' => $userOne->add($this->databaseConnection)]);
-
     }
 
     private function prepareRequestAndResponse(): void {
@@ -101,11 +116,21 @@ class Core {
         $this->response = new Response();
     }
 
-    private function handleRoutes(): string {
-        return $this->router->handleRoutes(
+    private function handleRoutes(): void {
+        $this->pageContent = $this->router->handleRoutes(
             $this->request->getMethod(),
             $this->request->getUrl()
         );
+    }
+
+    private function prepareMiddlewares(): void {
+        $middleware = new HtmlContentMiddleware();
+        $middleware->process(
+            $this->request,
+            $this->response,
+            function() {
+                $this->resolveResponse($this->pageContent);
+            });
     }
 
     private function resolveResponse(string $pageContent): void {

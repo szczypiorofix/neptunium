@@ -45,4 +45,8 @@ class Environment {
     public function getAppRootDir(): string {
         return $this->appRootDir;
     }
+
+    public function getEnvValue(string $key): string | null {
+        return $this->dotenv->getValue($key);
+    }
 }

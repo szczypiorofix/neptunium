@@ -1,0 +1,13 @@
+<nav class="navbar-container">
+    <ul class="navbar">
+        {% if navigationData %}
+            {% for navigation in navigationData %}
+                {% if navigation  %}
+                <li>
+                    <a href="{{ base_url ~ navigation.path }}">{{ navigation.title }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </ul>
+</nav>

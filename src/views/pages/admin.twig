@@ -1,0 +1,52 @@
+{% if queryData %}
+    <div>
+        {% for key,value in queryData %}
+            <p>{{ key }} : {{ value }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+<div>
+    <!-- User is {% if not loginData %}NOT {% endif%}logged in. -->
+</div>
+<div class="management-panel">
+    <div>
+        <h1>Panel zarządzania</h1>
+    </div>
+
+    {% if serverList %}
+    <div class="server-list-container">
+        <h2>Lista serwerów:</h2>
+        <ul>
+            {% for sn,sv in serverList %}
+                <li>
+                    <h3>{{ sv.name }}</h3>
+                    <div>
+                        <label class="toggle">
+                            <input type="checkbox" {% if sv.active %} checked {% endif %}>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div>
+                        <label>url:</label> {{ sv.url }}
+                    </div>
+                    <div>
+                        <label>wersja:</label> {{ sv.version }}
+                    </div>
+                    <div>
+                        <label>domena:</label> {{ sv.domainName }}
+                    </div>
+                    <div>
+                        <label>host:</label> {{ sv.hostName }}
+                    </div>
+                    <div>
+                        <label>zarejestrowany:</label> {{ sv.registerDate }}
+                    </div>
+                    <div>
+                        <label>ostatnia zmiana:</label> {{ sv.lastUpdate }}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>

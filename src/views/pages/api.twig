@@ -1,0 +1,13 @@
+<div>
+    <h1>This is API page</h1>
+</div>
+{% if queryData %}
+    <div>
+        {% for key,value in queryData %}
+            <p>{{ key }} : {{ value }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+<div>
+
+</div>

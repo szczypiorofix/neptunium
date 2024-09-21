@@ -1,0 +1,18 @@
+<div class="snackbar">
+    {% if snackbar.type == 2 %}
+        <div class="alert alert-error">
+            {{ snackbar.text }}
+        </div>
+    {% elseif snackbar.type == 1 %}
+        <div class="alert alert-warning">
+            {{ snackbar.text }}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            {{ snackbar.text }}
+        </div>
+    {% endif %}
+    <div class="close">
+        <button>&#x2715;</button>
+    </div>
+</div>

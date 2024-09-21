@@ -7,16 +7,15 @@ use Neptunium\Core\HtmlView;
 use Neptunium\Core\ModelClasses\Controller;
 use Neptunium\Core\ModelClasses\Http;
 use Neptunium\Core\ServiceManager;
-use Neptunium\Core\Services\SessionService;
+use Neptunium\Core\Services\NotificationService;
 
-class MainController extends Controller {
-    #[Route('/', Http::GET)]
+class LoginController extends Controller {
+    #[Route('/login', Http::GET)]
     public function index(array $params = []): string {
         $renderParams = [
-            'templateFileName'  => 'main.twig',
-            'templateName'      => 'main',
+            'templateFileName'  => 'login.twig',
+            'templateName'      => 'login',
             'queryData'         => $params,
-            'sessionData'       => $_SESSION ?? [],
         ];
 
         $serviceManager = ServiceManager::getInstance();
@@ -25,10 +24,14 @@ class MainController extends Controller {
         $sessionService->sessionStart();
         $loginData = $sessionService->getLoginData();
 
-        $renderParams[SessionService::LOGIN_DATA] = $loginData;
+        $notificationService = $serviceManager->getNotificationService();
+        $notificationService->restoreNotifications();
+        $notifications = $notificationService->getNotifications();
+        $notificationService->clearNotifications();
 
         $navigationService = $serviceManager->getNavigationService();
-        $renderParams['navigationData'] = $navigationService->prepareNavigationBar('main', !!$loginData);
+        $renderParams['navigationData'] = $navigationService->prepareNavigationBar('login', !!$loginData);
+        $renderParams[NotificationService::NOTIFICATIONS_KEY] = $notifications;
 
         return HtmlView::renderPage('index.twig', $renderParams);
     }
