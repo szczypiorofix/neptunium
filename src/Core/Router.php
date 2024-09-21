@@ -2,7 +2,7 @@
 
 namespace Neptunium\Core;
 
-use Neptunium\Attributes\Route;
+use Neptunium\Core\Attributes\Route;
 use ReflectionClass;
 use ReflectionException;
 

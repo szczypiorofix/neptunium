@@ -2,10 +2,10 @@
 
 namespace Neptunium\Core;
 
-use Neptunium\Services\AuthenticationService;
-use Neptunium\Services\NavigationService;
-use Neptunium\Services\NotificationService;
-use Neptunium\Services\SessionService;
+use Neptunium\Core\Services\AuthenticationService;
+use Neptunium\Core\Services\NavigationService;
+use Neptunium\Core\Services\NotificationService;
+use Neptunium\Core\Services\SessionService;
 
 class ServiceManager {
     private static ServiceManager $instance;

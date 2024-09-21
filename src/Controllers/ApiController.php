@@ -3,13 +3,12 @@
 namespace Neptunium\Controllers;
 
 use JetBrains\PhpStorm\NoReturn;
-use Neptunium\Attributes\Route;
+use Neptunium\Core\Attributes\Route;
 use Neptunium\Core\HtmlView;
+use Neptunium\Core\ModelClasses\Controller;
+use Neptunium\Core\ModelClasses\Http;
+use Neptunium\Core\ModelClasses\NotificationType;
 use Neptunium\Core\ServiceManager;
-use Neptunium\ModelClasses\Controller;
-use Neptunium\ModelClasses\Http;
-use Neptunium\ModelClasses\NotificationType;
-use Neptunium\Services\NotificationService;
 
 class ApiController extends Controller {
     #[Route('/api', Http::GET)]
@@ -58,7 +57,7 @@ class ApiController extends Controller {
                 $sessionService->setLoginData();
             }
 
-            $this->redirect(NEP_BASE_URL . "/home");
+            $this->redirect(NEP_BASE_URL . "/admin");
         }
 
         $notificationService->addNotification('login', 'Zły login i/lub hasło. Spróbuj ponownie.', NotificationType::ERROR);
@@ -83,6 +82,6 @@ class ApiController extends Controller {
 
         $notificationService->saveNotifications();
 
-        $this->redirect(NEP_BASE_URL . "/home/");
+        $this->redirect(NEP_BASE_URL . "/");
     }
 }

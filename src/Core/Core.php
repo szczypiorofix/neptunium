@@ -5,19 +5,17 @@ declare(strict_types=1);
 namespace Neptunium\Core;
 
 use Neptunium\Config;
+use Neptunium\Controllers\AdminPageController;
 use Neptunium\Controllers\ApiController;
-use Neptunium\Controllers\HomeController;
 use Neptunium\Controllers\LoginController;
 use Neptunium\Controllers\MainController;
+use Neptunium\Core\ModelClasses\Request;
+use Neptunium\Core\ModelClasses\Response;
+use Neptunium\Core\Services\AuthenticationService;
+use Neptunium\Core\Services\NavigationService;
+use Neptunium\Core\Services\NotificationService;
+use Neptunium\Core\Services\SessionService;
 use Neptunium\Middleware\HtmlContentMiddleware;
-use Neptunium\ModelClasses\Request;
-use Neptunium\ModelClasses\Response;
-use Neptunium\ORM\Generators\TableGenerator;
-use Neptunium\ORM\Models\UserServerModel;
-use Neptunium\Services\AuthenticationService;
-use Neptunium\Services\NavigationService;
-use Neptunium\Services\NotificationService;
-use Neptunium\Services\SessionService;
 
 class Core {
     private Environment $environment;
@@ -95,7 +93,7 @@ class Core {
         try {
             $this->router->registerRoutesFromControllerAttributes(
                 [
-                    HomeController::class,
+                    AdminPageController::class,
                     MainController::class,
                     ApiController::class,
                     LoginController::class

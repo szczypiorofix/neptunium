@@ -2,12 +2,12 @@
 
 namespace Neptunium\Controllers;
 
-use Neptunium\Attributes\Route;
+use Neptunium\Core\Attributes\Route;
 use Neptunium\Core\HtmlView;
+use Neptunium\Core\ModelClasses\Controller;
+use Neptunium\Core\ModelClasses\Http;
 use Neptunium\Core\ServiceManager;
-use Neptunium\ModelClasses\Controller;
-use Neptunium\ModelClasses\Http;
-use Neptunium\Services\SessionService;
+use Neptunium\Core\Services\SessionService;
 
 class MainController extends Controller {
     #[Route('/', Http::GET)]
