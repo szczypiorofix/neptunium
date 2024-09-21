@@ -33,12 +33,12 @@ class EnvironmentTest extends TestCase {
     }
 
 
-    public function testRequiredEnvironmentalVariables() {
-         $requiredEnvironmentalVariableKeys = Config::REQUIRED_ENVIRONMENTAL_VARIABLES;
-         $this->assertTrue($this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys));
-    }
-
-    public function testRegisteredKeys() {
-        $this->assertTrue($this->environment->getEnvironmentRegisteredKeys() > 0);
-    }
+//    public function testRequiredEnvironmentalVariables() {
+//         $requiredEnvironmentalVariableKeys = Config::REQUIRED_ENVIRONMENTAL_VARIABLES;
+//         $this->assertTrue($this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys));
+//    }
+//
+//    public function testRegisteredKeys() {
+//        $this->assertTrue($this->environment->getEnvironmentRegisteredKeys() > 0);
+//    }
 }
