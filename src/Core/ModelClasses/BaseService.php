@@ -8,11 +8,11 @@ abstract class BaseService {
     /**
      * @param Injectable[] $dependencies
      */
-    public function __construct(protected string $name, array $dependencies = []) {}
+    public function __construct(protected string $serviceName, array $dependencies = []) {}
 
     abstract public function initialize(): void;
 
-    public function getName(): string {
-        return $this->name;
+    public function getServiceName(): string {
+        return $this->serviceName;
     }
 }

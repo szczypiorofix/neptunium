@@ -6,14 +6,14 @@ use Neptunium\Core\Attributes\Route;
 use Neptunium\Core\ModelClasses\BaseService;
 
 class NavigationService extends BaseService {
-
+    public static string $name = 'NavigationService';
     /**
      * @var Route[]
      */
     private array $availableRoutes;
 
     public function __construct() {
-        parent::__construct('navigation');
+        parent::__construct(self::$name);
     }
 
     public function initialize(): void {

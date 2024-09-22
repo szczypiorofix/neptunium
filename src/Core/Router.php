@@ -3,6 +3,8 @@
 namespace Neptunium\Core;
 
 use Neptunium\Core\Attributes\Route;
+use Neptunium\Core\ModelClasses\FrameworkException;
+use Neptunium\Core\Services\NavigationService;
 use ReflectionClass;
 use ReflectionException;
 
@@ -51,7 +53,13 @@ class Router {
             }
         }
         http_response_code(404);
-        return $this->return404Page();
+        try {
+            $returnContent = $this->return404Page();
+        } catch(FrameworkException $e) {
+            echo $e->getMessage();
+            exit;
+        }
+        return $returnContent;
     }
 
     public function register(
@@ -79,6 +87,9 @@ class Router {
         return $queryStringParameters;
     }
 
+    /**
+     * @throws FrameworkException
+     */
     private function return404Page(): string {
         $renderParams = [
             'templateFileName' => '404.twig',
@@ -87,7 +98,10 @@ class Router {
         ];
         $serviceManager = ServiceManager::getInstance();
 
-        $navigationService = $serviceManager->getNavigationService();
+        $navigationService = $serviceManager->getService(NavigationService::$name);
+        if (!$navigationService instanceof NavigationService) {
+            throw new FrameworkException('Service error!', 'Navigation service not found');
+        }
         $renderParams['navigationData'] = $navigationService->prepareNavigationBar('404');
         return HtmlView::renderPage('index.twig', $renderParams);
     }

@@ -5,11 +5,11 @@ namespace Neptunium\Core\Services;
 use Neptunium\Core\ModelClasses\BaseService;
 
 class SessionService extends BaseService {
-
+    public static string $name = 'SessionService';
     const LOGIN_DATA = "loginData";
 
     public function __construct(array $dependencies = []) {
-        parent::__construct('session', $dependencies);
+        parent::__construct(self::$name, $dependencies);
     }
 
     public function initialize(): void {

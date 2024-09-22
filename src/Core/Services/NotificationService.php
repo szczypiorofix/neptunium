@@ -9,6 +9,7 @@ use Neptunium\Core\ModelClasses\Notification;
 use Neptunium\Core\ModelClasses\NotificationType;
 
 class NotificationService extends BaseService {
+    public static string $name = 'NotificationService';
     const NOTIFICATIONS_KEY = 'notifications';
 
     /**
@@ -17,7 +18,7 @@ class NotificationService extends BaseService {
     private array $notifications = [];
 
     public function __construct(array $dependencies = []) {
-        parent::__construct('notification', $dependencies);
+        parent::__construct(self::$name, $dependencies);
     }
 
     public function initialize(): void {

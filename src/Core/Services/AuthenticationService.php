@@ -7,11 +7,12 @@ use Neptunium\Core\ModelClasses\AuthInfo;
 use Neptunium\Core\ModelClasses\BaseService;
 
 class AuthenticationService extends BaseService {
+    public static string $name = 'AuthService';
     private DatabaseConnection $databaseConnection;
     private AuthInfo $authInfo;
 
     public function __construct(array $dependencies = []) {
-        parent::__construct('auth', $dependencies);
+        parent::__construct(self::$name, $dependencies);
     }
 
     public function initialize(): void {

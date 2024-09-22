@@ -2,6 +2,7 @@
 
 namespace Neptunium\Core;
 
+use Neptunium\Core\ModelClasses\BaseService;
 use Neptunium\Core\Services\AuthenticationService;
 use Neptunium\Core\Services\NavigationService;
 use Neptunium\Core\Services\NotificationService;
@@ -10,10 +11,10 @@ use Neptunium\Core\Services\SessionService;
 class ServiceManager {
     private static ServiceManager $instance;
 
-    private AuthenticationService $authenticationService;
-    private NotificationService $notificationService;
-    private SessionService $sessionService;
-    private NavigationService $navigationService;
+    /**
+     * @var BaseService[] array
+     */
+    private array $services;
 
     private function __construct() {}
 
@@ -24,40 +25,29 @@ class ServiceManager {
         return self::$instance;
     }
 
-    public function init(
-        AuthenticationService $authenticationService,
-        SessionService $sessionService,
-        NotificationService $notificationService,
-        NavigationService $navigationService,
-    ): void {
-        $this->authenticationService = $authenticationService;
-        $this->sessionService = $sessionService;
-        $this->notificationService = $notificationService;
-        $this->navigationService = $navigationService;
-
+    /**
+     * @param BaseService[] $services
+     * @return void
+     */
+    public function init(array $services): void {
+        $this->services = $services;
         $this->initializeServices();
     }
 
-    public function getAuthenticationService(): AuthenticationService {
-        return $this->authenticationService;
+    public function addService(string $name, BaseService $service): void {
+        $this->services[$name] = $service;
     }
 
-    public function getSessionService(): SessionService {
-        return $this->sessionService;
-    }
-
-    public function getNotificationService(): NotificationService {
-        return $this->notificationService;
-    }
-
-    public function getNavigationService(): NavigationService {
-        return $this->navigationService;
+    public function getService(string $className): BaseService | null {
+        if (isset($this->services[$className])) {
+            return $this->services[$className];
+        }
+        return null;
     }
 
     private function initializeServices(): void {
-        $this->authenticationService->initialize();
-        $this->sessionService->initialize();
-        $this->notificationService->initialize();
-        $this->navigationService->initialize();
+        foreach ($this->services as $service) {
+            $service->initialize();
+        }
     }
 }

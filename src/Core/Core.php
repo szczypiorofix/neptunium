@@ -40,7 +40,7 @@ class Core {
         $this->prepareDatabaseConnection();
 
         // set DB connection object to Auth service
-        $this->serviceManager->getAuthenticationService()->setDatabaseConnection($this->databaseConnection);
+        $this->serviceManager->getService('AuthService')->setDatabaseConnection($this->databaseConnection);
 
         /** Generate table... */
 //        $tableGenerator = new TableGenerator();
@@ -62,10 +62,12 @@ class Core {
 
         $this->serviceManager = ServiceManager::getInstance();
         $this->serviceManager->init(
-            $authService,
-            $sessionService,
-            $notificationService,
-            $navigationService,
+            [
+                AuthenticationService::$name    => $authService,
+                SessionService::$name           => $sessionService,
+                NotificationService::$name      => $notificationService,
+                NavigationService::$name        => $navigationService,
+            ]
         );
     }
 

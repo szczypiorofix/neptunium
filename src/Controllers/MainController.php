@@ -5,11 +5,16 @@ namespace Neptunium\Controllers;
 use Neptunium\Core\Attributes\Route;
 use Neptunium\Core\HtmlView;
 use Neptunium\Core\ModelClasses\Controller;
+use Neptunium\Core\ModelClasses\FrameworkException;
 use Neptunium\Core\ModelClasses\Http;
 use Neptunium\Core\ServiceManager;
+use Neptunium\Core\Services\NavigationService;
 use Neptunium\Core\Services\SessionService;
 
 class MainController extends Controller {
+    /**
+     * @throws FrameworkException
+     */
     #[Route('/', Http::GET)]
     public function index(array $params = []): string {
         $renderParams = [
@@ -21,13 +26,19 @@ class MainController extends Controller {
 
         $serviceManager = ServiceManager::getInstance();
 
-        $sessionService = $serviceManager->getSessionService();
+        $sessionService = $serviceManager->getService(SessionService::$name);
+        if (!$sessionService instanceof SessionService) {
+            throw new FrameworkException('Service error!', 'Session service not found');
+        }
         $sessionService->sessionStart();
         $loginData = $sessionService->getLoginData();
 
         $renderParams[SessionService::LOGIN_DATA] = $loginData;
 
-        $navigationService = $serviceManager->getNavigationService();
+        $navigationService = $serviceManager->getService(NavigationService::$name);
+        if (!$navigationService instanceof NavigationService) {
+            throw new FrameworkException('Service error!', 'Navigation service not found');
+        }
         $renderParams['navigationData'] = $navigationService->prepareNavigationBar('main', !!$loginData);
 
         return HtmlView::renderPage('index.twig', $renderParams);
