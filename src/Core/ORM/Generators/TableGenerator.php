@@ -4,7 +4,7 @@ namespace Neptunium\Core\ORM\Generators;
 
 use Neptunium\Core\DatabaseConnection;
 use Neptunium\Core\DebugContainer;
-use Neptunium\Core\ModelClasses\Generator;
+use Neptunium\Core\Interfaces\Generator;
 use Neptunium\Core\ORM\Mapping\FieldPropertyType;
 use Neptunium\Core\ORM\Mapping\Table;
 use ReflectionClass;

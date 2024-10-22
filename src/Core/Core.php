@@ -10,6 +10,7 @@ use Neptunium\Controllers\AdminPageController;
 use Neptunium\Controllers\ApiController;
 use Neptunium\Controllers\LoginController;
 use Neptunium\Controllers\MainController;
+use Neptunium\Core\ModelClasses\FrameworkException;
 use Neptunium\Core\ModelClasses\NotificationType;
 use Neptunium\Core\ModelClasses\Request;
 use Neptunium\Core\ModelClasses\Response;
@@ -95,7 +96,7 @@ class Core {
         $requiredEnvironmentalVariableKeys = Config::REQUIRED_ENVIRONMENTAL_VARIABLES;
         $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
         if (!$allVariablesAreAvailable) {
-            throw new ModelClasses\FrameworkException("Environmental Variables error!", "Not all environmental variables are available! Please check config file.");
+            throw new FrameworkException("Environmental Variables error!", "Not all environmental variables are available! Please check config file.");
         }
     }
 

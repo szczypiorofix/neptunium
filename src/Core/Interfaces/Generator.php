@@ -1,6 +1,6 @@
 <?php
 
-namespace Neptunium\Core\ModelClasses;
+namespace Neptunium\Core\Interfaces;
 
 use Neptunium\Core\DatabaseConnection;
 
