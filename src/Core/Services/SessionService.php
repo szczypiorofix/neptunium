@@ -12,9 +12,7 @@ class SessionService extends BaseService {
         parent::__construct(self::$name, $dependencies);
     }
 
-    public function initialize(): void {
-
-    }
+    public function initialize(): void {}
 
     public function sessionStart(): void {
         if (session_status() === PHP_SESSION_NONE) {

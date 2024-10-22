@@ -36,9 +36,7 @@ class ApiController extends Controller {
     public function login(
         ServiceManager $serviceManager,
         array $params = []
-    ): void {
-        $baseUrl = getenv("NEP_BASE_URL");
-        
+    ): void {        
         $sessionService = $serviceManager->getService(SessionService::$name);
         if (!$sessionService instanceof SessionService) {
             throw new FrameworkException('Service error!', 'Session service not found');
@@ -66,7 +64,7 @@ class ApiController extends Controller {
             $notificationService->saveNotifications();
             $sessionService->unsetLoginData();
 
-            $this->redirect($baseUrl . "/login/");
+            $this->redirect("/login");
         }
 
         if (isset($results['userdata']) && count($results['userdata']) === 1) {
@@ -78,14 +76,14 @@ class ApiController extends Controller {
                 $sessionService->setLoginData();
             }
 
-            $this->redirect($baseUrl  . "/admin");
+            $this->redirect("/admin");
         }
 
         $notificationService->addNotification('login', 'Zły login i/lub hasło. Spróbuj ponownie.', NotificationType::ERROR);
         $notificationService->saveNotifications();
         $sessionService->unsetLoginData();
 
-        $this->redirect($baseUrl  . "/login/");
+        $this->redirect("/login");
     }
 
     /**
@@ -95,9 +93,7 @@ class ApiController extends Controller {
     public function logout(
         ServiceManager $serviceManager,
         array $params = []
-    ): void {
-        $baseUrl = getenv("NEP_BASE_URL");
-        
+    ): void {       
         $sessionService = $serviceManager->getService(SessionService::$name);
         if (!$sessionService instanceof SessionService) {
             throw new FrameworkException('Service error!', 'Session service not found');
@@ -112,6 +108,6 @@ class ApiController extends Controller {
         $notificationService->addNotification('logout', "Użytkownik wylogowany", NotificationType::INFO);
         $notificationService->saveNotifications();
 
-        $this->redirect($baseUrl . "/");
+        $this->redirect("/");
     }
 }

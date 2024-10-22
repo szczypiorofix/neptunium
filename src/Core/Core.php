@@ -99,14 +99,12 @@ class Core {
     private function prepareRouter(): void {
         $this->router = new Router();
         try {
-            $this->router->registerRoutesFromControllerAttributes(
-                [
-                    AdminPageController::class,
-                    MainController::class,
-                    ApiController::class,
-                    LoginController::class
-                ]
-            );
+            $this->router->registerRoutesFromControllerAttributes([
+                AdminPageController::class,
+                MainController::class,
+                ApiController::class,
+                LoginController::class
+            ]);
         } catch (ReflectionException $e) {
             echo 'An error occurred while registering routes: '. $e->getMessage();
         }

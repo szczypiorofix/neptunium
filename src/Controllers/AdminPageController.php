@@ -38,6 +38,10 @@ class AdminPageController extends Controller {
 
         $sessionService->sessionStart();
         $loginData = $sessionService->getLoginData();
+        
+        if (!$loginData) {
+            $this->redirect("/login");
+        }
 
         $notificationService = $serviceManager->getService(NotificationService::$name);
         if (!$notificationService instanceof NotificationService) {

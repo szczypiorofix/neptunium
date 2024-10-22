@@ -35,6 +35,9 @@ class LoginController extends Controller {
         }
         $sessionService->sessionStart();
         $loginData = $sessionService->getLoginData();
+        if ($loginData) {
+            $this->redirect('/admin');
+        }
 
         $notificationService = $serviceManager->getService(NotificationService::$name);
         if (!$notificationService instanceof NotificationService) {

@@ -21,9 +21,7 @@ class NotificationService extends BaseService {
         parent::__construct(self::$name, $dependencies);
     }
 
-    public function initialize(): void {
-        // TODO: Implement initialize() method.
-    }
+    public function initialize(): void {}
 
     public function addNotification(string $name, string $text, int $type = NotificationType::INFO ): void {
         $this->notifications[$name] = new Notification($text, $type);
