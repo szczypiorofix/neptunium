@@ -94,6 +94,9 @@ class Core {
 
         $requiredEnvironmentalVariableKeys = Config::REQUIRED_ENVIRONMENTAL_VARIABLES;
         $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
+        if (!$allVariablesAreAvailable) {
+            throw new ModelClasses\FrameworkException("Environmental Variables error!", "Not all environmental variables are available! Please check config file.");
+        }
     }
 
     private function prepareRouter(): void {
