@@ -2,7 +2,6 @@
 
 namespace Neptunium\Controllers;
 
-use JetBrains\PhpStorm\NoReturn;
 use Neptunium\Core\Attributes\Route;
 use Neptunium\Core\HtmlView;
 use Neptunium\Core\ModelClasses\Controller;
@@ -29,9 +28,10 @@ class ApiController extends Controller {
     /**
      * @throws FrameworkException
      */
-    #[NoReturn]
     #[Route('/api/login', Http::POST)]
-    public function login(array $params = []): string {
+    public function login(array $params = []): void {
+        $baseUrl = getenv("NEP_BASE_URL");
+        
         $serviceManager = ServiceManager::getInstance();
 
         $sessionService = $serviceManager->getService(SessionService::$name);
@@ -61,7 +61,7 @@ class ApiController extends Controller {
             $notificationService->saveNotifications();
             $sessionService->unsetLoginData();
 
-            $this->redirect(NEP_BASE_URL . "/login/");
+            $this->redirect($baseUrl . "/login/");
         }
 
         if (isset($results['userdata']) && count($results['userdata']) === 1) {
@@ -73,22 +73,23 @@ class ApiController extends Controller {
                 $sessionService->setLoginData();
             }
 
-            $this->redirect(NEP_BASE_URL . "/admin");
+            $this->redirect($baseUrl  . "/admin");
         }
 
         $notificationService->addNotification('login', 'Zły login i/lub hasło. Spróbuj ponownie.', NotificationType::ERROR);
         $notificationService->saveNotifications();
         $sessionService->unsetLoginData();
 
-        $this->redirect(NEP_BASE_URL . "/login/");
+        $this->redirect($baseUrl  . "/login/");
     }
 
     /**
      * @throws FrameworkException
      */
-    #[NoReturn]
     #[Route('/api/logout', Http::GET)]
-    public function logout(array $params = []): string {
+    public function logout(array $params = []): void {
+        $baseUrl = getenv("NEP_BASE_URL");
+        
         $serviceManager = ServiceManager::getInstance();
 
         $sessionService = $serviceManager->getService(SessionService::$name);
@@ -105,6 +106,6 @@ class ApiController extends Controller {
         $notificationService->addNotification('logout', "Użytkownik wylogowany", NotificationType::INFO);
         $notificationService->saveNotifications();
 
-        $this->redirect(NEP_BASE_URL . "/");
+        $this->redirect($baseUrl . "/");
     }
 }

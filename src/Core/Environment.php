@@ -10,7 +10,7 @@ class Environment {
         private readonly string $rootDir,
         private readonly string $appRootDir,
     ) {
-        $this->dotenv = new Dotenv();
+        $this->dotenv = Dotenv::getInstance();
     }
 
     /**

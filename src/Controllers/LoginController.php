@@ -11,6 +11,7 @@ use Neptunium\Core\ServiceManager;
 use Neptunium\Core\Services\NavigationService;
 use Neptunium\Core\Services\NotificationService;
 use Neptunium\Core\Services\SessionService;
+use Neptunium\Core\ModelClasses\RenderParamsEnum;
 
 class LoginController extends Controller {
     /**
@@ -46,7 +47,7 @@ class LoginController extends Controller {
             throw new FrameworkException('Service error!', 'Navigation service not found');
         }
         $renderParams['navigationData'] = $navigationService->prepareNavigationBar('login', !!$loginData);
-        $renderParams[NotificationService::NOTIFICATIONS_KEY] = $notifications;
+        $renderParams[RenderParamsEnum::NOTIFICATIONS->value] = $notifications;
 
         return HtmlView::renderPage('index.twig', $renderParams);
     }

@@ -12,8 +12,8 @@ class EnvironmentTest extends TestCase {
 
     public function setUp(): void {
         $this->environment = new Environment(
-            'C:\workshop\htdocs\neptunium',
-            'C:\workshop\htdocs\neptunium\src'
+            __DIR__,
+            __DIR__ . DIRECTORY_SEPARATOR . ''
         );
         $this->environment->loadDotEnv('.env');
         parent::setUp();

@@ -9,6 +9,7 @@ use Neptunium\Controllers\AdminPageController;
 use Neptunium\Controllers\ApiController;
 use Neptunium\Controllers\LoginController;
 use Neptunium\Controllers\MainController;
+use Neptunium\Core\ModelClasses\NotificationType;
 use Neptunium\Core\ModelClasses\Request;
 use Neptunium\Core\ModelClasses\Response;
 use Neptunium\Core\Services\AuthenticationService;
@@ -19,7 +20,7 @@ use Neptunium\Middleware\HtmlContentMiddleware;
 
 class Core {
     private Environment $environment;
-    private DatabaseConnection $databaseConnection;
+    private ?DatabaseConnection $databaseConnection = null;
     private Router $router;
     private Request $request;
     private Response $response;
@@ -38,9 +39,16 @@ class Core {
         $this->prepareServices();
         $this->prepareEnvironment();
         $this->prepareDatabaseConnection();
-
+        
         // set DB connection object to Auth service
-        $this->serviceManager->getService('AuthService')->setDatabaseConnection($this->databaseConnection);
+        $authService = $this->serviceManager->getService('AuthService');
+        if (!$authService instanceof AuthenticationService) {
+            print_r("Błąd instancji klasy AuthenticationService");
+            return;
+        }
+        if ($this->databaseConnection->getDatabase()->getPdo()) {
+            $authService->setDatabaseConnection($this->databaseConnection);
+        }
 
         /** Generate table... */
 //        $tableGenerator = new TableGenerator();
@@ -83,9 +91,6 @@ class Core {
             exit();
         }
 
-        define('NEP_BASE_URL', getenv(Config::ENV_NEP_BASE_URL));
-        define('NEP_APP_VER', '1.0.1');
-
         $requiredEnvironmentalVariableKeys = Config::REQUIRED_ENVIRONMENTAL_VARIABLES;
         $allVariablesAreAvailable = $this->environment->checkRequiredEnvironmentalVariables($requiredEnvironmentalVariableKeys);
     }
@@ -109,7 +114,17 @@ class Core {
     private function prepareDatabaseConnection(): void {
         $this->databaseConnection = DatabaseConnection::getConnection();
         if ($this->databaseConnection->getDatabase()->isError()) {
-            print_r($this->databaseConnection->getDatabase()->getErrorMessage());
+//            print_r($this->databaseConnection->getDatabase()->getErrorMessage());
+
+            $notificationService = $this->serviceManager->getService('NotificationService');
+            if ($notificationService instanceof NotificationService) {
+                $notificationService->addNotification(
+                    "Database connection error",
+                    $this->databaseConnection->getDatabase()->getErrorMessage(),
+                    NotificationType::ERROR
+                );
+                $notificationService->saveNotifications();
+            }
         }
     }
 

@@ -23,7 +23,7 @@ class Request {
     }
 
     private function resolveMethod(): string {
-        return ($_SERVER["REQUEST_METHOD"]);
+        return filter_input(INPUT_SERVER, "REQUEST_METHOD");
     }
 
     public function getHeaders(): array {

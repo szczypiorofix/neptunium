@@ -30,6 +30,7 @@ class DatabaseConnection {
             $this->db->setPdo($dbPDO);
         } catch (\PDOException $exc) {
             $this->db->setErrorMessage($exc->getMessage());
+            $this->db->setException($exc);
             $this->db->setError(true);
         }
     }

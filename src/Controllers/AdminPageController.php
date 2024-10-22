@@ -12,7 +12,7 @@ use Neptunium\Core\ServiceManager;
 use Neptunium\Core\Services\NavigationService;
 use Neptunium\Core\Services\NotificationService;
 use Neptunium\Core\Services\SessionService;
-
+use Neptunium\Core\ModelClasses\RenderParamsEnum;
 
 class AdminPageController extends Controller {
     /**
@@ -36,11 +36,6 @@ class AdminPageController extends Controller {
         $sessionService->sessionStart();
         $loginData = $sessionService->getLoginData();
 
-//        $loginValue = intval($loginData);
-//        if (!$loginValue) {
-//            $this->redirect(NEP_BASE_URL . "/");
-//        }
-
         $notificationService = $serviceManager->getService(NotificationService::$name);
         if (!$notificationService instanceof NotificationService) {
             throw new FrameworkException('Service error!', 'Notification service not found');
@@ -54,8 +49,8 @@ class AdminPageController extends Controller {
             throw new FrameworkException('Service error!', 'Navigation service not found');
         }
         $renderParams['navigationData'] = $navigationService->prepareNavigationBar('home', !!$loginData);
-        $renderParams[NotificationService::NOTIFICATIONS_KEY] = $notifications;
-        $renderParams[SessionService::LOGIN_DATA] = $loginData;
+        $renderParams[RenderParamsEnum::NOTIFICATIONS->value] = $notifications;
+        $renderParams[RenderParamsEnum::LOGIN_DATA->value] = $loginData;
 
         $db = DatabaseConnection::getConnection()->getDatabase();
         $pdo = $db->getPdo();

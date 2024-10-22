@@ -3,7 +3,6 @@
 namespace Neptunium\Core\ORM\Models;
 
 use Neptunium\Core\DatabaseConnection;
-use Neptunium\Core\ModelClasses\BaseModel;
 use Neptunium\Core\ORM\Mapping\Column;
 use Neptunium\Core\ORM\Mapping\FieldPropertyType;
 use Neptunium\Core\ORM\Mapping\Table;
@@ -13,7 +12,7 @@ use Neptunium\Core\ORM\Mapping\Table;
     comment: 'Tabela z serwerami użytkownika',
     collate: 'utf8mb4_unicode_ci'
 )]
-class UserServerModel extends BaseModel {
+class UserServerModel {
     #[Column(
         type: FieldPropertyType::Integer,
         primaryKey: true,

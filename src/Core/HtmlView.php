@@ -30,9 +30,13 @@ class HtmlView {
         } catch (LoaderError|RuntimeError|SyntaxError $error) {
             return $error->getMessage();
         }
-        $params['base_url'] = NEP_BASE_URL;
-        $params['app_ver'] = NEP_APP_VER;
+        
+        $dotenv = Dotenv::getInstance();
+        
+        $params['baseUrl'] = $dotenv->getValue("NEP_BASE_URL");
+        $params['appVer'] = $dotenv->getValue("NEP_VER");
         $params['debugInfoData'] = DebugContainer::$info;
+        $params['debugWarningData'] = DebugContainer::$warning;
         $params['debugErrorData'] = DebugContainer::$error;
         return $template->render($params);
     }

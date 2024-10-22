@@ -4,6 +4,7 @@ namespace Neptunium\Core\ModelClasses;
 
 use Neptunium\Config;
 use PDO;
+use PDOException;
 
 class Database {
     private ?PDO $pdo = null;
@@ -15,6 +16,7 @@ class Database {
     private string $username;
     private string $password;
     private string $charset;
+    private PDOException $exception;
 
     private const DEFAULT_PORT = 3306;
     private const DEFAULT_CHARSET = 'UTF8';
@@ -74,5 +76,13 @@ class Database {
 
     public function setPdo(?PDO $pdo): void {
         $this->pdo = $pdo;
+    }
+
+    public function getException(): PDOException {
+        return $this->exception;
+    }
+
+    public function setException(PDOException $exception): void {
+        $this->exception = $exception;
     }
 }

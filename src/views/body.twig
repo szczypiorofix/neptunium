@@ -12,6 +12,16 @@
         {% endif %}
         <!--  _DEBUG ERROR DATA -->
 
+        <!--  DEBUG WARNING DATA_ -->
+        {% if debugWarningData %}
+            <div class="error-container">
+                {% for ddKey,ddValue in debugWarningData %}
+                    <div>{{ ddKey }} : {{ ddValue }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <!--  _DEBUG WARNING DATA -->
+
         <!--  DEBUG INFO DATA_ -->
         {% if debugInfoData %}
             <div>
@@ -56,9 +66,13 @@
         <!--  _NOTIFICATIONS -->
 
         <!--- TEMPLATE_ -->
-        {% include 'pages/' ~ templateFileName %}
+        {% if templateFileName %}
+            {% include 'pages/' ~ templateFileName %}
+        {% else %}
+            <p>Template file not found!</p>
+        {% endif %}
         <!--- _TEMPLATE -->
     </div>
 <!-- SCRIPTS PART -->
-<script type="module" src="{{ base_url }}/static/js/main.js?v={{ app_ver }}"></script>
+<script type="module" src="{{ baseUrl }}/static/js/main.js?v={{ appVer }}"></script>
 </body>

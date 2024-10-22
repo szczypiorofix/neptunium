@@ -7,10 +7,10 @@ use Neptunium\Core\ModelClasses\BaseService;
 use Neptunium\Core\ModelClasses\FrameworkException;
 use Neptunium\Core\ModelClasses\Notification;
 use Neptunium\Core\ModelClasses\NotificationType;
+use Neptunium\Core\ModelClasses\RenderParamsEnum;
 
 class NotificationService extends BaseService {
     public static string $name = 'NotificationService';
-    const NOTIFICATIONS_KEY = 'notifications';
 
     /**
      * @var Notification[]
@@ -51,8 +51,8 @@ class NotificationService extends BaseService {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
-        if (isset($_SESSION[self::NOTIFICATIONS_KEY])) {
-            $this->notifications = json_decode($_SESSION[self::NOTIFICATIONS_KEY], true);
+        if (isset($_SESSION[RenderParamsEnum::NOTIFICATIONS->value])) {
+            $this->notifications = json_decode($_SESSION[RenderParamsEnum::NOTIFICATIONS->value], true);
             return;
         }
         $this->notifications = [];
@@ -72,6 +72,6 @@ class NotificationService extends BaseService {
             session_start();
         }
         $notificationsEncoded = json_encode($this->notifications, JSON_UNESCAPED_UNICODE);
-        $_SESSION[self::NOTIFICATIONS_KEY] = $notificationsEncoded;
+        $_SESSION[RenderParamsEnum::NOTIFICATIONS->value] = $notificationsEncoded;
     }
 }
