@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Neptunium\Core;
 
+use Exception;
 use Neptunium\Config;
 use Neptunium\Controllers\AdminPageController;
 use Neptunium\Controllers\ApiController;
@@ -17,6 +18,7 @@ use Neptunium\Core\Services\NavigationService;
 use Neptunium\Core\Services\NotificationService;
 use Neptunium\Core\Services\SessionService;
 use Neptunium\Middleware\HtmlContentMiddleware;
+use ReflectionException;
 
 class Core {
     private Environment $environment;
@@ -25,7 +27,6 @@ class Core {
     private Request $request;
     private Response $response;
     private string $pageContent = "";
-
     private ServiceManager $serviceManager;
 
     public function __construct(
@@ -68,7 +69,7 @@ class Core {
         $notificationService = new NotificationService();
         $navigationService = new NavigationService();
 
-        $this->serviceManager = ServiceManager::getInstance();
+        $this->serviceManager = new ServiceManager();
         $this->serviceManager->init(
             [
                 AuthenticationService::$name    => $authService,
@@ -86,7 +87,7 @@ class Core {
         );
         try {
             $this->environment->loadDotEnv($this->rootDir . '/.env');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             echo 'An error occurred while loading environmental variables: '. $e->getMessage();
             exit();
         }
@@ -106,7 +107,7 @@ class Core {
                     LoginController::class
                 ]
             );
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             echo 'An error occurred while registering routes: '. $e->getMessage();
         }
     }
@@ -136,7 +137,8 @@ class Core {
     private function handleRoutes(): void {
         $this->pageContent = $this->router->handleRoutes(
             $this->request->getMethod(),
-            $this->request->getUrl()
+            $this->request->getUrl(),
+            $this->serviceManager
         );
     }
 

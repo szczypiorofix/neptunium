@@ -15,4 +15,5 @@ enum RenderParamsEnum: string {
     case DEBUG_INFO_DATA    = "debugInfoData";
     case DEBUG_WARNING_DATA = "debugWarningData";
     case DEBUG_ERROR_DATA   = "debugErrorData";
+    case SERVER_LIST        = "serverList";
 }

@@ -3,27 +3,16 @@
 namespace Neptunium\Core;
 
 use Neptunium\Core\ModelClasses\BaseService;
-use Neptunium\Core\Services\AuthenticationService;
-use Neptunium\Core\Services\NavigationService;
-use Neptunium\Core\Services\NotificationService;
-use Neptunium\Core\Services\SessionService;
 
 class ServiceManager {
-    private static ServiceManager $instance;
-
+    
     /**
      * @var BaseService[] array
      */
     private array $services;
 
-    private function __construct() {}
-
-    public static function getInstance(): ServiceManager {
-        if (!isset(self::$instance)) {
-            self::$instance = new ServiceManager();
-        }
-        return self::$instance;
-    }
+    public function __construct() {}
+    public function __clone() {}
 
     /**
      * @param BaseService[] $services

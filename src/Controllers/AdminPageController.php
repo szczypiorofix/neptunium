@@ -8,25 +8,28 @@ use Neptunium\Core\HtmlView;
 use Neptunium\Core\ModelClasses\Controller;
 use Neptunium\Core\ModelClasses\FrameworkException;
 use Neptunium\Core\ModelClasses\Http;
+use Neptunium\Core\ModelClasses\RenderParamsEnum;
+use Neptunium\Core\RenderParams;
 use Neptunium\Core\ServiceManager;
 use Neptunium\Core\Services\NavigationService;
 use Neptunium\Core\Services\NotificationService;
 use Neptunium\Core\Services\SessionService;
-use Neptunium\Core\ModelClasses\RenderParamsEnum;
+use PDO;
 
 class AdminPageController extends Controller {
     /**
      * @throws FrameworkException
      */
     #[Route('/admin', Http::GET)]
-    public function index(array $params = []): string {
-        $renderParams = [
-            'templateFileName'  => 'admin.twig',
-            'templateName'      => 'admin',
-            'queryData'         => $params,
-        ];
-
-        $serviceManager = ServiceManager::getInstance();
+    public function index(
+        ServiceManager $serviceManager,
+        array $params = []
+    ): string {
+        RenderParams::set([
+            RenderParamsEnum::TEMPLATE_FILE_NAME->value => 'admin.twig',
+            RenderParamsEnum::TEMPLATE_NAME->value      => 'admin',
+            RenderParamsEnum::QUERY_DATA->value         => $params,
+        ]);
 
         $sessionService = $serviceManager->getService(SessionService::$name);
         if (!$sessionService instanceof SessionService) {
@@ -48,9 +51,12 @@ class AdminPageController extends Controller {
         if (!$navigationService instanceof NavigationService) {
             throw new FrameworkException('Service error!', 'Navigation service not found');
         }
-        $renderParams['navigationData'] = $navigationService->prepareNavigationBar('home', !!$loginData);
-        $renderParams[RenderParamsEnum::NOTIFICATIONS->value] = $notifications;
-        $renderParams[RenderParamsEnum::LOGIN_DATA->value] = $loginData;
+        
+        RenderParams::set([
+            RenderParamsEnum::NAVIGATION_DATA->value => $navigationService->prepareNavigationBar('home', !!$loginData),
+            RenderParamsEnum::NOTIFICATIONS->value => $notifications,
+            RenderParamsEnum::LOGIN_DATA->value => $loginData,
+        ]);
 
         $db = DatabaseConnection::getConnection()->getDatabase();
         $pdo = $db->getPdo();
@@ -58,8 +64,9 @@ class AdminPageController extends Controller {
         $exec = $pdo->prepare("SELECT * FROM `userservers`;");
         $exec->execute();
 
-        $renderParams['serverList'] = $exec->fetchAll(\PDO::FETCH_ASSOC);
-
-        return HtmlView::renderPage('index.twig', $renderParams);
+        RenderParams::set([
+            RenderParamsEnum::SERVER_LIST->value => $exec->fetchAll(PDO::FETCH_ASSOC)
+        ]);
+        return HtmlView::renderPage('index.twig', RenderParams::getAll());
     }
 }

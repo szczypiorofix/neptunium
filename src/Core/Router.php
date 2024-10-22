@@ -11,9 +11,9 @@ use ReflectionException;
 /**
  * Route format:
  * [
- *  [request method]  => [
+ *    [request method] => [
  *      [path] => [class, class method]
- *      ]
+ *    ]
  * ]
  */
 class Router {
@@ -37,7 +37,7 @@ class Router {
         }
     }
 
-    public function handleRoutes(string $requestMethod, string $requestUrl): string {
+    public function handleRoutes(string $requestMethod, string $requestUrl, ServiceManager $serviceManager): string {
         foreach($this->routes as $routeRequestMethodKey => $routeRequestMethodValue) {
             if ($requestMethod === $routeRequestMethodKey) {
                 foreach($routeRequestMethodValue as $routeUrl => $routeValue) {
@@ -47,7 +47,7 @@ class Router {
                     if ($routeUrlParsed === $parsedUrl) {
                         $className = $routeValue[0];
                         $classObject = new $className();
-                        return call_user_func_array(array($classObject, $routeValue[1]), [$requestQueryString]);
+                        return call_user_func_array(array($classObject, $routeValue[1]), [$serviceManager, $requestQueryString]);
                     }
                 }
             }

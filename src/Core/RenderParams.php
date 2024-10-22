@@ -18,6 +18,7 @@ class RenderParams {
     public static array $debugInfoData = [];
     public static array $debugWarningData = [];
     public static array $debugErrorData = [];
+    public static array $serverList = [];
 
     public static function getAll(): array {
         $allProperties = array();

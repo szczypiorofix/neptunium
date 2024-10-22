@@ -8,6 +8,8 @@ use Neptunium\Core\ModelClasses\Controller;
 use Neptunium\Core\ModelClasses\FrameworkException;
 use Neptunium\Core\ModelClasses\Http;
 use Neptunium\Core\ModelClasses\NotificationType;
+use Neptunium\Core\ModelClasses\RenderParamsEnum;
+use Neptunium\Core\RenderParams;
 use Neptunium\Core\ServiceManager;
 use Neptunium\Core\Services\AuthenticationService;
 use Neptunium\Core\Services\NotificationService;
@@ -15,25 +17,28 @@ use Neptunium\Core\Services\SessionService;
 
 class ApiController extends Controller {
     #[Route('/api', Http::GET)]
-    public function index(array $params = []): string {
-        return HtmlView::renderPage('index.twig',
-            [
-                'templateFileName' => 'api.twig',
-                'templateName' => 'api',
-                'queryData' => $params,
-            ]
-        );
+    public function index(
+        ServiceManager $serviceManager,
+        array $params = []
+    ): string {
+        RenderParams::set([
+            RenderParamsEnum::TEMPLATE_FILE_NAME->value => 'api.twig',
+            RenderParamsEnum::TEMPLATE_NAME->value      => 'api',
+            RenderParamsEnum::QUERY_DATA->value         => $params,
+        ]);
+        return HtmlView::renderPage('index.twig', RenderParams::getAll());
     }
 
     /**
      * @throws FrameworkException
      */
     #[Route('/api/login', Http::POST)]
-    public function login(array $params = []): void {
+    public function login(
+        ServiceManager $serviceManager,
+        array $params = []
+    ): void {
         $baseUrl = getenv("NEP_BASE_URL");
         
-        $serviceManager = ServiceManager::getInstance();
-
         $sessionService = $serviceManager->getService(SessionService::$name);
         if (!$sessionService instanceof SessionService) {
             throw new FrameworkException('Service error!', 'Session service not found');
@@ -87,11 +92,12 @@ class ApiController extends Controller {
      * @throws FrameworkException
      */
     #[Route('/api/logout', Http::GET)]
-    public function logout(array $params = []): void {
+    public function logout(
+        ServiceManager $serviceManager,
+        array $params = []
+    ): void {
         $baseUrl = getenv("NEP_BASE_URL");
         
-        $serviceManager = ServiceManager::getInstance();
-
         $sessionService = $serviceManager->getService(SessionService::$name);
         if (!$sessionService instanceof SessionService) {
             throw new FrameworkException('Service error!', 'Session service not found');
