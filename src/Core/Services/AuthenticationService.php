@@ -46,7 +46,7 @@ class AuthenticationService extends BaseService {
         }
 
         $results['userdata'] = $this->checkUser($filteredInputs['useremail'], $filteredInputs['userpass']);
-        return  $results;
+        return $results;
     }
 
     public function setAuthInfo(AuthInfo $authInfo): void {

@@ -60,28 +60,50 @@ class ApiController extends Controller {
         }
 
         if (isset($results['error'])) {
-            $notificationService->addNotification('login', $results['error'], NotificationType::ERROR);
-            $notificationService->saveNotifications();
-            $sessionService->unsetLoginData();
+            $this->setNotificationAndLogout(
+                $notificationService, 
+                $sessionService,
+                $results['error'],
+                NotificationType::ERROR,
+                false
+            );
 
             $this->redirect("/login");
         }
-
+        
         if (isset($results['userdata']) && count($results['userdata']) === 1) {
-            if (isset($results['userdata'][0]['email'])) {
-                $authService->setUserLastLoginTime($results['userdata'][0]['email']);
-
-                $notificationService->addNotification('login', "Użytkownik pomyślnie zalogoway", NotificationType::INFO);
-                $notificationService->saveNotifications();
-                $sessionService->setLoginData();
+            if ($results['userdata'][0]['active'] === 0) {        
+                $this->setNotificationAndLoginStatus(
+                    $notificationService, 
+                    $sessionService,
+                    'Użytkownik jest nieaktywny. Skontaktuj się z administratorem systemu',
+                    NotificationType::WARNING,
+                    false
+                );
+        
+                $this->redirect("/login");
             }
-
+            
+            $authService->setUserLastLoginTime($results['userdata'][0]['email']);
+            
+            $this->setNotificationAndLoginStatus(
+                $notificationService, 
+                $sessionService,
+                "Użytkownik pomyślnie zalogoway",
+                NotificationType::INFO,
+                true
+            );
+            
             $this->redirect("/admin");
         }
 
-        $notificationService->addNotification('login', 'Zły login i/lub hasło. Spróbuj ponownie.', NotificationType::ERROR);
-        $notificationService->saveNotifications();
-        $sessionService->unsetLoginData();
+        $this->setNotificationAndLoginStatus(
+            $notificationService, 
+            $sessionService,
+            'Zły login i/lub hasło. Spróbuj ponownie.',
+            NotificationType::ERROR,
+            false
+        );
 
         $this->redirect("/login");
     }
@@ -98,16 +120,33 @@ class ApiController extends Controller {
         if (!$sessionService instanceof SessionService) {
             throw new FrameworkException('Service error!', 'Session service not found');
         }
+        
         $sessionService->sessionStart();
-        $sessionService->unsetLoginData();
 
         $notificationService = $serviceManager->getService(NotificationService::$name);
         if (!$notificationService instanceof NotificationService) {
             throw new FrameworkException('Service error!', 'Notification service not found');
         }
-        $notificationService->addNotification('logout', "Użytkownik wylogowany", NotificationType::INFO);
-        $notificationService->saveNotifications();
+        $this->setNotificationAndLoginStatus(
+            $notificationService, 
+            $sessionService,
+            "Użytkownik wylogowany",
+            NotificationType::INFO,
+            false
+        );
 
         $this->redirect("/");
+    }
+    
+    private function setNotificationAndLoginStatus(
+        NotificationService $notificationService,
+        SessionService $sessionService,
+        string $message,
+        int $type,
+        bool $logInUser = true
+    ): void {
+        $notificationService->addNotification('login', $message, $type);
+        $notificationService->saveNotifications();
+        $logInUser ? $sessionService->setLoginData() : $sessionService->unsetLoginData();
     }
 }
