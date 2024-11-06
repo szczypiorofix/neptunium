@@ -5,13 +5,14 @@ namespace Neptunium\Core\ORM\Models;
 use Neptunium\Core\ORM\Mapping\Column;
 use Neptunium\Core\ORM\Mapping\FieldPropertyType;
 use Neptunium\Core\ORM\Mapping\Table;
+use Neptunium\Core\ORM\Models\Generic\BaseModel;
 
 #[Table(
     name: 'Users',
     comment: 'Tabela użytkowników',
     collate: 'utf8mb4_unicode_ci'
 )]
-class UserModel {
+class UserModel extends BaseModel{
     #[Column(
         type: FieldPropertyType::Integer,
         primaryKey: true,

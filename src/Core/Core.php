@@ -14,6 +14,8 @@ use Neptunium\Core\ModelClasses\FrameworkException;
 use Neptunium\Core\ModelClasses\NotificationType;
 use Neptunium\Core\ModelClasses\Request;
 use Neptunium\Core\ModelClasses\Response;
+//use Neptunium\Core\ORM\Generators\TableGenerator;
+//use Neptunium\Core\ORM\Models\AppConfig;
 use Neptunium\Core\Services\AuthenticationService;
 use Neptunium\Core\Services\NavigationService;
 use Neptunium\Core\Services\NotificationService;
@@ -54,7 +56,7 @@ class Core {
 
         /** Generate table... */
 //        $tableGenerator = new TableGenerator();
-//        if (!$tableGenerator->generate(UserServerModel::class, $this->databaseConnection)) {
+//        if (!$tableGenerator->generate(AppConfig::class, $this->databaseConnection)) {
 //            print_r("Nie można wygenerować tabeli");
 //        }
 

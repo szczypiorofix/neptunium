@@ -72,48 +72,58 @@ class TableGenerator implements Generator {
                 }
             }
             foreach($column as $attributeKey => $attributeValue) {
-                switch($attributeKey) {
-                    case 'type':
-                        $attributeType = FieldPropertyType::getLabel($attributeValue);
-                        if (str_starts_with($attributeType, 'VARCHAR') && $attributeLength > 0) {
-                            $queryString .= " ".$attributeType."($attributeLength)";
-                            break;
-                        }
-                        $queryString .= " ".$attributeType;
-                        break;
-                    case 'nullable':
-                        $queryString .= " NULL";
-                        break;
-                    case 'autoIncrement':
-                        $queryString .= " AUTO_INCREMENT";
-                        break;
-                    case 'collation':
-                        $queryString .= " COLLATION ".$attributeValue;
-                        break;
-                    case 'defaultValue':
-                        $queryString .= " DEFAULT ".$attributeValue;
-                        break;
-                    case 'unique':
-                        $queryString .= " UNIQUE";
-                        break;
-                    case 'primaryKey':
-                        $queryString .= " PRIMARY KEY";
-                        break;
-                    case 'comment':
-                        $queryString .= " COMMENT '".$attributeValue."'";
-                        break;
-                    default:
-                        break;
-                }
+                $queryString .= $this->concatenateQueryParameters($attributeKey, $attributeValue, $attributeLength);
             }
             $queryString .= ',';
         }
 
         // remove last ', ' part from query
-        $queryString = rtrim($queryString, ", ");
-        $this->generateTableQuery .= $queryString . ");";
+        $queryStringTrimmed = rtrim($queryString, ", ");
+        $this->generateTableQuery .= $queryStringTrimmed . ");";
 
         $this->databaseConnection->getDatabase()->getPdo()->exec($this->generateTableQuery);
+    }
+    
+    private function concatenateQueryParameters(
+            string $attributeKey,
+            mixed $attributeValue,
+            int $attributeLength
+    ): string {
+        $queryString = "";
+        switch($attributeKey) {
+            case 'type':
+                $attributeType = FieldPropertyType::getLabel($attributeValue);
+                if (str_starts_with($attributeType, 'VARCHAR') && $attributeLength > 0) {
+                    $queryString .= " ".$attributeType."($attributeLength)";
+                    break;
+                }
+                $queryString .= " ".$attributeType;
+                break;
+            case 'nullable':
+                $queryString .= " NULL";
+                break;
+            case 'autoIncrement':
+                $queryString .= " AUTO_INCREMENT";
+                break;
+            case 'collation':
+                $queryString .= " COLLATION ".$attributeValue;
+                break;
+            case 'defaultValue':
+                $queryString .= " DEFAULT ".$attributeValue;
+                break;
+            case 'unique':
+                $queryString .= " UNIQUE";
+                break;
+            case 'primaryKey':
+                $queryString .= " PRIMARY KEY";
+                break;
+            case 'comment':
+                $queryString .= " COMMENT '".$attributeValue."'";
+                break;
+            default:
+                break;
+        }
+        return $queryString;
     }
 
     private function determineTableName(array $modelClassAttributes): string {

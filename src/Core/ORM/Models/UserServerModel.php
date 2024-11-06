@@ -6,13 +6,14 @@ use Neptunium\Core\DatabaseConnection;
 use Neptunium\Core\ORM\Mapping\Column;
 use Neptunium\Core\ORM\Mapping\FieldPropertyType;
 use Neptunium\Core\ORM\Mapping\Table;
+use Neptunium\Core\ORM\Models\Generic\BaseModel;
 
 #[Table(
     name: 'UserServers',
     comment: 'Tabela z serwerami użytkownika',
     collate: 'utf8mb4_unicode_ci'
 )]
-class UserServerModel {
+class UserServerModel extends BaseModel {
     #[Column(
         type: FieldPropertyType::Integer,
         primaryKey: true,
@@ -80,7 +81,7 @@ class UserServerModel {
         parent::__construct();
     }
 
-    public function add(DatabaseConnection $databaseConnection): bool {
+    public function insert(DatabaseConnection $databaseConnection): bool {
         $pdo = $databaseConnection->getDatabase()->getPdo();
         $query = $pdo->prepare(
             "INSERT INTO `UserServers` (`name`, `active`, `url`, `varsion`, `hostName`, `domainName`, `registerDate`, `lastUpdate`) VALUES (:servername, :active, :url, :version, :hostName, :domainName, NOW(), NOW());"
@@ -96,15 +97,15 @@ class UserServerModel {
         ]);
     }
 
-    public function update(DatabaseConnection $databaseConnection): bool {
+    public function update(): bool {
         return false;
     }
 
-    public function get(DatabaseConnection $databaseConnection): bool {
+    public function get(): bool {
         return false;
     }
 
-    public function delete(DatabaseConnection $databaseConnection): bool{
+    public function delete(): bool{
         return false;
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="neptunium@localhost" uuid="be040ac5-aab3-4673-a78a-e27f9c6bea6f">
+    <data-source source="LOCAL" name="neptunium@localhost" uuid="463e7f7f-22f6-43ca-86c9-ed2a382e784d">
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>

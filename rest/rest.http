@@ -1,0 +1,8 @@
+GET https://airapi.airly.eu/v2/measurements/point?lat=52.232&lng=21.015
+Content-Type: application/json
+Accept: application/json
+apikey: ru4nT0UBfsSQurIUGKi3ipNcIkRqe7FI
+Accept-Encoding: gzip
+Accept-Language: pl
+
+###
