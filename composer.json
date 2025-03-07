@@ -15,7 +15,8 @@
   "require": {
     "twig/twig": "^3.0",
     "ext-pdo": "*",
-    "monolog/monolog": "^3.7"
+    "monolog/monolog": "^3.7",
+    "squizlabs/php_codesniffer": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "10"
@@ -24,6 +25,7 @@
     "twig/twig": "For templates"
   },
   "scripts": {
-    "test": "phpunit tests"
+    "test": "phpunit tests",
+    "phpcs": "phpcs --standard=PSR12 ./src"
   }
 }
