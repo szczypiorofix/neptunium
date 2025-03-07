@@ -2,23 +2,24 @@
 
 namespace Neptunium\Core\ORM\Models\Generic;
 
-class BaseModel {
-    protected function __construct() {}
-    protected function __clone() {}
+use Neptunium\Core\DatabaseConnection;
 
-    public function insert(): bool {
-        return false;
+abstract class BaseModel
+{
+    protected DatabaseConnection $databaseConnection;
+
+    protected function __construct()
+    {
+    }
+    protected function __clone()
+    {
     }
 
-    public function update(): bool {
-        return false;
-    }
+    abstract public function insert(): bool;
 
-    public function delete(): bool {
-        return false;
-    }
+    abstract public function update(): bool;
 
-    public function select(): array {
-        return array();
-    }
+    abstract public function delete(): bool;
+
+    abstract public function select(): array;
 }

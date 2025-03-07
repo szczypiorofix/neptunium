@@ -3,7 +3,8 @@
 namespace Neptunium\Core\ORM\Mapping;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class Column {
+class Column
+{
     public function __construct(
         public FieldPropertyType $type = FieldPropertyType::VarChar,
         public ?int $length = 0,
@@ -14,5 +15,6 @@ class Column {
         public ?bool $unique = false,
         public ?bool $autoIncrement = false,
         public ?string $comment = "",
-    ) {}
+    ) {
+    }
 }

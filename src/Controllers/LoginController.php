@@ -14,7 +14,8 @@ use Neptunium\Core\Services\NavigationService;
 use Neptunium\Core\Services\NotificationService;
 use Neptunium\Core\Services\SessionService;
 
-class LoginController extends Controller {
+class LoginController extends Controller
+{
     /**
      * @throws FrameworkException
      */

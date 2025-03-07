@@ -6,20 +6,24 @@ use Neptunium\Core\DatabaseConnection;
 use Neptunium\Core\ModelClasses\AuthInfo;
 use Neptunium\Core\ModelClasses\BaseService;
 
-class AuthenticationService extends BaseService {
+class AuthenticationService extends BaseService
+{
     public static string $name = 'AuthService';
     private DatabaseConnection $databaseConnection;
     private AuthInfo $authInfo;
 
-    public function __construct(array $dependencies = []) {
+    public function __construct(array $dependencies = [])
+    {
         parent::__construct(self::$name, $dependencies);
     }
 
-    public function initialize(): void {
+    public function initialize(): void
+    {
         $this->authInfo = new AuthInfo();
     }
 
-    public function setDatabaseConnection(DatabaseConnection $dbConnection): void {
+    public function setDatabaseConnection(DatabaseConnection $dbConnection): void
+    {
         $this->databaseConnection = $dbConnection;
     }
 
@@ -27,7 +31,8 @@ class AuthenticationService extends BaseService {
      * @param array $fields
      * @return array
      */
-    public function validate(array $fields): array {
+    public function validate(array $fields): array
+    {
         $results = [];
         if (!$this->checkInputs($fields, INPUT_POST)) {
             $results['error'] = "Sprawdzanie inputów nie powiodlo się";
@@ -35,10 +40,12 @@ class AuthenticationService extends BaseService {
         }
 
         $filteredInputs = filter_input_array(INPUT_POST, $fields);
-        if (!$filteredInputs) {{
+        if (!$filteredInputs) {
+            {
             $results['error'] = "Filtrowanie inputów nie powiodlo się";
             return $results;
-        }}
+            }
+        }
 
         if (!$this->checkMatchPassword($filteredInputs['userpass'])) {
             $results['error'] = "Błędny format hasła";
@@ -49,15 +56,18 @@ class AuthenticationService extends BaseService {
         return $results;
     }
 
-    public function setAuthInfo(AuthInfo $authInfo): void {
+    public function setAuthInfo(AuthInfo $authInfo): void
+    {
         $this->authInfo = $authInfo;
     }
 
-    public function getAuthInfo(): AuthInfo {
+    public function getAuthInfo(): AuthInfo
+    {
         return $this->authInfo;
     }
 
-    public function setUserLastLoginTime($userEmail): bool {
+    public function setUserLastLoginTime($userEmail): bool
+    {
         $pdo = $this->databaseConnection->getDatabase()->getPdo();
         $exec = $pdo->prepare("UPDATE `users` SET `lastLogin`=NOW() WHERE `email` = :useremail");
         $exec->execute([
@@ -66,8 +76,9 @@ class AuthenticationService extends BaseService {
         return false;
     }
 
-    private function checkInputs(array $fields, int $type): bool {
-        foreach($fields as $field => $filter) {
+    private function checkInputs(array $fields, int $type): bool
+    {
+        foreach ($fields as $field => $filter) {
             if (filter_input($type, $field, $filter) == null) {
                 return false;
             }
@@ -75,7 +86,8 @@ class AuthenticationService extends BaseService {
         return true;
     }
 
-    private function checkMatchPassword($password): bool {
+    private function checkMatchPassword($password): bool
+    {
         $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
         if (preg_match($pattern, $password)) {
             return true;
@@ -83,7 +95,8 @@ class AuthenticationService extends BaseService {
         return false;
     }
 
-    private function checkUser(string $userEmail, string $userPass): array {
+    private function checkUser(string $userEmail, string $userPass): array
+    {
         $pdo = $this->databaseConnection->getDatabase()->getPdo();
         $exec = $pdo->prepare("SELECT * FROM `users` WHERE `email` = :useremail AND `password` = MD5(:userpass)");
         $exec->execute([

@@ -15,7 +15,8 @@ use Neptunium\Core\Services\AuthenticationService;
 use Neptunium\Core\Services\NotificationService;
 use Neptunium\Core\Services\SessionService;
 
-class ApiController extends Controller {
+class ApiController extends Controller
+{
     #[Route('/api', Http::GET)]
     public function index(
         ServiceManager $serviceManager,
@@ -36,7 +37,7 @@ class ApiController extends Controller {
     public function login(
         ServiceManager $serviceManager,
         array $params = []
-    ): void {        
+    ): void {
         $sessionService = $serviceManager->getService(SessionService::$name);
         if (!$sessionService instanceof SessionService) {
             throw new FrameworkException('Service error!', 'Session service not found');
@@ -61,7 +62,7 @@ class ApiController extends Controller {
 
         if (isset($results['error'])) {
             $this->setNotificationAndLogout(
-                $notificationService, 
+                $notificationService,
                 $sessionService,
                 $results['error'],
                 NotificationType::ERROR,
@@ -70,35 +71,35 @@ class ApiController extends Controller {
 
             $this->redirect("/login");
         }
-        
+
         if (isset($results['userdata']) && count($results['userdata']) === 1) {
-            if ($results['userdata'][0]['active'] === 0) {        
+            if ($results['userdata'][0]['active'] === 0) {
                 $this->setNotificationAndLoginStatus(
-                    $notificationService, 
+                    $notificationService,
                     $sessionService,
                     'Użytkownik jest nieaktywny. Skontaktuj się z administratorem systemu',
                     NotificationType::WARNING,
                     false
                 );
-        
+
                 $this->redirect("/login");
             }
-            
+
             $authService->setUserLastLoginTime($results['userdata'][0]['email']);
-            
+
             $this->setNotificationAndLoginStatus(
-                $notificationService, 
+                $notificationService,
                 $sessionService,
                 "Użytkownik pomyślnie zalogoway",
                 NotificationType::INFO,
                 true
             );
-            
+
             $this->redirect("/admin");
         }
 
         $this->setNotificationAndLoginStatus(
-            $notificationService, 
+            $notificationService,
             $sessionService,
             'Zły login i/lub hasło. Spróbuj ponownie.',
             NotificationType::ERROR,
@@ -115,12 +116,12 @@ class ApiController extends Controller {
     public function logout(
         ServiceManager $serviceManager,
         array $params = []
-    ): void {       
+    ): void {
         $sessionService = $serviceManager->getService(SessionService::$name);
         if (!$sessionService instanceof SessionService) {
             throw new FrameworkException('Service error!', 'Session service not found');
         }
-        
+
         $sessionService->sessionStart();
 
         $notificationService = $serviceManager->getService(NotificationService::$name);
@@ -128,7 +129,7 @@ class ApiController extends Controller {
             throw new FrameworkException('Service error!', 'Notification service not found');
         }
         $this->setNotificationAndLoginStatus(
-            $notificationService, 
+            $notificationService,
             $sessionService,
             "Użytkownik wylogowany",
             NotificationType::INFO,
@@ -137,7 +138,7 @@ class ApiController extends Controller {
 
         $this->redirect("/");
     }
-    
+
     private function setNotificationAndLoginStatus(
         NotificationService $notificationService,
         SessionService $sessionService,

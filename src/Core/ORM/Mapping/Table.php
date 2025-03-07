@@ -5,7 +5,8 @@ namespace Neptunium\Core\ORM\Mapping;
 use ReflectionProperty;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class Table {
+class Table
+{
     private array $columns;
     private string $createTableQuery;
 
@@ -18,35 +19,43 @@ class Table {
         $this->columns = [];
     }
 
-    public function getName(): ?string {
+    public function getName(): ?string
+    {
         return $this->name;
     }
 
-    public function setName(?string $name): void {
+    public function setName(?string $name): void
+    {
         $this->name = $name;
     }
 
-    public function getCreateTableQuery(): string {
+    public function getCreateTableQuery(): string
+    {
         return $this->createTableQuery;
     }
 
-    public function getComment(): ?string {
+    public function getComment(): ?string
+    {
         return $this->comment;
     }
 
-    public function setComment(?string $comment): void {
+    public function setComment(?string $comment): void
+    {
         $this->comment = $comment;
     }
 
-    public function getCollate(): ?string {
+    public function getCollate(): ?string
+    {
         return $this->collate;
     }
 
-    public function setCollate(?string $collate): void {
+    public function setCollate(?string $collate): void
+    {
         $this->collate = $collate;
     }
 
-    public function setCreateTableQuery(string $createTableQuery): void {
+    public function setCreateTableQuery(string $createTableQuery): void
+    {
         $this->createTableQuery = $createTableQuery;
     }
 
@@ -54,7 +63,8 @@ class Table {
      * Returns a list of Personality objects
      * @return ReflectionProperty[]
      */
-    public function getColumns(): array {
+    public function getColumns(): array
+    {
         return $this->columns;
     }
 
@@ -62,7 +72,8 @@ class Table {
      * @param ReflectionProperty[] $columns
      * @return void
      */
-    public function setColumns(array $columns): void {
+    public function setColumns(array $columns): void
+    {
         $this->columns = $columns;
     }
 }

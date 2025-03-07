@@ -13,7 +13,8 @@ use Neptunium\Core\ORM\Models\Generic\BaseModel;
     comment: 'Tabela z serwerami użytkownika',
     collate: 'utf8mb4_unicode_ci'
 )]
-class UserServerModel extends BaseModel {
+class UserServerModel extends BaseModel
+{
     #[Column(
         type: FieldPropertyType::Integer,
         primaryKey: true,
@@ -77,14 +78,19 @@ class UserServerModel extends BaseModel {
     )]
     public string $lastUpdate = "";
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
+        $this->databaseConnection = DatabaseConnection::getConnection();
     }
 
-    public function insert(DatabaseConnection $databaseConnection): bool {
-        $pdo = $databaseConnection->getDatabase()->getPdo();
+    public function insert(): bool
+    {
+        $pdo = $this->databaseConnection->getDatabase()->getPdo();
         $query = $pdo->prepare(
-            "INSERT INTO `UserServers` (`name`, `active`, `url`, `varsion`, `hostName`, `domainName`, `registerDate`, `lastUpdate`) VALUES (:servername, :active, :url, :version, :hostName, :domainName, NOW(), NOW());"
+            "INSERT INTO `UserServers` "
+            . "(`name`, `active`, `url`, `varsion`, `hostName`, `domainName`, `registerDate`, `lastUpdate`)"
+            . " VALUES (:servername, :active, :url, :version, :hostname, :domainname, NOW(), NOW());"
         );
 
         return $query->execute([
@@ -92,20 +98,26 @@ class UserServerModel extends BaseModel {
             ':active'                   => $this->active,
             ':url'                      => $this->url,
             ':version'                  => $this->version,
-            ':hostName'                 => $this->hostName,
-            ':domainName'                 => $this->domainName,
+            ':hostname'                 => $this->hostName,
+            ':domainname'               => $this->domainName,
         ]);
     }
 
-    public function update(): bool {
+    public function update(): bool
+    {
+        $pdo = $this->databaseConnection->getDatabase()->getPdo();
         return false;
     }
 
-    public function get(): bool {
-        return false;
+    public function select(): array
+    {
+        $pdo = $this->databaseConnection->getDatabase()->getPdo();
+        return [];
     }
 
-    public function delete(): bool{
+    public function delete(): bool
+    {
+        $pdo = $this->databaseConnection->getDatabase()->getPdo();
         return false;
     }
 }

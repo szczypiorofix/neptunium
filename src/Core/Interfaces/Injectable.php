@@ -2,6 +2,7 @@
 
 namespace Neptunium\Core\Interfaces;
 
-interface Injectable {
+interface Injectable
+{
     public function inject();
 }

@@ -4,7 +4,8 @@ namespace Neptunium\Core\ModelClasses;
 
 use Exception;
 
-class FrameworkException extends Exception {
+class FrameworkException extends Exception
+{
     public function __construct(
         public string $title,
         string $message,
@@ -14,7 +15,8 @@ class FrameworkException extends Exception {
         parent::__construct($message, $code, $previousException);
     }
 
-    public function __toString(): string {
+    public function __toString(): string
+    {
         return "Wystąpił błąd w aplikacji: " . __CLASS__ . " : [$this->code]: $this->title - $this->message\n";
     }
 }

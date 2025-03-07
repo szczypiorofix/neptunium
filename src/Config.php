@@ -2,7 +2,8 @@
 
 namespace Neptunium;
 
-class Config {
+class Config
+{
     public const REQUIRED_ENVIRONMENTAL_VARIABLES = [
         Config::ENV_NEP_DB_NAME,
         Config::ENV_NEP_DB_HOST,

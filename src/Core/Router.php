@@ -16,20 +16,24 @@ use ReflectionException;
  *    ]
  * ]
  */
-class Router {
+class Router
+{
     private array $routes = [];
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     /**
      * @throws ReflectionException
      */
-    public function registerRoutesFromControllerAttributes(array $controllers): void {
-        foreach($controllers as $controller) {
+    public function registerRoutesFromControllerAttributes(array $controllers): void
+    {
+        foreach ($controllers as $controller) {
             $reflectionController = new ReflectionClass($controller);
-            foreach($reflectionController->getMethods() as $method) {
+            foreach ($reflectionController->getMethods() as $method) {
                 $attributes = $method->getAttributes(Route::class);
-                foreach($attributes as $attribute) {
+                foreach ($attributes as $attribute) {
                     $route = $attribute->newInstance();
                     $this->register($route->method, $route->path, [$controller, $method->getName()]) ;
                 }
@@ -37,17 +41,23 @@ class Router {
         }
     }
 
-    public function handleRoutes(string $requestMethod, string $requestUrl, ServiceManager $serviceManager): string {
-        foreach($this->routes as $routeRequestMethodKey => $routeRequestMethodValue) {
+    public function handleRoutes(string $requestMethod, string $requestUrl, ServiceManager $serviceManager): string
+    {
+        foreach ($this->routes as $routeRequestMethodKey => $routeRequestMethodValue) {
             if ($requestMethod === $routeRequestMethodKey) {
-                foreach($routeRequestMethodValue as $routeUrl => $routeValue) {
+                foreach ($routeRequestMethodValue as $routeUrl => $routeValue) {
                     $routeUrlParsed = trim($routeUrl, '/');
                     $parsedUrl = trim($requestUrl, '/');
                     $requestQueryString = $this->retrieveGetParameters();
                     if ($routeUrlParsed === $parsedUrl) {
                         $className = $routeValue[0];
                         $classObject = new $className();
-                        return call_user_func_array(array($classObject, $routeValue[1]), [$serviceManager, $requestQueryString]);
+                        return call_user_func_array(
+                            array(
+                                $classObject,
+                                $routeValue[1]),
+                            array($serviceManager, $requestQueryString)
+                        );
                     }
                 }
             }
@@ -55,7 +65,7 @@ class Router {
         http_response_code(404);
         try {
             $returnContent = $this->return404Page();
-        } catch(FrameworkException $e) {
+        } catch (FrameworkException $e) {
             echo $e->getMessage();
             exit;
         }
@@ -66,20 +76,23 @@ class Router {
         string $requestMethod,
         string $route,
         callable | array $action
-    ) : self {
+    ): self {
         $this->routes[$requestMethod][$route] = $action;
         return $this;
     }
 
-    public function get(string $route, callable | array $action) : self {
+    public function get(string $route, callable | array $action): self
+    {
         return $this->register('GET', $route, $action);
     }
 
-    public function getRoutes(): array {
+    public function getRoutes(): array
+    {
         return $this->routes;
     }
 
-    private function retrieveGetParameters(): array|false|int|null|string {
+    private function retrieveGetParameters(): array|false|int|null|string
+    {
         $actual_link = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $queryString = parse_url($actual_link, PHP_URL_QUERY);
         $queryStringParameters = [];
@@ -90,7 +103,8 @@ class Router {
     /**
      * @throws FrameworkException
      */
-    private function return404Page(): string {
+    private function return404Page(): string
+    {
         $renderParams = [
             'templateFileName' => '404.twig',
             'templateName' => 'page404',

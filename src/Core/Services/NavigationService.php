@@ -5,18 +5,21 @@ namespace Neptunium\Core\Services;
 use Neptunium\Core\Attributes\Route;
 use Neptunium\Core\ModelClasses\BaseService;
 
-class NavigationService extends BaseService {
+class NavigationService extends BaseService
+{
     public static string $name = 'NavigationService';
     /**
      * @var Route[]
      */
     private array $availableRoutes;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(self::$name);
     }
 
-    public function initialize(): void {
+    public function initialize(): void
+    {
         $this->availableRoutes = [];
     }
 
@@ -24,11 +27,13 @@ class NavigationService extends BaseService {
      * @param Route[] $routes
      * @return void
      */
-    public function setAvailableRoutes(array $routes): void {
+    public function setAvailableRoutes(array $routes): void
+    {
         $this->availableRoutes = $routes;
     }
 
-    public function prepareNavigationBar(string $currentPath, bool $userLoggedIn = false): array {
+    public function prepareNavigationBar(string $currentPath, bool $userLoggedIn = false): array
+    {
         $nav = array(
             'login_page' => [
                 'title' => 'Login',
@@ -77,7 +82,8 @@ class NavigationService extends BaseService {
     /**
      * @return Route[] get routes
      */
-    public function getAvailableRoutes(): array {
+    public function getAvailableRoutes(): array
+    {
         return $this->availableRoutes;
     }
 }

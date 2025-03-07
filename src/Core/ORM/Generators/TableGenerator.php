@@ -10,7 +10,8 @@ use Neptunium\Core\ORM\Mapping\Table;
 use ReflectionClass;
 use ReflectionException;
 
-class TableGenerator implements Generator {
+class TableGenerator implements Generator
+{
     private Table $table;
     private string $tableName;
     private string $generateTableQuery;
@@ -18,9 +19,12 @@ class TableGenerator implements Generator {
     private DatabaseConnection $databaseConnection;
     private ReflectionClass $reflectionClassObject;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
-    public function generate(string $class, DatabaseConnection $databaseConnection): bool {
+    public function generate(string $class, DatabaseConnection $databaseConnection): bool
+    {
         $this->originClass = $class;
         $this->databaseConnection = $databaseConnection;
         try {
@@ -37,18 +41,20 @@ class TableGenerator implements Generator {
     /**
      * @throws ReflectionException
      */
-    private function createReflectionObject(): ReflectionClass {
+    private function createReflectionObject(): ReflectionClass
+    {
         return new ReflectionClass($this->originClass);
     }
 
-    private function generateTableObjectWithAttributes(): void {
+    private function generateTableObjectWithAttributes(): void
+    {
         $tableArrayColumns = [];
         $modelClassProperties = $this->reflectionClassObject->getProperties();
         $modelClassAttributes = $this->reflectionClassObject->getAttributes();
-        foreach($modelClassProperties as $column) {
+        foreach ($modelClassProperties as $column) {
             $propertyAttributes = $column->getAttributes();
             $columnName = $column->getName();
-            foreach($propertyAttributes as $attribute) {
+            foreach ($propertyAttributes as $attribute) {
                 $tableArrayColumns[$columnName] = $attribute->getArguments();
             }
         }
@@ -59,19 +65,20 @@ class TableGenerator implements Generator {
         $this->table->setColumns($tableArrayColumns);
     }
 
-    private function createTable(): void {
-        $this->generateTableQuery = "CREATE TABLE IF NOT EXISTS `" .$this->tableName . "` (";
+    private function createTable(): void
+    {
+        $this->generateTableQuery = "CREATE TABLE IF NOT EXISTS `" . $this->tableName . "` (";
 
         $queryString = "";
-        foreach($this->table->getColumns() as $columnName => $column) {
+        foreach ($this->table->getColumns() as $columnName => $column) {
             $queryString .= "`" . $columnName . "`";
             $attributeLength = 0;
-            foreach($column as $attributeKey => $attributeValue) {
+            foreach ($column as $attributeKey => $attributeValue) {
                 if ($attributeKey === 'length') {
                     $attributeLength = $attributeValue;
                 }
             }
-            foreach($column as $attributeKey => $attributeValue) {
+            foreach ($column as $attributeKey => $attributeValue) {
                 $queryString .= $this->concatenateQueryParameters($attributeKey, $attributeValue, $attributeLength);
             }
             $queryString .= ',';
@@ -83,21 +90,21 @@ class TableGenerator implements Generator {
 
         $this->databaseConnection->getDatabase()->getPdo()->exec($this->generateTableQuery);
     }
-    
+
     private function concatenateQueryParameters(
-            string $attributeKey,
-            mixed $attributeValue,
-            int $attributeLength
+        string $attributeKey,
+        mixed $attributeValue,
+        int $attributeLength
     ): string {
         $queryString = "";
-        switch($attributeKey) {
+        switch ($attributeKey) {
             case 'type':
                 $attributeType = FieldPropertyType::getLabel($attributeValue);
                 if (str_starts_with($attributeType, 'VARCHAR') && $attributeLength > 0) {
-                    $queryString .= " ".$attributeType."($attributeLength)";
+                    $queryString .= " " . $attributeType . "($attributeLength)";
                     break;
                 }
-                $queryString .= " ".$attributeType;
+                $queryString .= " " . $attributeType;
                 break;
             case 'nullable':
                 $queryString .= " NULL";
@@ -106,10 +113,10 @@ class TableGenerator implements Generator {
                 $queryString .= " AUTO_INCREMENT";
                 break;
             case 'collation':
-                $queryString .= " COLLATION ".$attributeValue;
+                $queryString .= " COLLATION " . $attributeValue;
                 break;
             case 'defaultValue':
-                $queryString .= " DEFAULT ".$attributeValue;
+                $queryString .= " DEFAULT " . $attributeValue;
                 break;
             case 'unique':
                 $queryString .= " UNIQUE";
@@ -118,7 +125,7 @@ class TableGenerator implements Generator {
                 $queryString .= " PRIMARY KEY";
                 break;
             case 'comment':
-                $queryString .= " COMMENT '".$attributeValue."'";
+                $queryString .= " COMMENT '" . $attributeValue . "'";
                 break;
             default:
                 break;
@@ -126,7 +133,8 @@ class TableGenerator implements Generator {
         return $queryString;
     }
 
-    private function determineTableName(array $modelClassAttributes): string {
+    private function determineTableName(array $modelClassAttributes): string
+    {
         $classNameArray = explode(DIRECTORY_SEPARATOR, $this->originClass);
         // Retrieve table name from class name
         $tableName = end($classNameArray);
@@ -141,7 +149,8 @@ class TableGenerator implements Generator {
         return $tableName;
     }
 
-    private function show(mixed $data): void {
+    private function show(mixed $data): void
+    {
         echo '<pre>';
         var_dump($data);
         echo '</pre>';

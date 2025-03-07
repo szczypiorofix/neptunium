@@ -9,7 +9,8 @@ use Neptunium\Core\ModelClasses\Notification;
 use Neptunium\Core\ModelClasses\NotificationType;
 use Neptunium\Core\ModelClasses\RenderParamsEnum;
 
-class NotificationService extends BaseService {
+class NotificationService extends BaseService
+{
     public static string $name = 'NotificationService';
 
     /**
@@ -17,20 +18,25 @@ class NotificationService extends BaseService {
      */
     private array $notifications = [];
 
-    public function __construct(array $dependencies = []) {
+    public function __construct(array $dependencies = [])
+    {
         parent::__construct(self::$name, $dependencies);
     }
 
-    public function initialize(): void {}
+    public function initialize(): void
+    {
+    }
 
-    public function addNotification(string $name, string $text, int $type = NotificationType::INFO ): void {
+    public function addNotification(string $name, string $text, int $type = NotificationType::INFO): void
+    {
         $this->notifications[$name] = new Notification($text, $type);
     }
 
     /**
      * @throws Exception
      */
-    public function getNotification(string $name): Notification {
+    public function getNotification(string $name): Notification
+    {
         if (!isset($this->notifications[$name])) {
             throw new FrameworkException("Notification error!", "Notification '$name' does not exist");
         }
@@ -40,12 +46,14 @@ class NotificationService extends BaseService {
     /**
      * @return Notification[]
      */
-    public function getNotifications(): array {
+    public function getNotifications(): array
+    {
         return $this->notifications;
     }
 
 
-    public function restoreNotifications(): void {
+    public function restoreNotifications(): void
+    {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
@@ -56,16 +64,19 @@ class NotificationService extends BaseService {
         $this->notifications = [];
     }
 
-    public function deleteNotification(string $name): void {
+    public function deleteNotification(string $name): void
+    {
         unset($this->notifications[$name]);
     }
 
-    public function clearNotifications(): void {
+    public function clearNotifications(): void
+    {
         $this->notifications = [];
         $this->saveNotifications();
     }
 
-    public function saveNotifications(): void {
+    public function saveNotifications(): void
+    {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }

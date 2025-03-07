@@ -16,7 +16,8 @@ use Neptunium\Core\Services\NotificationService;
 use Neptunium\Core\Services\SessionService;
 use PDO;
 
-class AdminPageController extends Controller {
+class AdminPageController extends Controller
+{
     /**
      * @throws FrameworkException
      */
@@ -38,7 +39,7 @@ class AdminPageController extends Controller {
 
         $sessionService->sessionStart();
         $loginData = $sessionService->getLoginData();
-        
+
         if (!$loginData) {
             $this->redirect("/login");
         }
@@ -55,7 +56,7 @@ class AdminPageController extends Controller {
         if (!$navigationService instanceof NavigationService) {
             throw new FrameworkException('Service error!', 'Navigation service not found');
         }
-        
+
         RenderParams::set([
             RenderParamsEnum::NAVIGATION_DATA->value => $navigationService->prepareNavigationBar('home', !!$loginData),
             RenderParamsEnum::NOTIFICATIONS->value => $notifications,

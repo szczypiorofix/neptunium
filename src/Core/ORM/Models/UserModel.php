@@ -12,7 +12,8 @@ use Neptunium\Core\ORM\Models\Generic\BaseModel;
     comment: 'Tabela użytkowników',
     collate: 'utf8mb4_unicode_ci'
 )]
-class UserModel extends BaseModel{
+class UserModel extends BaseModel
+{
     #[Column(
         type: FieldPropertyType::Integer,
         primaryKey: true,
@@ -76,9 +77,28 @@ class UserModel extends BaseModel{
     )]
     public string $lastLogin = "";
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
+    public function insert(): bool
+    {
+        return false;
+    }
 
+    public function update(): bool
+    {
+        return false;
+    }
+
+    public function delete(): bool
+    {
+        return false;
+    }
+
+    public function select(): array
+    {
+        return array();
+    }
 }

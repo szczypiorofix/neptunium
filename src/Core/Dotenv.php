@@ -4,35 +4,44 @@ namespace Neptunium\Core;
 
 use Exception;
 
-class Dotenv {
+class Dotenv
+{
     private static array $registeredKeys = array();
     private static ?Dotenv $instance = null;
 
-    private function __construct() {}
-    private function __clone() {}
+    private function __construct()
+    {
+    }
+    private function __clone()
+    {
+    }
 
-    public static function getInstance(): Dotenv {
+    public static function getInstance(): Dotenv
+    {
         if (is_null(self::$instance)) {
             self::$instance = new Dotenv();
         }
         return self::$instance;
     }
-    
+
     /**
      * @throws Exception
      */
-    public static function load(string $path): void {
+    public static function load(string $path): void
+    {
         $fileRawContent = @file_get_contents($path);
         if ($fileRawContent) {
             self::parseEnvFileContent($fileRawContent);
         }
     }
 
-    public static function getRegisteredKeys(): array {
+    public static function getRegisteredKeys(): array
+    {
         return self::$registeredKeys;
     }
 
-    public function getValue(string $key): mixed {        
+    public function getValue(string $key): mixed
+    {
         $value = getenv($key);
         if ($value) {
             return $value;
@@ -40,9 +49,10 @@ class Dotenv {
         throw new ModelClasses\FrameworkException("Brak klucza!", "Brak klucza: " . $key);
     }
 
-    private static function parseEnvFileContent(string $fileRawContent): void {
+    private static function parseEnvFileContent(string $fileRawContent): void
+    {
         $fileContentArray = explode(PHP_EOL, $fileRawContent);
-        foreach($fileContentArray as $line) {
+        foreach ($fileContentArray as $line) {
             $lineArray = explode("=", trim($line));
             if (isset($lineArray[0]) && isset($lineArray[1])) {
                 $lineKey = trim($lineArray[0]);

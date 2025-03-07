@@ -30,27 +30,29 @@ use Monolog\Level;
 use Monolog\Logger as MonologLogger;
 use Monolog\Handler\StreamHandler;
 
-
-class Logger {
+class Logger
+{
     private static ?Logger $instance = null;
     private static string $loggerName = "LOGGER";
 
     private static MonologLogger $logger;
 
-    private function __construct() {
+    private function __construct()
+    {
         self::$logger = new MonologLogger(self::$loggerName);
     }
 
-    public static function getInstance(): Logger {
+    public static function getInstance(): Logger
+    {
         if (is_null(self::$instance)) {
             self::$instance = new Logger();
         }
         return self::$instance;
     }
 
-    public static function log(string $text) {
+    public static function log(string $text)
+    {
         self::$logger->pushHandler(new StreamHandler('./logs/app.log', Level::Warning));
         self::$logger->warning($text);
     }
 }
-

@@ -31,24 +31,35 @@ namespace Neptunium\Core;
  *
  * @author szczypiorofix
  */
-class NeptuniumErrorHandler {
+class NeptuniumErrorHandler
+{
     private mixed $previousErrorHandler = null;
     private static ?NeptuniumErrorHandler $errorHandler = null;
-    
-    private function __construct() {
+
+    private function __construct()
+    {
         $this->previousErrorHandler = set_error_handler([$this, "neptuniumErrorHandler"]);
     }
-    
-    private function __clone() {}
-    
-    public static function getInstance(): NeptuniumErrorHandler {
+
+    private function __clone()
+    {
+    }
+
+    public static function getInstance(): NeptuniumErrorHandler
+    {
         if (is_null(self::$errorHandler)) {
             self::$errorHandler = new NeptuniumErrorHandler();
         }
         return self::$errorHandler;
     }
-    
-    public function neptuniumErrorHandler($errno, $errstr, $errfile, $errline): bool {
+
+    public function getPreviousErrorHandler(): mixed
+    {
+        return $this->previousErrorHandler;
+    }
+
+    public function neptuniumErrorHandler($errno, $errstr, $errfile, $errline): bool
+    {
         if (!(error_reporting() & $errno)) {
             // This error code is not included in error_reporting, so let it fall
             // through to the standard PHP error handler

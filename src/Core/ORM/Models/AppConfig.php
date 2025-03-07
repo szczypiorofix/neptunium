@@ -36,7 +36,8 @@ use Neptunium\Core\ORM\Models\Generic\BaseModel;
     comment: 'Tabela ustawień',
     collate: 'utf8mb4_unicode_ci'
 )]
-class AppConfig extends BaseModel {
+class AppConfig extends BaseModel
+{
     #[Column(
         type: FieldPropertyType::Integer,
         primaryKey: true,
@@ -51,16 +52,36 @@ class AppConfig extends BaseModel {
         comment: 'Klucz'
     )]
     public string $key = "";
-    
+
     #[Column(
         type: FieldPropertyType::VarChar,
         length: 60,
         comment: 'Wartość'
     )]
-    public string $value = "";   
+    public string $value = "";
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
-}
 
+    public function insert(): bool
+    {
+        return false;
+    }
+
+    public function update(): bool
+    {
+        return false;
+    }
+
+    public function delete(): bool
+    {
+        return false;
+    }
+
+    public function select(): array
+    {
+        return array();
+    }
+}

@@ -2,7 +2,8 @@
 
 namespace Neptunium\Core\ModelClasses;
 
-enum RenderParamsEnum: string {
+enum RenderParamsEnum: string
+{
     case TEMPLATE_FILE_NAME = "templateFileName";
     case TEMPLATE_NAME      = "templateName";
     case QUERY_DATA         = "queryData";

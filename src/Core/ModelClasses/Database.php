@@ -6,7 +6,8 @@ use Neptunium\Config;
 use PDO;
 use PDOException;
 
-class Database {
+class Database
+{
     private ?PDO $pdo = null;
     private string $errorMessage = "";
     private bool $error = false;
@@ -21,7 +22,8 @@ class Database {
     private const DEFAULT_PORT = 3306;
     private const DEFAULT_CHARSET = 'UTF8';
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->host         = getenv(Config::ENV_NEP_DB_HOST);
         $this->name         = getenv(Config::ENV_NEP_DB_NAME);
         $this->username     = getenv(Config::ENV_NEP_DB_USER);
@@ -30,59 +32,73 @@ class Database {
         $this->charset      = getenv(Config::ENV_NEP_DB_CHARSET) ?? self::DEFAULT_CHARSET;
     }
 
-    public function getCharset(): string {
+    public function getCharset(): string
+    {
         return $this->charset;
     }
 
-    public function getPassword(): string {
+    public function getPassword(): string
+    {
         return $this->password;
     }
 
-    public function getUsername(): string {
+    public function getUsername(): string
+    {
         return $this->username;
     }
 
-    public function getPort(): int {
+    public function getPort(): int
+    {
         return $this->port;
     }
 
-    public function getName(): string {
+    public function getName(): string
+    {
         return $this->name;
     }
 
-    public function getHost(): string {
+    public function getHost(): string
+    {
         return $this->host;
     }
 
-    public function isError(): bool {
+    public function isError(): bool
+    {
         return $this->error;
     }
 
-    public function setError(bool $error): void {
+    public function setError(bool $error): void
+    {
         $this->error = $error;
     }
 
-    public function getErrorMessage(): string {
+    public function getErrorMessage(): string
+    {
         return $this->errorMessage;
     }
 
-    public function setErrorMessage(string $errorMessage): void {
+    public function setErrorMessage(string $errorMessage): void
+    {
         $this->errorMessage = $errorMessage;
     }
 
-    public function getPdo(): ?PDO {
+    public function getPdo(): ?PDO
+    {
         return $this->pdo;
     }
 
-    public function setPdo(?PDO $pdo): void {
+    public function setPdo(?PDO $pdo): void
+    {
         $this->pdo = $pdo;
     }
 
-    public function getException(): PDOException {
+    public function getException(): PDOException
+    {
         return $this->exception;
     }
 
-    public function setException(PDOException $exception): void {
+    public function setException(PDOException $exception): void
+    {
         $this->exception = $exception;
     }
 }

@@ -5,11 +5,13 @@ namespace Neptunium\Core;
 use Neptunium\Core\ModelClasses\Database;
 use PDO;
 
-class DatabaseConnection {
+class DatabaseConnection
+{
     private ?Database $db;
     private static ?DatabaseConnection $databaseInstance = null;
 
-    private function __construct() {
+    private function __construct()
+    {
         $this->db = new Database();
         $databaseHost = $this->db->getHost();
         $databasePort = $this->db->getPort();
@@ -35,14 +37,16 @@ class DatabaseConnection {
         }
     }
 
-    public static function getConnection(): DatabaseConnection {
+    public static function getConnection(): DatabaseConnection
+    {
         if (!self::$databaseInstance) {
             self::$databaseInstance = new DatabaseConnection();
         }
         return self::$databaseInstance;
     }
 
-    public function getDatabase(): Database {
+    public function getDatabase(): Database
+    {
         return $this->db;
     }
 }

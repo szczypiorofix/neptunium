@@ -15,7 +15,8 @@ use Neptunium\Core\Services\NavigationService;
 use Neptunium\Core\Services\NotificationService;
 use Neptunium\Core\Services\SessionService;
 
-class MainController extends Controller {
+class MainController extends Controller
+{
     /**
      * @throws FrameworkException
      */
@@ -61,7 +62,7 @@ class MainController extends Controller {
         ]);
 
         DebugContainer::$warning = [
-          'main'=> 'Notifications count: '.count($notifications),
+          'main' => 'Notifications count: ' . count($notifications),
         ];
 
         return HtmlView::renderPage('index.twig', RenderParams::getAll());

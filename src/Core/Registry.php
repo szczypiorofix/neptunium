@@ -2,13 +2,18 @@
 
 namespace Neptunium\Core;
 
-class Registry {
-    static private array $store = array();
+class Registry
+{
+    private static array $store = array();
 
-    private function __construct() {}
-    private function __clone() {}
+    private function __construct()
+    {
+    }
+    private function __clone()
+    {
+    }
 
-    static public function add(
+    public static function add(
         object $object,
         $name = null
     ): mixed {
@@ -20,37 +25,46 @@ class Registry {
         return null;
     }
 
-    static public function getSize(): int {
+    public static function getSize(): int
+    {
         return count(self::$store);
     }
 
-    static public function showList(): void {
+    public static function showList(): void
+    {
         $r = "";
-        foreach(self::$store as $s) {
-            $r .= $s.'<br>';
+        foreach (self::$store as $s) {
+            $r .= $s . '<br>';
         }
         echo $r;
     }
 
-    static public function returnList(): array {
+    public static function returnList(): array
+    {
         return self::$store;
     }
 
-    static public function get(string $name): mixed {
+    public static function get(string $name): mixed
+    {
 //        if (!self::contains($name)) {
 //            throw new FrameworkException('Brak obiektu!', "Nie znaleziono obiektu ".$name);
 //        }
         return self::$store[$name];
     }
 
-    static public function remove(string $name): void {
+    public static function remove(string $name): void
+    {
 //        if (!self::contains($name)) {
-//            throw new FrameworkException('Brak obiektu!', "Nie można usunąć obiektu ".$name.", ponieważ nie ma go w rejestrze!");
+//            throw new FrameworkException(
+//              'Brak obiektu!',
+//              "Nie można usunąć obiektu " . $name . ", ponieważ nie ma go w rejestrze!"
+//);
 //        }
         unset(self::$store[$name]);
     }
 
-    static public function contains($name): bool {
+    public static function contains($name): bool
+    {
         return isset(self::$store[$name]);
     }
 }
